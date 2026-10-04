@@ -1,0 +1,11 @@
+.gradle/
+.gradle-user/
+build/
+out/
+.idea/
+.vscode/
+*.iml
+local.properties
+*.log
+hs_err_pid*.log
+*.zip

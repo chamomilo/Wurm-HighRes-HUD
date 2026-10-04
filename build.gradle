@@ -1,0 +1,168 @@
+import java.util.Properties
+
+plugins {
+    id 'java'
+}
+
+group = 'org.highreshud'
+version = '0.1.1'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+def localProperties = new Properties()
+def localPropertiesFile = file('local.properties')
+if (localPropertiesFile.isFile()) {
+    localPropertiesFile.withInputStream { localProperties.load(it) }
+}
+
+def configuredLibraryDirectory = findProperty('wurmClientLibDir')
+if (configuredLibraryDirectory == null || configuredLibraryDirectory.toString().trim().isEmpty()) {
+    configuredLibraryDirectory = localProperties.getProperty('wurmClientLibDir')
+}
+if (configuredLibraryDirectory == null || configuredLibraryDirectory.toString().trim().isEmpty()) {
+    configuredLibraryDirectory = System.getenv('WURM_CLIENT_LIBS')
+}
+if (configuredLibraryDirectory == null || configuredLibraryDirectory.toString().trim().isEmpty()) {
+    throw new GradleException('Set wurmClientLibDir in local.properties, '
+            + 'pass -PwurmClientLibDir=..., or set WURM_CLIENT_LIBS')
+}
+
+def wurmClientLibDir = file(configuredLibraryDirectory.toString())
+def requiredClientLibraries = [
+        'client-patched.jar',
+        'common.jar',
+        'javassist.jar',
+        'modlauncher.jar'
+].collect { new File(wurmClientLibDir, it) }
+
+requiredClientLibraries.each { library ->
+    if (!library.isFile()) {
+        throw new GradleException('Required Wurm client library is missing: ' + library)
+    }
+}
+
+repositories { mavenCentral() }
+
+dependencies {
+    compileOnly files(requiredClientLibraries)
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation files(requiredClientLibraries)
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+test {
+    systemProperty 'wurmClientLibDir', wurmClientLibDir.absolutePath
+    systemProperty 'highResHudProjectDir', projectDir.absolutePath
+    systemProperty 'highResHudVersion', project.version.toString()
+    testLogging {
+        events 'failed'
+        exceptionFormat 'full'
+    }
+}
+
+jar {
+    archiveFileName = "highres-hud-${project.version}.jar"
+}
+
+task resourcePack(type: Jar) {
+    archiveFileName = "highres-hud-resources-${project.version}.jar"
+    destinationDirectory = file("${buildDir}/resource-pack")
+    from('resource-pack')
+}
+
+task verifyArtifacts(dependsOn: [jar, resourcePack]) {
+    doLast {
+        def modContents = zipTree(jar.archiveFile.get().asFile)
+        [
+                'org/highreshud/client/HighResHudMod.class',
+                'org/highreshud/client/HighResHudRuntime.class',
+                'org/highreshud/client/UnifiedHookInstaller.class',
+                'org/highreshud/core/HighResHudApi.class',
+                'org/highreshud/core/ActionBus.class',
+                'org/highreshud/core/ExamineBroker.class',
+                'org/highreshud/core/PortraitScheduler.class',
+                'org/highreshud/client/portrait/PortraitRenderService.class',
+                'org/highreshud/client/state/CreatureRelationState.class',
+                'org/chamomilo/wurm/update/SharedUpdateCoordinator.class',
+                'org/chamomilo/wurm/update/UpdateTarget.class',
+                'org/chamomilo/wurm/update/ModUpdate.class',
+                'org/chamomilo/wurm/update/GitHubReleaseClient.class',
+                'com/wurmonline/client/renderer/gui/ChamomiloUpdateWindow.class',
+                'org/highreshealthbar/client/HighResHealthBarMod.class',
+                'org/highreshealthbar/client/SleepBonusToggleTracker.class',
+                'org/highresfocusbar/client/HighResFocusBarMod.class',
+                'org/highresfightinghud/client/HighResFightingHudMod.class',
+                'com/wurmonline/client/renderer/gui/HighResHealthBar.class',
+                'com/wurmonline/client/renderer/gui/HighResFocusBar.class',
+                'com/wurmonline/client/renderer/gui/HighResFightingHud.class'
+        ].each { required ->
+            if (modContents.matching { include required }.files.empty) {
+                throw new GradleException('Unified mod artifact is missing ' + required)
+            }
+        }
+
+        def modProperties = new Properties()
+        file('mods/highres-hud.properties').withInputStream {
+            modProperties.load(it)
+        }
+        [
+                sharedClassLoader: 'true',
+                updateProvider: 'chamomilo',
+                updateCoordinatorProtocol: '1',
+                updateId: 'highres-hud',
+                updateName: 'High-res HUD',
+                updateRepo: 'chamomilo/Wurm-HighRes-HUD',
+                updateAsset: 'highres-hud-{version}.zip'
+        ].each { key, expected ->
+            if (modProperties.getProperty(key) != expected) {
+                throw new GradleException("Invalid updater metadata ${key}")
+            }
+        }
+
+        def entrypoint = file('src/main/java/org/highreshud/client/HighResHudMod.java').text
+        ['ModListener',
+         'SharedUpdateCoordinator.registerHost',
+         'SharedUpdateCoordinator.modInitialized',
+         'SharedUpdateCoordinator.startOnce'].each { integration ->
+            if (!entrypoint.contains(integration)) {
+                throw new GradleException(
+                        "HighResHudMod is missing updater integration ${integration}")
+            }
+        }
+
+        def packContents = zipTree(resourcePack.archiveFile.get().asFile)
+        [
+                'mappings.txt',
+                'gui/highres-healthbar-frame.png',
+                'gui/highres-select-bar-frame.png',
+                'gui/highres-fighting-hud-frame.png'
+        ].each { required ->
+            if (packContents.matching { include required }.files.empty) {
+                throw new GradleException('Unified resource pack is missing ' + required)
+            }
+        }
+    }
+}
+
+task dist(type: Zip, dependsOn: [test, verifyArtifacts]) {
+    archiveFileName = "highres-hud-${project.version}.zip"
+    destinationDirectory = file("${buildDir}/distributions")
+    into('mods/highres-hud') {
+        from jar
+        from resourcePack
+        from 'README.md'
+        from 'CHANGELOG.md'
+        from 'ARCHITECTURE.md'
+        from 'LICENSE'
+        from('src/main/resources/org/highreshud/client/portrait/portrait-profiles.properties') {
+            rename { 'portrait-profiles.bundled.properties' }
+        }
+    }
+    into('mods') { from 'mods/highres-hud.properties' }
+}
+
+build.dependsOn verifyArtifacts

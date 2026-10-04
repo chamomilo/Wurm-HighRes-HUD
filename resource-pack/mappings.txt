@@ -1,0 +1,11 @@
+img.highreshealthbar.frame = gui/highres-healthbar-frame.png
+img.highreshealthbar.frame.three = gui/highres-healthbar-frame-three-line.png
+img.highreshealthbar.frame.nameonly = gui/highres-healthbar-frame-name-only.png
+img.highreshealthbar.frame.compact = gui/highres-healthbar-frame-compact.png
+img.highreshealthbar.nameplate = gui/highres-healthbar-nameplate.png
+img.highreshealthbar.mount.frame = gui/highres-healthbar-mount-frame.png
+img.highreshealthbar.blood = gui/highres-healthbar-blood.png
+img.highresselectbar.frame = gui/highres-select-bar-frame.png
+img.highresselectbar.actions = gui/highres-select-actions.png
+img.highresselectbar.pin = gui/highres-select-pin.png
+img.highresfightinghud.frame = gui/highres-fighting-hud-frame.png
