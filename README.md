@@ -53,15 +53,15 @@ contains all three panels and owns their hooks.
 
 ## Installation
 
-1. Download `highres-hud-0.1.1.zip` from the
+1. Download `highres-hud-0.1.2.zip` from the
    [latest release](https://github.com/chamomilo/Wurm-HighRes-HUD/releases/latest).
 2. Close Wurm Unlimited.
 3. Extract the archive into the `WurmLauncher` directory, merging its `mods`
    folder with the existing one.
 4. Confirm these paths exist:
    - `WurmLauncher/mods/highres-hud.properties`
-   - `WurmLauncher/mods/highres-hud/highres-hud-0.1.1.jar`
-   - `WurmLauncher/mods/highres-hud/highres-hud-resources-0.1.1.jar`
+   - `WurmLauncher/mods/highres-hud/highres-hud-0.1.2.jar`
+   - `WurmLauncher/mods/highres-hud/highres-hud-resources-0.1.2.jar`
 5. Disable the three standalone High-res HUD mods if they are present, then
    start the game through Client Mod Launcher.
 
@@ -149,3 +149,7 @@ scheduling model, and [CHANGELOG.md](CHANGELOG.md) for release history.
 ## License
 
 Wurm High-res HUD is released under the [GNU General Public License v3.0](LICENSE).
+
+## Chamomilo versions
+
+Version 0.1.2 embeds the shared Chamomilo updater. A versions window opens at every launch after the HUD is ready and lists all mods from the public GitHub catalogue, including disabled and absent installations. UPDATE opens a newer installed release; INSTALL opens a release for an absent mod. ZIP installation remains manual. The public catalogue is refreshed without requiring new client binaries; a verified copy is retained for offline startup. All Chamomilo updater copies share one window, with a thin high-resolution wood-and-metal frame.

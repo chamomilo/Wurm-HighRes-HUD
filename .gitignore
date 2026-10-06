@@ -9,3 +9,15 @@ local.properties
 *.log
 hs_err_pid*.log
 *.zip
+
+.gradle/
+.gradle-user/
+build/
+libs/
+local.properties
+*.log
+*.zip
+__pycache__/
+*.pyc
+.tmp*/
+mods/*/*.jar

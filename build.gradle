@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.highreshud'
-version = '0.1.1'
+version = '0.1.2'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -166,3 +166,6 @@ task dist(type: Zip, dependsOn: [test, verifyArtifacts]) {
 }
 
 build.dependsOn verifyArtifacts
+
+ext.chamomiloUpdate = [id: 'highres-hud', name: 'High-res HUD', repo: 'chamomilo/Wurm-HighRes-HUD', asset: 'highres-hud-{version}.zip', properties: 'mods/highres-hud.properties', main: 'src/main/java/org/highreshud/client/HighResHudMod.java']
+apply from: 'gradle/chamomilo-updater.gradle'
