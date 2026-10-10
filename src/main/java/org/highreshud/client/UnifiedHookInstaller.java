@@ -151,6 +151,12 @@ public final class UnifiedHookInstaller {
                 "com.wurmonline.client.renderer.gui.FightWindowComponent");
         fightWindow.getMethod("toggleFighting", "(Z)V").insertAfter(
                 "org.highreshud.client.HighResHudRuntime.combatChanged($1);");
+        fightWindow.getMethod("setOptions", "([B)V").insertAfter(
+                "org.highreshud.client.HighResHudRuntime.focusOptions(this);");
+        fightWindow.getMethod("updatePosition", "(FFB)V").insertAfter(
+                "org.highreshud.client.HighResHudRuntime.focusPosition(this,$3);");
+        fightWindow.getMethod("setFocusLevel", "(BLjava/lang/String;)V").insertAfter(
+                "org.highreshud.client.HighResHudRuntime.focusLevel(this,$1,$2);");
 
         CtClass listener = pool.getCtClass(
                 "com.wurmonline.client.comm.ServerConnectionListenerClass");

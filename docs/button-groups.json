@@ -1,0 +1,12 @@
+{
+  "baseline": [1920, 1080],
+  "geometryPolicy": "Keep Healthbar and Select dimensions; Fighting HUD grows slightly to 676 x 282 for larger Special moves buttons; explicitly scale compact artwork",
+  "groups": [
+    {"id":"health.sleep-toggle","block":"sleep bonus action","members":["sleep-toggle"],"captionVariants":["Activate","Deactivate"],"density":"HIGH","family":"Alegreya Sans SC","height":14,"widths":[76],"captionRows":1,"typographicLevel":"compact-action","scale":0.5,"sharedFontSize":"largest supported size fitting both variants in Regular and Bold","baseline":"union of ink bounds across both variants and weights","overflow":"ellipsis with original caption in tooltip"},
+    {"id":"health.ride-action","block":"ride status row","members":["disembark"],"captionVariants":["Disembark"],"density":"HIGH","family":"Alegreya Sans SC","height":16,"widths":[76],"captionRows":1,"typographicLevel":"compact-action","scale":0.5,"sharedFontSize":"largest fitting supported size in both weights","baseline":"common ink bounds","overflow":"ellipsis with original caption in tooltip"},
+    {"id":"select.action-pages","block":"action shelf page control","members":["pager"],"density":"HIGH","family":"Alegreya Sans SC","height":28,"widths":[29],"captionRows":1,"typographicLevel":"compact-navigation","scale":0.5,"sharedFontSize":12,"baseline":"union of numeric caption ink bounds","overflow":"ellipsis with page count in tooltip"},
+    {"id":"fighting.target-action","block":"target portrait header","members":["no-target"],"captionVariants":["No target"],"density":"HIGH","family":"Alegreya Sans SC","height":19,"widths":[96],"captionRows":1,"typographicLevel":"compact-action","scale":0.5,"sharedFontSize":"largest fitting supported size in Regular and Bold","baseline":"common ink bounds","overflow":"ellipsis with original caption in tooltip"},
+    {"id":"fighting.focus-action","block":"combat focus","members":["combat-focus"],"captionVariants":["Combat focus"],"density":"HIGH","family":"Alegreya Sans SC","height":24,"widths":[126],"captionRows":1,"typographicLevel":"combat-action","scale":0.5,"sharedFontSize":"largest fitting supported size in Regular and Bold","baseline":"common ink bounds","overflow":"ellipsis with original caption in tooltip"}
+  ],
+  "excluded": "Select actions/hotkey badges, pin/close, and native combat controls are icons or indicators, not captioned peer buttons. Native combat actions and tooltips remain native. Updater groups belong to the canonical reference."
+}

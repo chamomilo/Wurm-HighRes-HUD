@@ -6,6 +6,7 @@ import com.wurmonline.client.renderer.cell.CellRenderable;
 import com.wurmonline.client.renderer.cell.CreatureCellRenderable;
 import com.wurmonline.client.renderer.gui.HeadsUpDisplay;
 import com.wurmonline.client.renderer.gui.SelectBar;
+import com.wurmonline.client.renderer.gui.StaticComponent;
 import com.wurmonline.client.renderer.gui.WurmComponent;
 import com.wurmonline.shared.constants.PlayerAction;
 import com.wurmonline.shared.util.MulticolorLineSegment;
@@ -63,15 +64,9 @@ public final class HighResHudRuntime {
                 && hud != null && hud.getWorld() != null) {
             lifecycle.sessionReady();
         }
-        guarded("updates.ready", new Task() {
-            @Override public void run() { HighResHudMod.updaterHudReady(hud); }
-        });
     }
 
     public static void beginFrame(final HeadsUpDisplay hud) {
-        guarded("updates.frame", new Task() {
-            @Override public void run() { HighResHudMod.updaterFrame(hud); }
-        });
         SharedPortraitCoordinator.beginFrame();
         guarded("healthbar.frame.begin", new Task() {
             @Override public void run() { HighResHealthBarMod.beginPortraitFrame(hud); }
@@ -266,6 +261,12 @@ public final class HighResHudRuntime {
         guarded("fightingHud.target", new Task() {
             @Override public void run() { HighResFightingHudMod.targetChanged(hud); }
         });
+        guarded("selectbar.combatTarget", new Task() {
+            @Override public void run() {
+                HighResFocusBarMod.combatTargetPresented(hud,
+                        HighResFightingHudMod.presentedTargetId(hud));
+            }
+        });
     }
 
     public static boolean redirectFightWindow(final HeadsUpDisplay hud,
@@ -283,6 +284,16 @@ public final class HighResHudRuntime {
                 HighResFightingHudMod.combatFightingChanged(fighting);
             }
         });
+    }
+
+    public static void focusOptions(final StaticComponent source) {
+        guarded("fightingHud.focusOptions", () -> HighResFightingHudMod.focusOptions(source));
+    }
+    public static void focusPosition(final StaticComponent source, final byte stance) {
+        guarded("fightingHud.focusPosition", () -> HighResFightingHudMod.focusPosition(source, stance));
+    }
+    public static void focusLevel(final StaticComponent source, final byte level, final String message) {
+        guarded("fightingHud.focusLevel", () -> HighResFightingHudMod.focusLevel(source, level, message));
     }
 
     public static void corpseCreated(final long killedId, final long corpseId) {

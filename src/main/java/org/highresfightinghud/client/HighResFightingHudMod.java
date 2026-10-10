@@ -5,6 +5,7 @@ import com.wurmonline.client.renderer.gui.HeadsUpDisplay;
 import com.wurmonline.client.renderer.gui.HighResFightingHud;
 import com.wurmonline.client.renderer.gui.HudSettings;
 import com.wurmonline.client.renderer.gui.SelectBar;
+import com.wurmonline.client.renderer.gui.StaticComponent;
 import com.wurmonline.client.renderer.gui.TargetWindow;
 import com.wurmonline.client.renderer.gui.WurmComponent;
 import com.wurmonline.client.settings.SavePosManager;
@@ -123,6 +124,30 @@ public final class HighResFightingHudMod {
         if (mod != null && mod.hud == source && current != null) {
             current.targetChanged();
         }
+    }
+
+    public static long presentedTargetId(HeadsUpDisplay source) {
+        HighResFightingHudMod mod = instance;
+        return mod != null && mod.hud == source && mod.panel != null
+                ? mod.panel.presentedTargetId() : Long.MIN_VALUE;
+    }
+
+    public static void focusOptions(StaticComponent source) {
+        HighResFightingHudMod mod = instance;
+        if (mod != null && mod.panel != null && mod.panel.ownsNativeFightWindow(source))
+            mod.panel.focusOptionsReceived();
+    }
+
+    public static void focusPosition(StaticComponent source, byte stance) {
+        HighResFightingHudMod mod = instance;
+        if (mod != null && mod.panel != null && mod.panel.ownsNativeFightWindow(source))
+            mod.panel.focusPositionReceived(stance);
+    }
+
+    public static void focusLevel(StaticComponent source, byte level, String message) {
+        HighResFightingHudMod mod = instance;
+        if (mod != null && mod.panel != null && mod.panel.ownsNativeFightWindow(source))
+            mod.panel.focusLevelReceived(level, message);
     }
 
     public static boolean serverText(String title, String message) {

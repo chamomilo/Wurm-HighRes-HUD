@@ -33,19 +33,19 @@ final class HighResHealthBarLayout {
     static final int PORTRAIT_BLOOD_INSET = 14;
 
     static final int GAUGE_X = 107;
-    static final int GAUGE_WIDTH = 212;
+    static final int GAUGE_WIDTH = 211;
     static final int GAUGE_INSET_X = 2;
     static final int GAUGE_INSET_Y = 2;
-    static final int STAMINA_Y = 2;
-    static final int STAMINA_HEIGHT = 22;
+    static final int STAMINA_Y = 5;
+    static final int STAMINA_HEIGHT = 19;
     static final int WATER_FOOD_Y = 27;
     static final int WATER_WIDTH = 104;
-    static final int FOOD_WIDTH = 105;
+    static final int FOOD_WIDTH = 104;
     static final int WATER_FOOD_GAP = 3;
     static final int WATER_FOOD_HEIGHT = 16;
     static final int CCFP_Y = 46;
     static final int[] CCFP_OFFSETS = new int[]{0, 54, 107, 161};
-    static final int[] CCFP_WIDTHS = new int[]{51, 50, 51, 51};
+    static final int[] CCFP_WIDTHS = new int[]{51, 50, 51, 50};
     static final int CCFP_HEIGHT = 16;
     static final int SLEEP_BONUS_Y = 65;
     static final int SLEEP_BONUS_HEIGHT = 16;
@@ -55,7 +55,7 @@ final class HighResHealthBarLayout {
     static final int SLEEP_BUTTON_Y = 1;
     static final int SLEEP_TIMER_GAP = 4;
     static final int FAVOR_Y = 84;
-    static final int FAVOR_HEIGHT = 16;
+    static final int FAVOR_HEIGHT = 19;
 
     static final int NAMEPLATE_SOURCE_WIDTH = 128;
     static final int NAMEPLATE_HEIGHT = 22;

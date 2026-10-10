@@ -114,17 +114,23 @@ public final class CombatKnowledge {
     }
 
     public synchronized Snapshot snapshot(int currentStance) {
+        return snapshot(currentStance, AttackStanceModel.allStancesMask());
+    }
+
+    /** Availability is live client state; it never changes the stored observations. */
+    public synchronized Snapshot snapshot(int currentStance, int availableStances) {
         Probability hit = probability(outgoingHits, outgoingAttempts);
         Probability parry = probability(outgoingParries, outgoingAttempts);
         Probability glance = probability(outgoingGlances, outgoingAttempts);
         Probability shield = probability(incomingShieldBlocks,
                 shieldOpportunities);
 
-        int bestStance = 0;
+        int bestStance = -1;
         double bestScore = -1.0;
         double globalRate = hit.value;
         for (int i = 0; i < AttackStanceModel.count(); i++) {
             int stance = AttackStanceModel.idAt(i);
+            if ((availableStances & (1 << stance)) == 0) continue;
             double learnedRate = (stanceHits[stance] + globalRate * 12.0)
                     / (stanceAttempts[stance] + 12.0);
             double score = learnedRate
@@ -139,15 +145,15 @@ public final class CombatKnowledge {
                 / (stanceAttempts[safeCurrent] + 12.0);
         double currentScore = currentRate
                 * AttackStanceModel.damagePrior(safeCurrent);
-        double gain = currentScore <= 0.0001 ? 0.0
+        double gain = bestStance < 0 || currentScore <= 0.0001 ? 0.0
                 : (bestScore / currentScore - 1.0) * 100.0;
 
         return new Snapshot(encounters, kills, outgoingAttempts,
                 incomingAttempts, hit, parry, glance, shield,
                 studyPercent(), damageSamples == 0 ? 0.0
                 : severityTotal / damageSamples, maximumSeverity,
-                bestStance, Math.max(0.0, gain), bestScore,
-                stanceAttempts[bestStance], topDamageTypes());
+                bestStance, Math.max(0.0, gain), Math.max(0.0, bestScore),
+                bestStance < 0 ? 0 : stanceAttempts[bestStance], topDamageTypes());
     }
 
     public synchronized long encounters() { return encounters; }

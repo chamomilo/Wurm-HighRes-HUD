@@ -29,6 +29,12 @@ public final class AttackStanceModel {
         return IDS.length;
     }
 
+    public static int allStancesMask() {
+        int mask = 0;
+        for (int id : IDS) mask |= 1 << id;
+        return mask;
+    }
+
     public static int idAt(int gridIndex) {
         return gridIndex >= 0 && gridIndex < IDS.length ? IDS[gridIndex] : 0;
     }

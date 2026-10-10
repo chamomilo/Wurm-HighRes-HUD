@@ -44,6 +44,11 @@ public final class CombatKnowledgeBook {
         return creature(creatureKey).snapshot(currentStance);
     }
 
+    public synchronized CombatKnowledge.Snapshot snapshot(
+            String creatureKey, int currentStance, int availableStances) {
+        return creature(creatureKey).snapshot(currentStance, availableStances);
+    }
+
     public synchronized void recordEncounter(String creatureKey) {
         creature(creatureKey).recordEncounter();
         dirty = true;

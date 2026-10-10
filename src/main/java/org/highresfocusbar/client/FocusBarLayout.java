@@ -26,11 +26,14 @@ public final class FocusBarLayout {
 
     public static final int ACTION_SHELF_X = 107;
     public static final int ACTION_SHELF_Y = 65;
-    public static final int ACTION_SHELF_WIDTH = 327;
-    public static final int ACTION_SHELF_HEIGHT = 29;
-    public static final int ACTION_X = 114;
+    public static final int ACTION_SHELF_WIDTH = 328;
+    public static final int ACTION_SHELF_HEIGHT = 30;
+    public static final int ACTION_X = ACTION_SHELF_X;
     public static final int ACTION_Y = 66;
     public static final int ACTION_SLOT_SIZE = 28;
+    public static final int ACTION_SLOT_GAP = 0;
+    public static final int ACTION_ICON_INSET = 3;
+    public static final int ACTION_ICON_SIZE = ACTION_SLOT_SIZE - ACTION_ICON_INSET * 2;
     public static final int ACTION_VISIBLE_SLOTS = 10;
     public static final int ACTION_PAGER_X = 403;
     public static final int ACTION_PAGER_WIDTH = 29;

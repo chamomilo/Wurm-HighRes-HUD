@@ -1,6 +1,7 @@
 package org.highreshealthbar.client;
 
 import com.wurmonline.client.renderer.PlayerBodyRenderable;
+import com.wurmonline.client.renderer.cell.CreatureCellRenderable;
 import com.wurmonline.client.game.World;
 import com.wurmonline.client.game.inventory.InventoryMetaWindowView;
 import com.wurmonline.client.renderer.gui.HealthBar;
@@ -289,13 +290,16 @@ public final class HighResHealthBarMod {
     }
 
     public void disembark() {
-        World currentWorld = world();
-        if (currentWorld == null || currentWorld.getPlayer() == null
-                || currentWorld.getPlayer().getCarrierCreature() == null) {
-            return;
-        }
+        HeadsUpDisplay currentHud = hud;
+        World currentWorld = currentHud == null ? null : currentHud.getWorld();
+        if (currentWorld == null || currentWorld.getPlayer() == null) return;
+        CreatureCellRenderable carrier = currentWorld.getPlayer().getCarrierCreature();
+        if (carrier == null) return;
+        // sendLocalAction targets a surface tile at level zero. That target
+        // can be blocked by a floor when the player is indoors or underground.
+        long carrierId = carrier.getId();
         HighResHudApi.runAs(ActionOrigin.HUD,
-                () -> currentWorld.sendLocalAction(PlayerAction.DISEMBARK));
+                () -> currentHud.sendAction(PlayerAction.DISEMBARK, carrierId));
     }
 
     public String[] vehicleStats(long vehicleId, String fallbackDetails) {

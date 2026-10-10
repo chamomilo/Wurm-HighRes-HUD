@@ -12,6 +12,7 @@ import com.wurmonline.shared.constants.PlayerAction;
 import org.gotti.wurmunlimited.modloader.ReflectionUtil;
 import org.highresfocusbar.client.portrait.FocusPortraitController;
 import org.highreshud.client.state.ActionProgressState;
+import org.highresfightinghud.client.HighResFightingHudMod;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -222,9 +223,20 @@ public final class HighResFocusBarMod {
                     : (PickableUnit) unitField.get(source);
             mod.state.selectionChanged(selected == null
                     ? FocusBarState.NO_SELECTION : selected.getId());
+            if (selected != null && mod.panel != null) {
+                mod.panel.dismissCombatTarget(
+                        HighResFightingHudMod.presentedTargetId(mod.hud));
+            }
         } catch (Throwable error) {
             LOG.log(Level.WARNING,
                     "Unable to mirror Select Bar selection", error);
+        }
+    }
+
+    public static void combatTargetPresented(HeadsUpDisplay source, long targetId) {
+        HighResFocusBarMod mod = instance;
+        if (mod != null && mod.hud == source && mod.panel != null) {
+            mod.panel.dismissCombatTarget(targetId);
         }
     }
 

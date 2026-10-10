@@ -35,6 +35,10 @@ import org.highreshud.core.ActionOrigin;
 import org.highreshud.core.HighResHudApi;
 import org.highreshud.client.HiddenExamineCoordinator;
 import org.highreshud.client.HighResHudRuntime;
+import org.highreshud.client.ui.HudCaptionGroup;
+import org.highreshud.client.ui.HudSkin;
+import com.wurmonline.client.renderer.gui.text.ChamomiloUiV1Fonts;
+import org.chamomilo.wurm.ui.v1.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -68,7 +72,7 @@ public final class HighResFocusBar extends StaticComponent
     private static final int OVERLAY_TOP_INSET = 1;
     private static final int ACTION_SLOT_WIDTH = ACTION_SLOT_SIZE;
     private static final int ACTION_SLOT_HEIGHT = ACTION_SLOT_SIZE;
-    private static final int ACTION_STRIDE = ACTION_SLOT_SIZE;
+    private static final int ACTION_STRIDE = ACTION_SLOT_SIZE + ACTION_SLOT_GAP;
     private static final long SHINE_PERIOD = 4_800_000_000L;
     private static final long SELECTION_GRACE_NANOS = 750_000_000L;
     private static final long ACTION_PRESS_NANOS = 165_000_000L;
@@ -95,7 +99,9 @@ public final class HighResFocusBar extends StaticComponent
     private final TextFont bold;
     private final TextFont title;
     private final TextFont small;
-    private final ResourceTexture frame;
+    private final ChamomiloUiV1Canvas ui = new ChamomiloUiV1Canvas(this);
+    private HudCaptionGroup pagerCaption;
+    private int pagerCaptionPages;
     private final ResourceTexture actionAtlas;
     private final ResourceTexture pinIcon;
     private final Map<Short, SelectBarButtonProperty> actionProperties;
@@ -147,7 +153,6 @@ public final class HighResFocusBar extends StaticComponent
         this.small = FocusFonts.small();
         this.text = regular;
         this.textBold = bold;
-        this.frame = texture("img.highresselectbar.frame");
         this.actionAtlas = texture("img.highresselectbar.actions");
         this.pinIcon = texture("img.highresselectbar.pin");
         Map<Short, SelectBarButtonProperty> loaded;
@@ -201,15 +206,16 @@ public final class HighResFocusBar extends StaticComponent
         if (!contentVisible) return;
         requestPortrait(selectedPortrait, subject);
 
+        HudSkin.selectBack(ui.begin(queue), x, y);
         renderPortrait(queue, subject, selectedPortrait, PORTRAIT_X, true);
-        renderFrame(queue);
         renderIdentity(queue, subject);
-        renderHealth(queue, subject, INFO_X, INFO_WIDTH);
+        renderHealth(queue, subject);
         renderStatus(queue, subject);
         renderInspectButton(queue, subject);
         renderWaypointButton(queue, subject, PORTRAIT_X);
         renderActions(queue);
-        renderProgress(queue, state, INFO_X, INFO_WIDTH);
+        renderProgress(queue, state);
+        renderFrame(queue);
         renderPinButton(queue);
         renderCloseButton(queue);
         renderDistanceFooter(queue, subject);
@@ -330,13 +336,7 @@ public final class HighResFocusBar extends StaticComponent
     }
 
     private void renderFrame(Queue queue) {
-        if (frame != null) {
-            int frameWidth = BASE_WIDTH;
-            Renderer.texturedQuadAlphaBlend(queue, frame,
-                    1f, 1f, 1f, 1f,
-                    x, y, frameWidth, PANEL_HEIGHT,
-                    0f, 0f, frameWidth / (float) FRAME_SOURCE_WIDTH, 1f);
-        }
+        HudSkin.selectFront(ui.begin(queue), x, y);
     }
 
     private void renderIdentity(Queue queue, PickableUnit subject) {
@@ -368,18 +368,14 @@ public final class HighResFocusBar extends StaticComponent
                 0.94f, 0.94f, 0.91f);
     }
 
-    private void renderProgress(Queue queue, FocusBarState ownerState,
-                                int infoX, int infoWidth) {
+    private void renderProgress(Queue queue, FocusBarState ownerState) {
         FocusBarState.Progress progress = ownerState.progress();
         if (progress.title.isEmpty()) return;
-        int gx = x + infoX + FOCUS_GAUGE_LEFT_INSET;
-        int gy = y + FOCUS_PROGRESS_GAUGE_Y;
-        int gw = infoWidth - FOCUS_GAUGE_LEFT_INSET
-                - FOCUS_GAUGE_RIGHT_INSET;
+        UiRect well = HudSkin.selectProgress(x, y);
         float[] colour = progress.changeColor
                 ? new float[]{0.58f, 0.23f, 0.10f}
                 : new float[]{0.10f, 0.43f, 0.72f};
-        renderGauge(queue, gx, gy, gw, FOCUS_PROGRESS_GAUGE_HEIGHT,
+        renderGauge(queue, well.x, well.y, well.width, well.height,
                 progress.value, colour[0], colour[1], colour[2]);
     }
 
@@ -389,13 +385,9 @@ public final class HighResFocusBar extends StaticComponent
         int glyphInset = (CLOSE_ZONE_SIZE - CLOSE_GLYPH_SIZE) / 2;
         int bx = zoneX + glyphInset;
         int by = zoneY + glyphInset;
-        for (int index = 2; index < CLOSE_GLYPH_SIZE - 2; index++) {
-            fillRect(queue, 0.68f, 0.13f, 0.085f, 0.90f,
-                    bx + index, by + index, 2, 2);
-            fillRect(queue, 0.68f, 0.13f, 0.085f, 0.90f,
-                    bx + CLOSE_GLYPH_SIZE - index - 2,
-                    by + index, 2, 2);
-        }
+        UiPainter.button(ui.begin(queue), 1f, 0f, HudSkin.COMPACT, 1.0f,
+                zoneX, zoneY, CLOSE_ZONE_SIZE, CLOSE_ZONE_SIZE);
+        UiIcon.CLOSE.paint(ui, UiColor.TEXT, 1.0f, bx, by, CLOSE_GLYPH_SIZE);
     }
 
     private void renderPinButton(Queue queue) {
@@ -403,11 +395,9 @@ public final class HighResFocusBar extends StaticComponent
         int zoneY = y + PIN_ZONE_Y;
         boolean pressed = autoClose.isPinned();
         int pressInset = pressed ? 1 : 0;
-        if (pressed) {
-            fillRect(queue, 0.15f, 0.085f, 0.035f, 0.72f,
-                    zoneX + 2, zoneY + 2,
-                    PIN_ZONE_SIZE - 4, PIN_ZONE_SIZE - 4);
-        }
+        UiPainter.button(ui.begin(queue), pressed ? .82f : 1f,
+                pressed ? 1f : 0f, HudSkin.COMPACT, 1.0f,
+                zoneX, zoneY, PIN_ZONE_SIZE, PIN_ZONE_SIZE);
         if (pinIcon == null) return;
         int glyphInset = (PIN_ZONE_SIZE - PIN_GLYPH_SIZE) / 2 + pressInset;
         int glyphSize = PIN_GLYPH_SIZE - pressInset * 2;
@@ -432,6 +422,13 @@ public final class HighResFocusBar extends StaticComponent
                 CLOSE_ZONE_SIZE, CLOSE_ZONE_SIZE);
     }
 
+    /** The combat card takes over this creature, including a transient native deselection. */
+    public void dismissCombatTarget(long combatTargetId) {
+        if (combatTargetId == Long.MIN_VALUE) return;
+        PickableUnit selected = selectedSubject();
+        if (selected != null && selected.getId() == combatTargetId) clearSelection();
+    }
+
     private void clearSelection() {
         latchedSelectedSubject = null;
         selectedLastSeen = 0L;
@@ -442,27 +439,24 @@ public final class HighResFocusBar extends StaticComponent
         updatePresentation(null);
     }
 
-    private void renderHealth(Queue queue, PickableUnit subject,
-                              int infoX, int infoWidth) {
+    private void renderHealth(Queue queue, PickableUnit subject) {
         CreatureCellRenderable healthSubject = creature(subject);
         float raw = healthSubject == null ? 0f
                 : clamp(healthSubject.getPercentHealth() / 100f);
         smoothedHealth = healthSubject == null ? -1f
                 : FocusMath.smoothHealth(smoothedHealth, raw);
 
-        int gx = x + infoX + FOCUS_GAUGE_LEFT_INSET;
-        int gy = y + FOCUS_HEALTH_GAUGE_Y;
-        int gw = infoWidth - FOCUS_GAUGE_LEFT_INSET
-                - FOCUS_GAUGE_RIGHT_INSET;
+        UiRect well = HudSkin.selectHealth(x, y);
+        int gx = well.x, gy = well.y, gw = well.width;
         if (healthSubject != null) {
-            renderGauge(queue, gx, gy, gw, FOCUS_HEALTH_GAUGE_HEIGHT,
+            renderGauge(queue, gx, gy, gw, well.height,
                     smoothedHealth, 0.055f, 0.61f, 0.18f);
         }
         String label = healthSubject == null ? ""
                 : "Health: " + percent(smoothedHealth);
         if (!label.isEmpty()) {
             paintCentered(small, queue, fit(small, label, gw - 8),
-                    gx, centeredLowerEdge(gy, FOCUS_HEALTH_GAUGE_HEIGHT,
+                    gx, centeredLowerEdge(gy, well.height,
                             small.getHeight()), gw,
                     0.94f, 0.92f, 0.84f);
         }
@@ -591,12 +585,14 @@ public final class HighResFocusBar extends StaticComponent
             int sy = y + ACTION_Y;
             boolean pressed = index == pressedActionIndex
                     && now < pressedActionUntil;
-            int inset = pressed ? 2 : 0;
+            int pressOffset = pressed ? 1 : 0;
             if (pressed) {
                 fillRect(queue, 0.19f, 0.12f, 0.040f, 0.96f,
                         sx, sy, ACTION_SLOT_WIDTH, ACTION_SLOT_HEIGHT);
             }
             if (index >= actions.size()) continue;
+            UiPainter.button(ui.begin(queue), pressed ? .82f : 1f, pressed ? 1f : 0f,
+                    HudSkin.COMPACT, 1.0f, sx, sy, ACTION_SLOT_WIDTH, ACTION_SLOT_HEIGHT);
             PlayerAction action = actions.get(index);
             SelectBarButtonProperty property = actionProperties.get(action.getId());
             if (property != null && actionAtlas != null) {
@@ -604,12 +600,12 @@ public final class HighResFocusBar extends StaticComponent
                         1f,
                         pressed ? 0.86f : 1f,
                         pressed ? 0.48f : 1f, 1f,
-                        sx + inset, sy + inset,
-                        ACTION_SLOT_WIDTH - inset * 2,
-                        ACTION_SLOT_HEIGHT - inset * 2,
-                        FocusAtlasUv.offset(property.getX()),
-                        FocusAtlasUv.offset(property.getY()),
-                        FocusAtlasUv.size(), FocusAtlasUv.size());
+                        sx + ACTION_ICON_INSET + pressOffset,
+                        sy + ACTION_ICON_INSET + pressOffset,
+                        ACTION_ICON_SIZE, ACTION_ICON_SIZE,
+                        FocusAtlasUv.iconOffset(property.getX()),
+                        FocusAtlasUv.iconOffset(property.getY()),
+                        FocusAtlasUv.iconSize(), FocusAtlasUv.iconSize());
             } else {
                 paintCentered(bold, queue, "?", sx, sy + 17,
                         ACTION_SLOT_WIDTH, 0.80f, 0.68f, 0.46f);
@@ -625,10 +621,7 @@ public final class HighResFocusBar extends StaticComponent
                     int kw = Math.max(10, small.getWidth(key) + 3);
                     int keyX = sx + ACTION_SLOT_WIDTH - kw - 2;
                     paintCentered(small, queue, key,
-                            keyX + 1, sy + 13, kw,
-                            0.02f, 0.015f, 0.01f);
-                    paintCentered(small, queue, key,
-                            keyX, sy + 12, kw,
+                            keyX + pressOffset, sy + 12 + pressOffset, kw,
                             0.96f, 0.84f, 0.48f);
                 }
             }
@@ -644,16 +637,22 @@ public final class HighResFocusBar extends StaticComponent
         int px = x + ACTION_PAGER_X;
         int py = y + ACTION_Y;
         boolean pressed = now < pressedPagerUntil;
-        if (pressed) {
-            fillRect(queue, 0.19f, 0.12f, 0.040f, 0.96f,
-                    px, py, ACTION_PAGER_WIDTH, ACTION_SLOT_HEIGHT);
+        if (pagerCaption == null || pagerCaptionPages != pages) {
+            String[] variants = new String[pages];
+            for (int p = 1; p <= pages; p++) variants[p - 1] = p + "/" + pages;
+            pagerCaption = new HudCaptionGroup(ACTION_PAGER_WIDTH, ACTION_SLOT_HEIGHT,
+                    HudSkin.COMPACT, 12, variants);
+            pagerCaptionPages = pages;
         }
-        paintCentered(small, queue, page + "/" + pages,
-                px, centeredLowerEdge(py, ACTION_SLOT_HEIGHT,
-                        small.getHeight()), ACTION_PAGER_WIDTH,
-                pressed ? 1f : 0.88f,
-                pressed ? 0.80f : 0.69f,
-                pressed ? 0.35f : 0.32f);
+        UiPainter.button(ui.begin(queue), pressed ? .82f : 1f, pressed ? 1f : 0f,
+                HudSkin.COMPACT, 1.0f, px, py, ACTION_PAGER_WIDTH, ACTION_SLOT_HEIGHT);
+        String caption = page + "/" + pages;
+        TextFont font = ChamomiloUiV1Fonts.caption(pagerCaption.fontPixels, false, pagerCaption.density);
+        int offset = pressed ? 1 : 0;
+        font.moveTo(px + pagerCaption.textX(caption, false, ACTION_PAGER_WIDTH) + offset,
+                py + pagerCaption.baseline + offset);
+        font.paint(queue, pagerCaption.caption(caption), UiColor.TEXT.red,
+                UiColor.TEXT.green, UiColor.TEXT.blue, 1.0f);
     }
 
     private void normalizeActionPage(int actionCount) {
@@ -697,15 +696,10 @@ public final class HighResFocusBar extends StaticComponent
 
     private void renderGauge(Queue queue, int gx, int gy, int gw, int gh,
                              float value, float red, float green, float blue) {
+        UiRect well = new UiRect(gx, gy, gw, gh);
+        HudSkin.gauge(ui.begin(queue), well, value, new UiColor(red, green, blue));
+        HudSkin.glass(ui, well);
         int filled = Math.round(clamp(value) * gw);
-        if (filled <= 0) return;
-        fillRect(queue, red, green, blue, 1f, gx, gy, filled, gh);
-        fillRect(queue, Math.min(1f, red + 0.22f),
-                Math.min(1f, green + 0.20f),
-                Math.min(1f, blue + 0.16f), 0.68f,
-                gx, gy, filled, 1);
-        fillRect(queue, red * 0.46f, green * 0.46f, blue * 0.46f, 0.86f,
-                gx, gy + gh - 1, filled, 1);
         if (!HighResFocusBarSettings.animateGaugeShine || filled < 5) return;
         long offset = (gx * 31L + gy * 17L) * 1_000_000L;
         double angle = Math.floorMod(System.nanoTime() + offset, SHINE_PERIOD)

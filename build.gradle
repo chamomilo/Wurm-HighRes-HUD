@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.highreshud'
-version = '0.1.2'
+version = '0.2.3'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -55,6 +55,8 @@ tasks.withType(JavaCompile) {
 }
 
 test {
+    def javaFx = project.findProperty('wurmJavaFxJar') ?: System.getenv('WURM_JAVAFX_JAR') ?: System.getenv('WURM_JFX')
+    if (javaFx) classpath += files(javaFx)
     systemProperty 'wurmClientLibDir', wurmClientLibDir.absolutePath
     systemProperty 'highResHudProjectDir', projectDir.absolutePath
     systemProperty 'highResHudVersion', project.version.toString()
@@ -92,6 +94,12 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 'org/chamomilo/wurm/update/ModUpdate.class',
                 'org/chamomilo/wurm/update/GitHubReleaseClient.class',
                 'com/wurmonline/client/renderer/gui/ChamomiloUpdateWindow.class',
+                'META-INF/chamomilo-updater.properties',
+                'org/chamomilo/wurm/ui/v1/UiPainter.class',
+                'org/chamomilo/wurm/ui/v1/fonts/OFL.txt',
+                'org/highreshud/client/ui/HudSkin.class',
+                'org/highreshud/client/ui/HudCaptionGroup.class',
+                'com/wurmonline/client/renderer/gui/HighResHudActionButton.class',
                 'org/highreshealthbar/client/HighResHealthBarMod.class',
                 'org/highreshealthbar/client/SleepBonusToggleTracker.class',
                 'org/highresfocusbar/client/HighResFocusBarMod.class',
@@ -125,9 +133,9 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
 
         def entrypoint = file('src/main/java/org/highreshud/client/HighResHudMod.java').text
         ['ModListener',
-         'SharedUpdateCoordinator.registerHost',
+         'SharedUpdateHooks.registerHost',
          'SharedUpdateCoordinator.modInitialized',
-         'SharedUpdateCoordinator.startOnce'].each { integration ->
+         'SharedUpdateHooks.install'].each { integration ->
             if (!entrypoint.contains(integration)) {
                 throw new GradleException(
                         "HighResHudMod is missing updater integration ${integration}")
@@ -148,7 +156,16 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
     }
 }
 
-task dist(type: Zip, dependsOn: [test, verifyArtifacts]) {
+task verifyHudUi(type: JavaExec, dependsOn: testClasses) {
+    classpath = sourceSets.test.runtimeClasspath
+    def javaFx = findProperty('wurmJavaFxJar') ?: System.getenv('WURM_JAVAFX_JAR') ?: System.getenv('WURM_JFX')
+    if (javaFx) classpath += files(javaFx)
+    main = 'org.highreshud.client.HudUiProbe'
+    args file("${buildDir}/hud-ui-preview.png").absolutePath
+}
+check.dependsOn verifyHudUi
+
+task dist(type: Zip, dependsOn: [test, verifyArtifacts, verifyHudUi]) {
     archiveFileName = "highres-hud-${project.version}.zip"
     destinationDirectory = file("${buildDir}/distributions")
     into('mods/highres-hud') {
@@ -158,6 +175,9 @@ task dist(type: Zip, dependsOn: [test, verifyArtifacts]) {
         from 'CHANGELOG.md'
         from 'ARCHITECTURE.md'
         from 'LICENSE'
+        from 'chamomilo-updater.lock.properties'
+        from 'docs/UI-MIGRATION.md'
+        from 'docs/button-groups.json'
         from('src/main/resources/org/highreshud/client/portrait/portrait-profiles.properties') {
             rename { 'portrait-profiles.bundled.properties' }
         }

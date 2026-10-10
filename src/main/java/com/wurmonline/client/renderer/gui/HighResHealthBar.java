@@ -17,6 +17,9 @@ import org.highreshealthbar.client.HighResHealthBarMod;
 import org.highreshealthbar.client.HighResHealthBarSettings;
 import org.highreshealthbar.client.MountStatusText;
 import org.highreshealthbar.client.SleepBonusToggleTracker;
+import org.highreshud.client.ui.HudCaptionGroup;
+import org.highreshud.client.ui.HudSkin;
+import org.chamomilo.wurm.ui.v1.*;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -51,12 +54,9 @@ public final class HighResHealthBar extends HealthBar {
     private final float[] spentFlashFrom = new float[GAUGE_COUNT];
     private final float[] spentFlashTo = new float[GAUGE_COUNT];
     private final long[] spentFlashUntil = new long[GAUGE_COUNT];
-    private ResourceTexture frameWithNameTwoLines;
-    private ResourceTexture frameWithNameThreeLines;
-    private ResourceTexture frameWithNameOnly;
-    private ResourceTexture frameWithoutName;
-    private ResourceTexture nameplateTexture;
-    private ResourceTexture mountFrame;
+    private final ChamomiloUiV1Canvas ui = new ChamomiloUiV1Canvas(this);
+    private final HighResHudActionButton sleepButton;
+    private final HighResHudActionButton rideButton;
     private ResourceTexture bloodTexture;
     private float previousDamage = -1f;
     private long hitFlashUntil;
@@ -68,6 +68,8 @@ public final class HighResHealthBar extends HealthBar {
     private RideStatusSnapshot rideStatus = RideStatusSnapshot.empty();
     private long nextRideScan;
     private HeaderLayout headerLayout = HeaderLayout.hidden();
+    private UiFrameGrid mountGrid;
+    private int mountGridRows;
 
     public HighResHealthBar(HealthBar original, HighResHealthBarMod controller) {
         super(original.player);
@@ -93,13 +95,14 @@ public final class HighResHealthBar extends HealthBar {
                 new java.util.Random(), System.nanoTime());
         this.text = highText;
         this.textBold = highBold;
-        this.frameWithNameTwoLines = texture("img.highreshealthbar.frame");
-        this.frameWithNameThreeLines = texture(
-                "img.highreshealthbar.frame.three");
-        this.frameWithNameOnly = texture("img.highreshealthbar.frame.nameonly");
-        this.frameWithoutName = texture("img.highreshealthbar.frame.compact");
-        this.nameplateTexture = texture("img.highreshealthbar.nameplate");
-        this.mountFrame = texture("img.highreshealthbar.mount.frame");
+        this.sleepButton = new HighResHudActionButton(this, SLEEP_BUTTON_WIDTH,
+                SLEEP_BUTTON_HEIGHT, new HudCaptionGroup(SLEEP_BUTTON_WIDTH,
+                SLEEP_BUTTON_HEIGHT, HudSkin.COMPACT, "Activate", "Deactivate"),
+                "Activate", () -> controller.toggleSleepBonus());
+        this.rideButton = new HighResHudActionButton(this, DISEMBARK_BUTTON_WIDTH,
+                DISEMBARK_BUTTON_HEIGHT, new HudCaptionGroup(DISEMBARK_BUTTON_WIDTH,
+                DISEMBARK_BUTTON_HEIGHT, HudSkin.COMPACT, "Disembark"),
+                "Disembark", () -> controller.disembark());
         this.bloodTexture = texture("img.highreshealthbar.blood");
         refreshRideStatus();
         refreshHeaderLayout();
@@ -176,8 +179,8 @@ public final class HighResHealthBar extends HealthBar {
     }
 
     private void updateHighResSize() {
-        setSize(PANEL_WIDTH, frameHeight()
-                + (showNumberValues ? FOOTER_HEIGHT : 0));
+        int nextHeight = frameHeight() + (showNumberValues ? FOOTER_HEIGHT : 0);
+        if (width != PANEL_WIDTH || height != nextHeight) setSize(PANEL_WIDTH, nextHeight);
     }
 
     private int contentY() {
@@ -209,11 +212,8 @@ public final class HighResHealthBar extends HealthBar {
 
         // Back only the body. The title zone must remain clear so the separate
         // dynamic nameplates do not merge into a full-width dark strip.
-        fillRect(queue, 0.045f, 0.038f, 0.031f, 1f,
-                x, contentY, PANEL_WIDTH,
-                CONTENT_HEIGHT + mountBlockHeight());
+        HudSkin.healthBack(ui.begin(queue), x, contentY);
         renderPortrait(queue, x, contentY);
-        renderFrame(queue);
         renderTitlePlates(queue);
         renderBloodVignette(queue, x, contentY, healthValue);
 
@@ -232,6 +232,7 @@ public final class HighResHealthBar extends HealthBar {
                 GAUGE_WIDTH, STAMINA_HEIGHT, damageValue);
         drawHitFlash(queue, left, contentY + STAMINA_Y,
                 GAUGE_WIDTH, STAMINA_HEIGHT, damageValue);
+        HudSkin.glass(ui, HudSkin.healthGauge(x, contentY, GAUGE_STAMINA));
 
         drawSolidGauge(queue, left, contentY + WATER_FOOD_Y,
                 WATER_WIDTH, WATER_FOOD_HEIGHT,
@@ -274,6 +275,7 @@ public final class HighResHealthBar extends HealthBar {
                     GAUGE_FAVOR, 0f, 0f, 0f);
         }
 
+        renderFrame(queue);
         drawGaugeLabels(queue, contentY, left);
         drawSleepBonusControl(queue, contentY, left);
         renderMountStatus(queue);
@@ -285,44 +287,11 @@ public final class HighResHealthBar extends HealthBar {
     }
 
     private void renderFrame(Queue queue) {
-        int currentTitleHeight = titleHeight();
-        boolean threeLines = showName
-                && currentTitleHeight == THREE_LINE_TITLE_HEIGHT;
-        boolean nameOnly = showName
-                && currentTitleHeight == NAME_ONLY_TITLE_HEIGHT;
-        ResourceTexture active = !showName ? frameWithoutName
-                : nameOnly ? frameWithNameOnly
-                : threeLines ? frameWithNameThreeLines
-                : frameWithNameTwoLines;
-        if (active == null) {
-            String resource = !showName
-                    ? "img.highreshealthbar.frame.compact"
-                    : nameOnly ? "img.highreshealthbar.frame.nameonly"
-                    : threeLines ? "img.highreshealthbar.frame.three"
-                    : "img.highreshealthbar.frame";
-            active = texture(resource);
-            if (!showName) frameWithoutName = active;
-            else if (nameOnly) frameWithNameOnly = active;
-            else if (threeLines) frameWithNameThreeLines = active;
-            else frameWithNameTwoLines = active;
-        }
-        if (active != null) {
-            // The frame is rendered at exact PNG pixels; the component itself is
-            // taller only because the three text fields hang below this edge.
-            Renderer.texturedQuadAlphaBlend(queue, active,
-                    1f, 1f, 1f, 1f,
-                    x, y, PANEL_WIDTH, mainFrameHeight(), 0f, 0f, 1f, 1f);
-        }
+        HudSkin.healthFront(ui.begin(queue), x, contentY());
     }
 
     private void renderTitlePlates(Queue queue) {
         if (!showName) return;
-        ResourceTexture active = nameplateTexture;
-        if (active == null) {
-            active = texture("img.highreshealthbar.nameplate");
-            nameplateTexture = active;
-        }
-        if (active == null) return;
 
         String[] lines = headerLayout.lines();
         for (int index = 0; index < lines.length; index++) {
@@ -330,36 +299,10 @@ public final class HighResHealthBar extends HealthBar {
                     Math.min(PANEL_WIDTH - NAMEPLATE_X - 2,
                             titleText.getWidth(lines[index])
                                     + NAMEPLATE_TEXT_PADDING));
-            renderNameplate(queue, active, x + NAMEPLATE_X,
-                    y + index * (TITLE_LINE_HEIGHT + TITLE_LINE_GAP), width);
+            int py = y + index * (TITLE_LINE_HEIGHT + TITLE_LINE_GAP);
+            UiHudPainter.nameplate(ui.begin(queue), false, HudSkin.SCALE, 1.0f, x + NAMEPLATE_X, py, width);
+            UiHudPainter.nameplate(ui, true, HudSkin.SCALE, 1.0f, x + NAMEPLATE_X, py, width);
         }
-    }
-
-    private static void renderNameplate(Queue queue, ResourceTexture texture,
-                                        int px, int py, int width) {
-        int middleWidth = width - NAMEPLATE_LEFT_CAP - NAMEPLATE_RIGHT_CAP;
-        renderNameplateSlice(queue, texture, px, py, NAMEPLATE_LEFT_CAP,
-                0, NAMEPLATE_LEFT_CAP);
-        renderNameplateSlice(queue, texture, px + NAMEPLATE_LEFT_CAP, py,
-                middleWidth, NAMEPLATE_LEFT_CAP,
-                NAMEPLATE_SOURCE_WIDTH - NAMEPLATE_LEFT_CAP
-                        - NAMEPLATE_RIGHT_CAP);
-        renderNameplateSlice(queue, texture, px + width - NAMEPLATE_RIGHT_CAP,
-                py, NAMEPLATE_RIGHT_CAP,
-                NAMEPLATE_SOURCE_WIDTH - NAMEPLATE_RIGHT_CAP,
-                NAMEPLATE_RIGHT_CAP);
-    }
-
-    private static void renderNameplateSlice(Queue queue,
-                                             ResourceTexture texture,
-                                             int px, int py, int width,
-                                             int sourceX, int sourceWidth) {
-        if (width <= 0) return;
-        Renderer.texturedQuadAlphaBlend(queue, texture,
-                1f, 1f, 1f, 1f,
-                px, py, width, NAMEPLATE_HEIGHT,
-                sourceX / (float) NAMEPLATE_SOURCE_WIDTH, 0f,
-                sourceWidth / (float) NAMEPLATE_SOURCE_WIDTH, 1f);
     }
 
     private void renderMountStatus(Queue queue) {
@@ -368,16 +311,20 @@ public final class HighResHealthBar extends HealthBar {
         if (!mount.isItem() && !showRide) return;
 
         int mountY = y + mainFrameHeight();
-        ResourceTexture active = mountFrame;
-        if (active == null) {
-            active = texture("img.highreshealthbar.mount.frame");
-            mountFrame = active;
-        }
         List<CreatureCellRenderable> hitched =
                 rideStatus.visibleHitched(showHitchedAnimals);
         int rowCount = rideStatus.rowCount(showRide, showHitchedAnimals);
-        for (int row = 0; row < rowCount; row++) {
-            renderMountRowFrame(queue, active, mountY + row * MOUNT_ROW_HEIGHT);
+        if (rowCount > 0) {
+            HudSkin.well(ui.begin(queue), x, mountY, PANEL_WIDTH, rowCount * MOUNT_ROW_HEIGHT);
+            if (mountGrid == null || mountGridRows != rowCount) {
+                int[] weights = new int[rowCount];
+                int[][] columns = new int[rowCount][];
+                java.util.Arrays.fill(weights, 1);
+                for (int i = 0; i < rowCount; i++) columns[i] = new int[]{1};
+                mountGrid = new UiFrameGrid(3, weights, columns);
+                mountGridRows = rowCount;
+            }
+            mountGrid.foreground(ui, 1.0f, x, mountY, PANEL_WIDTH, rowCount * MOUNT_ROW_HEIGHT);
         }
 
         if (mount.isItem()) {
@@ -438,24 +385,10 @@ public final class HighResHealthBar extends HealthBar {
     private void drawActionButton(Queue queue, int buttonX, int buttonY,
                                   int buttonWidth, int buttonHeight,
                                   String label, boolean enabled) {
-        float shade = enabled ? 1f : 0.58f;
-        fillRect(queue, 0.45f * shade, 0.30f * shade, 0.16f * shade, 1f,
-                buttonX, buttonY, buttonWidth, buttonHeight);
-        fillRect(queue, 0.13f * shade, 0.075f * shade, 0.035f * shade, 1f,
-                buttonX + 1, buttonY + 1,
-                buttonWidth - 2, buttonHeight - 2);
-        fillRect(queue, 0.76f * shade, 0.55f * shade, 0.29f * shade, 0.72f,
-                buttonX + 1, buttonY + 1, buttonWidth - 2, 1);
-        fillRect(queue, 0.02f, 0.012f, 0.006f, 0.80f,
-                buttonX + 1, buttonY + buttonHeight - 2,
-                buttonWidth - 2, 1);
-
-        int textX = buttonX
-                + (buttonWidth - smallText.getWidth(label)) / 2;
-        int baseline = buttonY
-                + (buttonHeight + smallText.getHeight()) / 2;
-        paintShadowed(smallText, queue, label, textX, baseline,
-                0.97f * shade, 0.91f * shade, 0.76f * shade);
+        HighResHudActionButton button = "Disembark".equals(label) ? rideButton : sleepButton;
+        button.setLocation(buttonX, buttonY, buttonWidth, buttonHeight);
+        button.caption(label, enabled);
+        button.render(queue, 1.0f);
     }
 
     private int disembarkButtonX() {
@@ -481,15 +414,6 @@ public final class HighResHealthBar extends HealthBar {
                 sleepBonusButtonX(x + GAUGE_X),
                 contentY + SLEEP_BONUS_Y + SLEEP_BUTTON_Y,
                 SLEEP_BUTTON_WIDTH, SLEEP_BUTTON_HEIGHT);
-    }
-
-    private void renderMountRowFrame(Queue queue, ResourceTexture texture,
-                                     int rowY) {
-        if (texture == null) return;
-        Renderer.texturedQuadAlphaBlend(queue, texture,
-                1f, 1f, 1f, 1f,
-                x, rowY, PANEL_WIDTH, MOUNT_ROW_HEIGHT,
-                0f, 0f, 1f, 1f);
     }
 
     private void renderCreatureHealthRow(Queue queue,
@@ -682,21 +606,19 @@ public final class HighResHealthBar extends HealthBar {
                                 float value, float red, float green, float blue,
                                 int gaugeIndex, float bubbleRed,
                                 float bubbleGreen, float bubbleBlue) {
-        // The exact-pixel frame already contains the textured empty-gauge well.
-        // Only the filled portion is a perfectly uniform base colour; all
-        // apparent depth comes from the explicit highlights below.
-        int innerX = gx + GAUGE_INSET_X;
-        int innerY = gy + GAUGE_INSET_Y;
-        int innerWidth = Math.max(0, gw - GAUGE_INSET_X * 2);
-        int innerHeight = Math.max(0, gh - GAUGE_INSET_Y * 2);
+        // Main gauges occupy the grid's exact cells, with no second inset.
+        UiRect well = gaugeIndex >= 0
+                ? HudSkin.healthGauge(x, contentY(), gaugeIndex)
+                : new UiRect(gx + GAUGE_INSET_X, gy + GAUGE_INSET_Y,
+                        Math.max(0, gw - GAUGE_INSET_X * 2),
+                        Math.max(0, gh - GAUGE_INSET_Y * 2));
+        int innerX = well.x;
+        int innerY = well.y;
+        int innerWidth = well.width;
+        int innerHeight = well.height;
+        HudSkin.gauge(ui.begin(queue), well, value, new UiColor(red, green, blue));
         int fill = Math.max(0, Math.min(innerWidth,
                 Math.round(innerWidth * value)));
-        if (fill > 0) {
-            fillRect(queue, red, green, blue, 1f,
-                    innerX, innerY, fill, innerHeight);
-            drawGaugeDepthAndLacquer(queue,
-                    innerX, innerY, fill, innerHeight);
-        }
         if (gaugeIndex >= 0 && gaugeIndex < previous.length) {
             drawGrowthAnimation(queue, innerX, innerY,
                     fill, innerHeight, value,
@@ -707,49 +629,8 @@ public final class HighResHealthBar extends HealthBar {
                     innerWidth, innerHeight, value, gaugeIndex,
                     red, green, blue);
         }
-    }
-
-    private void drawGaugeDepthAndLacquer(Queue queue, int gx, int gy,
-                                         int fill, int gh) {
-        if (fill <= 0 || gh <= 0) return;
-
-        // Static bevel: these are overlays, not texture. The colour beneath
-        // remains monolithic across the whole filled area.
-        fillRect(queue, 1f, 1f, 1f, 0.22f, gx, gy, fill, 1);
-        if (gh >= 4) {
-            fillRect(queue, 1f, 1f, 1f, 0.07f,
-                    gx, gy + 1, fill, 1);
-            fillRect(queue, 0f, 0f, 0f, 0.20f,
-                    gx, gy + gh - 2, fill, 1);
-        }
-        fillRect(queue, 0f, 0f, 0f, 0.36f,
-                gx, gy + gh - 1, fill, 1);
-
-        // Static lacquer depth. Permanent motion is deliberately absent;
-        // gauges animate only in direct response to a value change or hit.
-        int glossHeight = Math.max(2, gh / 2);
-        for (int row = 0; row < glossHeight; row++) {
-            float falloff = 1f - row / (float) glossHeight;
-            float alpha = falloff * falloff * 0.16f;
-            fillRect(queue, 1f, 0.98f, 0.90f, alpha,
-                    gx + 1, gy + row, Math.max(0, fill - 2), 1);
-        }
-
-        // A fixed lower shade keeps the point readable on pale fills.
-        int lowerY = gy + Math.max(1, gh * 2 / 3);
-        fillRect(queue, 0f, 0f, 0f, 0.12f,
-                gx + 1, lowerY, Math.max(0, fill - 2),
-                Math.max(1, gy + gh - 1 - lowerY));
-
-        // A restrained bloom hugs the current fill edge; it never sweeps over
-        // the whole bar and therefore reads as depth, not an effect strip.
-        int edgeWidth = Math.min(5, fill);
-        for (int step = 0; step < edgeWidth; step++) {
-            float edgeAlpha = (step + 1f) / edgeWidth * 0.14f;
-            fillRect(queue, 1f, 0.98f, 0.86f, edgeAlpha,
-                    gx + fill - edgeWidth + step, gy + 1,
-                    1, Math.max(1, gh - 3));
-        }
+        // Stamina receives damage/hit overlays before its common glass layer.
+        if (gaugeIndex != GAUGE_STAMINA) HudSkin.glass(ui, well);
     }
 
     private void drawSpentGaugeFlash(Queue queue, int gx, int gy,
@@ -798,17 +679,13 @@ public final class HighResHealthBar extends HealthBar {
 
     private void drawDamageOverlay(Queue queue, int gx, int gy, int gw, int gh,
                                    float damageValue) {
-        gx += GAUGE_INSET_X;
-        gy += GAUGE_INSET_Y;
-        gw = Math.max(0, gw - GAUGE_INSET_X * 2);
-        gh = Math.max(0, gh - GAUGE_INSET_Y * 2);
+        UiRect well = HudSkin.healthGauge(x, contentY(), GAUGE_STAMINA);
+        gx = well.x; gy = well.y; gw = well.width; gh = well.height;
         int damageWidth = Math.max(0,
                 Math.min(gw, Math.round(gw * damageValue)));
         if (damageWidth <= 0) return;
         int dx = gx + gw - damageWidth;
-        fillRect(queue, 0.76f, 0.09f, 0.07f, 1f,
-                dx, gy, damageWidth, gh);
-        drawGaugeDepthAndLacquer(queue, dx, gy, damageWidth, gh);
+        ui.fill(UiColor.rgb(0xc21712), 1f, dx, gy, damageWidth, gh);
     }
 
     private void drawGrowthAnimation(Queue queue, int gx, int gy, int fill, int gh,
@@ -853,10 +730,8 @@ public final class HighResHealthBar extends HealthBar {
         previousDamage = damageValue;
         if (now >= hitFlashUntil) return;
 
-        gx += GAUGE_INSET_X;
-        gy += GAUGE_INSET_Y;
-        gw = Math.max(0, gw - GAUGE_INSET_X * 2);
-        gh = Math.max(0, gh - GAUGE_INSET_Y * 2);
+        UiRect well = HudSkin.healthGauge(x, contentY(), GAUGE_STAMINA);
+        gx = well.x; gy = well.y; gw = well.width; gh = well.height;
 
         float remaining = (hitFlashUntil - now) / (float) HIT_FLASH_DURATION;
         float pulse = remaining * remaining;
@@ -933,7 +808,7 @@ public final class HighResHealthBar extends HealthBar {
 
     private void paintGaugeLabel(Queue queue, String value, int px, int py,
                                  int barHeight) {
-        // SimpleTextFont.moveTo uses the lower edge of the text box, not an AWT
+        // The shared HUD font adapter uses the lower edge of the text box, not an AWT
         // baseline. Center the complete glyph box inside the coloured channel.
         int baseline = py + (barHeight + smallText.getHeight()) / 2;
         paintShadowed(smallText, queue, value, px + 3, baseline,
@@ -974,11 +849,11 @@ public final class HighResHealthBar extends HealthBar {
     @Override
     protected void leftPressed(int mouseX, int mouseY, int buttons) {
         if (overDisembarkButton(mouseX, mouseY)) {
-            controller.disembark();
+            rideButton.leftPressed(mouseX, mouseY, buttons);
             return;
         }
         if (buttons != 2 && overSleepBonusButton(mouseX, mouseY)) {
-            controller.toggleSleepBonus();
+            sleepButton.leftPressed(mouseX, mouseY, buttons);
             return;
         }
         int contentY = contentY();
@@ -989,6 +864,18 @@ public final class HighResHealthBar extends HealthBar {
         }
         // Preserve stock dragging and double-click paper-doll behaviour.
         super.leftPressed(mouseX, mouseY, buttons);
+    }
+
+    @Override public StaticComponent getComponentAt(int mx, int my) {
+        // Synchronize hit geometry independently of render ordering/window dragging.
+        sleepButton.setLocation(sleepBonusButtonX(x + GAUGE_X),
+                contentY() + SLEEP_BONUS_Y + SLEEP_BUTTON_Y, SLEEP_BUTTON_WIDTH, SLEEP_BUTTON_HEIGHT);
+        sleepButton.caption(player.isSleepBonusActive() ? "Deactivate" : "Activate", controller.canToggleSleepBonus());
+        rideButton.setLocation(disembarkButtonX(), y + mainFrameHeight() + DISEMBARK_BUTTON_Y,
+                DISEMBARK_BUTTON_WIDTH, DISEMBARK_BUTTON_HEIGHT);
+        if (overSleepBonusButton(mx, my)) return sleepButton;
+        if (overDisembarkButton(mx, my)) return rideButton;
+        return super.getComponentAt(mx, my);
     }
 
     public boolean mouseWheeledAt(HeadsUpDisplay owner, int mouseX, int mouseY,

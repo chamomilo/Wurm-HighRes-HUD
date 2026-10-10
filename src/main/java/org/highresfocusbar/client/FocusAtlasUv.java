@@ -15,4 +15,13 @@ public final class FocusAtlasUv {
     public static float size() {
         return CELL / ATLAS;
     }
+
+    /** Exclude the legacy 3 px atlas contour when the kit owns the button. */
+    public static float iconOffset(int cell) {
+        return (cell * CELL + 3f) / ATLAS;
+    }
+
+    public static float iconSize() {
+        return (CELL - 6f) / ATLAS;
+    }
 }
