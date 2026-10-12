@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.highreshud'
-version = '0.6.3'
+version = '0.7.5'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8

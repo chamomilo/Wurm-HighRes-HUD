@@ -15,7 +15,7 @@ import static org.highresfightinghud.client.FightingHudLayout.*;
 /** Actual compact button paint/input plus a production-painter layout contact sheet. */
 public final class HudButtonProbe {
     public static PreviewCanvas canvas;
-    private static Graphics2D graphics;
+    static Graphics2D graphics;
     private static final java.util.LinkedList<Shape> clips = new java.util.LinkedList<>();
     public static boolean clip(int x, int y, int width, int height) {
         clips.addLast(graphics.getClip()); graphics.clipRect(x, y, Math.max(0, width), Math.max(0, height));
@@ -74,6 +74,7 @@ public final class HudButtonProbe {
         public ProbeFont(int size,boolean bold,UiDensity density) { this.size=size;this.bold=bold;this.density=density; }
         public void moveTo(int x,int y) {this.x=x;this.y=y;}
         public int paint(Queue q,String s,float r,float g,float b,float a) {
+            if(InventoryOpacityPreview.captures(q)) {InventoryOpacityPreview.text(q,this,s,r,g,b,a);return getWidth(s);}
             Rectangle ink=UiTypography.font(size,bold,density).createGlyphVector(
                     new java.awt.font.FontRenderContext(null,true,false),s).getPixelBounds(null,x,y);
             texts.add(new PaintedText(s,ink,y));

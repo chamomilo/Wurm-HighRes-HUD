@@ -17,6 +17,10 @@ abstract class HighResNativeWindow {
         @Override protected void renderComponent(Queue queue, float ignoredAlpha) { HighResNativeWindow.this.render(queue); }
     };
     private boolean maximized;
+    private int opacityPercent = org.highreshud.client.HighResWindowsSettings.clampOpacity(org.highreshud.client.HighResWindowsSettings.defaultInventoryOpacity);
+    int opacityPercent() { return opacityPercent; }
+    void opacityPercent(int percent) { opacityPercent = org.highreshud.client.HighResWindowsSettings.clampOpacity(percent); }
+    void resetOpacity() { opacityPercent(org.highreshud.client.HighResWindowsSettings.defaultInventoryOpacity); }
     private int normalX, normalY, normalWidth, normalHeight;
 
     HighResNativeWindow(String id, String title, WWindow window, HeadsUpDisplay owner) {
@@ -37,6 +41,7 @@ abstract class HighResNativeWindow {
     void tick() { header.refresh(); HighResWindowIntegration.skinContent(window.getComponent()); }
     void render(Queue queue) {
         tick();
+        int firstPrimitive = queue == null ? 0 : queue.getQueueCount();
         int bodyY = hasTitle() ? window.y : window.y + header.height;
         UiPainter.background(canvas.begin(queue), UiBackground.LEATHER, UiScale.BASE,
                 1.0f, window.x, bodyY, window.width, window.y + window.height - bodyY);
@@ -48,6 +53,10 @@ abstract class HighResNativeWindow {
         if (hasTitle()) UiPainter.frame(canvas, FRAME, 1.0f, window.x, window.y, window.width, window.height);
         if (!window.minimized && window.resizable) UiIcon.RESIZE.paint(canvas, UiColor.MUTED, 1.0f,
                 window.x + window.width - 19, window.y + window.height - 19, 12);
+        if (itemTable() != null) {
+            HighResInventoryOpacity.apply(queue, firstPrimitive, queue == null ? 0 : queue.getQueueCount(), opacityPercent);
+            if (!window.minimized) HighResWindowIntegration.paintInventoryOpacity(this, queue);
+        }
     }
     void close() { owner.hideComponent(window); }
     void collapse() { window.toggleSize(); collapsedChanged(); }

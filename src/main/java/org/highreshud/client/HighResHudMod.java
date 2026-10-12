@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 /** Single mod-loader entry point for all High-res HUD components. */
 public final class HighResHudMod implements WurmClientMod, Configurable,
         PreInitable, Initable, ModListener {
-    public static final String VERSION = "0.6.3";
+    public static final String VERSION = "0.7.5";
     private static final String DEFAULT_PACK =
             "mods/highres-hud/highres-hud-resources-" + VERSION + ".jar";
     private static final String DEFAULT_PROFILES =
@@ -59,14 +59,28 @@ public final class HighResHudMod implements WurmClientMod, Configurable,
 
     @Override
     public void configure(Properties properties) {
+        properties = org.chamomilo.wurm.update.SharedModSettings.configure("highres-hud",properties,
+                ModSettingsSchema.specs(),this::applyUserSettings);
         ensureLanguagePreferences();
         HudMessages.useLanguage(languagePreferences.language());
         Properties source = properties == null ? new Properties() : properties;
         HighResWindowsSettings.configure(source);
         SkillDetailSettings.load(java.nio.file.Paths.get(System.getProperty("user.home"), ".chamomilo", "highres-hud-skills.properties"));
+        ModSettingsSchema.includeSkillDetail();
         healthbar.configure(scoped(source, "healthbar.", false));
         selectbar.configure(scoped(source, "selectbar.", true));
         fightingHud.configure(scoped(source, "fightingHud.", true));
+    }
+
+    private void applyUserSettings(String key, Properties values) {
+        if (key.equals("inventory.defaultOpacity")) {
+            HighResWindowsSettings.configureOpacity(values);
+        } else if (key.equals("fontSize")) {
+            HighResWindowsSettings.configure(values);
+            com.wurmonline.client.renderer.gui.HighResWindowIntegration.refreshTypography();
+        } else if (key.startsWith("healthbar.")) healthbar.configure(scoped(values,"healthbar.",false));
+        else if (key.startsWith("selectbar.")) selectbar.configure(scoped(values,"selectbar.",true));
+        else if (key.startsWith("fightingHud.")) fightingHud.configure(scoped(values,"fightingHud.",true));
     }
 
     @Override

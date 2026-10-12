@@ -37,7 +37,7 @@ public final class HudUiProbe {
         pool.get(creature).getDeclaredMethod("getCurrentFightStance").setBody("{ return 0; }");
         pool.get(gui + "WurmComponent").getClassInitializer().setBody("{}");
         pool.get(gui + "WurmComponent").getDeclaredMethod("fillRect")
-                .setBody("{ " + gui + "HudButtonProbe.canvas.fill(new org.chamomilo.wurm.ui.v1.UiColor($2,$3,$4),$5,$6,$7,$8,$9); }");
+                .setBody("{ " + gui + "InventoryOpacityPreview.fill($1,new org.chamomilo.wurm.ui.v1.UiColor($2,$3,$4),$5,$6,$7,$8,$9); }");
         pool.get(gui + "WurmComponent").getDeclaredMethod("render")
                 .setBody("{ this.renderComponent($1,$2); }"); // Substitute only the native GPU scissor stack.
         CtClass renderer = pool.get(gui + "Renderer");
@@ -61,8 +61,8 @@ public final class HudUiProbe {
                 new CtClass[]{CtClass.intType,CtClass.booleanType,pool.get("org.chamomilo.wurm.ui.v1.UiDensity")})
                 .setBody("{ return new " + gui + "HudButtonProbe.ProbeFont($1,$2,$3); }");
         CtClass canvas = pool.get(gui + "ChamomiloUiV1Canvas");
-        canvas.getDeclaredMethod("fill").setBody("{ " + gui + "HudButtonProbe.canvas.fill($1,$2,$3,$4,$5,$6); }");
-        canvas.getDeclaredMethod("texture").setBody("{ return " + gui + "HudButtonProbe.canvas.texture($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11); }");
+        canvas.getDeclaredMethod("fill").setBody("{ " + gui + "InventoryOpacityPreview.fill(this.queue,$1,$2,$3,$4,$5,$6); }");
+        canvas.getDeclaredMethod("texture").setBody("{ return " + gui + "InventoryOpacityPreview.texture(this.queue,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11); }");
         pool.get(gui + "WurmTreeList").getClassInitializer().setBody("{}");
         for (String name : new String[]{"InventoryListComponent", "InventoryListComponent$SingleTreeListItem", "InventoryListComponent$GroupTreeListItem",
                 "InventoryListComponent$InventoryTreeListItem", "DefaultTab", "WurmTreeList", "WurmTextPanel", "ChatPanelComponent"}) {
@@ -76,7 +76,10 @@ public final class HudUiProbe {
             });
         }
         // Keep list/layout/editor/model logic; substitute only native GPU body drawing.
-        pool.get(gui + "WurmTreeList$TreeListPanel").getDeclaredMethod("renderComponent").setBody("{}");
+        pool.get(gui + "WurmTreeList$TreeListPanel").getDeclaredMethod("renderComponent")
+                .setBody("{"+gui+"InventoryOpacityPreview.rows(this,$1);}");
+        for(String type:new String[]{"com.wurmonline.client.renderer.backend.Queue","com.wurmonline.client.renderer.backend.Primitive"})
+            if(pool.get(type).getClassInitializer()!=null)pool.get(type).getClassInitializer().setBody("{}");
         pool.get(gui + "WurmTextPanel").getDeclaredMethod("renderComponent").setBody("{}");
         pool.get(gui + "WurmInputField").getDeclaredMethod("renderComponent").instrument(new javassist.expr.ExprEditor() {
             @Override public void edit(javassist.expr.MethodCall call) throws CannotCompileException {

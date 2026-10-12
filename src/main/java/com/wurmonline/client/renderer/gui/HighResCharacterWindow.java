@@ -263,7 +263,7 @@ final class HighResCharacterWindow extends HighResNativeWindow {
             InventoryMetaItem inventory=(InventoryMetaItem)HighResWindowAccess.get(character,"inventoryItem");
             float total=(slot==null?0:slot.getWeight())+(inventory==null?0:inventory.getWeight());
             String value=String.format(Locale.ROOT,"%.1f",total);
-            TextFont font=HudTextFonts.body(12,false);
+            TextFont font=HudTextFonts.body(HighResDataTypography.bodyPixels(12),false);
             text(queue,value,x+(w-font.getWidth(value))/2,y+h-11,UiColor.TEXT,12);
         } else if(field.equals("bodyItem"))
             HighResCharacterArtwork.icon(queue,HighResCharacterArtwork.BODY,tint,x+(w-35)/2,y+(h-60)/2,35,60);
@@ -310,7 +310,7 @@ final class HighResCharacterWindow extends HighResNativeWindow {
                 if(wound.getXPosition()<0)continue;
                 wound.render(queue,1f,1f,1f,1f);
                 String label=wound.getItemName()+" · "+String.format(Locale.ROOT,"%.1f",wound.getDamage());
-                text(queue,HighResWindowIntegration.ellipsis(label,HudTextFonts.body(14,false),w-54),x+46,wound.getYPosition()+14,UiColor.TEXT,14);
+                text(queue,HighResWindowIntegration.ellipsis(label,HudTextFonts.body(HighResDataTypography.bodyPixels(14),false),w-54),x+46,wound.getYPosition()+14,UiColor.TEXT,14);
                 String treatment=(wound.isBandaged()?HudMessages.tr("Bandaged"):"")+(wound.isTreated()?" "+HudMessages.tr("Treated"):"");
                 text(queue,treatment,x+46,wound.getYPosition()+30,UiColor.MUTED,12);
             }
@@ -319,7 +319,7 @@ final class HighResCharacterWindow extends HighResNativeWindow {
         }
     }
     private static void text(Queue queue,String value,int x,int y,UiColor color,int pixels) {
-        TextFont font=HudTextFonts.body(pixels,false);font.moveTo(x,y);font.paint(queue,value,color.red,color.green,color.blue,1f);
+        TextFont font=HudTextFonts.body(HighResDataTypography.bodyPixels(pixels),false);font.moveTo(x,y);font.paint(queue,value,color.red,color.green,color.blue,1f);
     }
     boolean pick(PickData pick,int x,int y) {
         if(woundAt(x,y)!=null)return false;

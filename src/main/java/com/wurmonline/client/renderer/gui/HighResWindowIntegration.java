@@ -24,9 +24,14 @@ public final class HighResWindowIntegration {
     private static final Map<WurmTreeList<?>, HighResInventoryFilter> FILTERS = new IdentityHashMap<>();
     private HighResWindowIntegration() { }
 
+    /** HUD-thread font refresh reuses native rows, selection and scroll anchors. */
+    public static void refreshTypography() {
+        for (HighResNativeWindow skin : new ArrayList<HighResNativeWindow>(WINDOWS.values())) skin.tick();
+    }
+
     public static void hudReady(HeadsUpDisplay hud) {
         if (hud == null || currentHud == hud) return;
-        INVENTORY_DRAG.clear();
+        INVENTORY_DRAG.reset();
         WINDOWS.clear(); SCROLLS.clear(); TABLES.clear(); HEADINGS.clear(); HEADING_HINTS.clear(); BANDS.clear(); FILTERS.clear(); currentHud = hud;
         if (HighResWindowsSettings.inventory) attach(new HighResInventoryWindow(
                 (InventoryWindow) HighResWindowAccess.get(hud, "inventoryWindow"), hud));
@@ -51,6 +56,7 @@ public final class HighResWindowIntegration {
     }
     private static void attach(HighResNativeWindow skin) {
         WINDOWS.put(skin.window, skin); skin.install();
+        if(skin.itemTable()!=null)resized(skin.window);
     }
     static void attachDialog(WWindow dialog, HeadsUpDisplay hud) {
         attach(new HighResNativeWindow("highres.skills.detail", "Skill detail level", dialog, hud) { });
@@ -97,7 +103,7 @@ public final class HighResWindowIntegration {
     }
     private static void detach(WurmComponent window) {
         if (window == null || !WINDOWS.containsKey(window)) return;
-        INVENTORY_DRAG.clear();
+        INVENTORY_DRAG.removed((WWindow)window);
         SCROLLS.keySet().removeIf(component -> descendant(component, window));
         FILTERS.entrySet().removeIf(entry -> descendant(entry.getKey(), window));
         TABLES.removeIf(component -> descendant(component, window));
@@ -111,6 +117,7 @@ public final class HighResWindowIntegration {
         // Also catch windows created/reparented by another mod after the native open hook.
         attachContainers(hud);
         for (HighResNativeWindow skin : WINDOWS.values()) skin.tick();
+        INVENTORY_DRAG.arrivals(WINDOWS.values());
         for (HighResInventoryFilter filter : FILTERS.values()) filter.refresh();
         for (WButton button : HEADING_HINTS.keySet()) refreshHeadingHint(button);
         for (ScrollSkin scroll : SCROLLS.values()) scroll.synchronize();
@@ -156,10 +163,17 @@ public final class HighResWindowIntegration {
     }
     static Collection<HighResNativeWindow> skins() {return WINDOWS.values();}
     static void paintInventoryDrag(HighResNativeWindow skin,Queue queue) {INVENTORY_DRAG.paint(skin,queue);}
+    static void paintInventoryOpacity(HighResNativeWindow skin,Queue queue) {
+        HighResInventoryFilter filter=FILTERS.get(skin.itemTable());
+        if(filter!=null)filter.paintOpacity(queue);
+    }
     public static void inventoryDragFrame(HeadsUpDisplay hud,int x,int y) {if(hud==currentHud)INVENTORY_DRAG.update(hud,WINDOWS.values(),x,y);}
     public static boolean inventoryDrop(HeadsUpDisplay hud,int x,int y,int button) {return hud==currentHud&&INVENTORY_DRAG.drop(hud,x,y,button);}
     public static void inventoryDragCleared() {INVENTORY_DRAG.clear();}
     static boolean inventoryGap(WurmTreeList<?> table) {return INVENTORY_DRAG.hasGap(table);}
+    static void refreshInventoryFilter(WurmTreeList<?> table) {
+        HighResInventoryFilter filter=FILTERS.get(table);if(filter!=null)filter.refresh();
+    }
     public static void windowHidden(HeadsUpDisplay hud,WurmComponent component) {
         if(hud!=currentHud)return;
         INVENTORY_DRAG.clear();
@@ -197,7 +211,8 @@ public final class HighResWindowIntegration {
             for(String language:HudMessages.languageCodes())
                 nameWidth=Math.max(nameWidth,HighResWindowTypography.heading().getWidth(HudMessages.translate(language,"Name")));
             TextFont editor=com.wurmonline.client.renderer.gui.text.HudTextFonts.body(14,false);
-            nameWidth+=Math.max(editor.getWidth("WWWWW"),editor.getWidth("ШШШШШ"))+12+24+32+HighResInventoryFilter.captionGap();
+            int filterWidth=Math.max(editor.getWidth("WWWWW"),editor.getWidth("ШШШШШ"))+12;
+            nameWidth+=filterWidth+HighResInventoryOpacity.widthFor(filterWidth)+6+24+32+HighResInventoryFilter.captionGap();
         }
         int minimum = skin != null && skin.itemTable() != null
                 ? Math.max(240, skin.itemTable().commonWidth + nameWidth
@@ -280,13 +295,14 @@ public final class HighResWindowIntegration {
         WurmArrayPanel<?> row = (WurmArrayPanel<?>) HighResWindowAccess.get(table, "buttonRow");
         if (row == null) { TABLES.remove(table); return; }
         WurmBorderPanel band = (WurmBorderPanel) row.parent;
-        boolean items=false;
-        for(HighResNativeWindow skin:WINDOWS.values())if(skin.itemTable()==table)items=true;
+        HighResNativeWindow itemSkin=null;
+        for(HighResNativeWindow skin:WINDOWS.values())if(skin.itemTable()==table)itemSkin=skin;
+        boolean items=itemSkin!=null;
         int height=items?28:HEADING_HEIGHT;
         WButton name=null;
         for(FlexComponent child:(FlexComponent[])HighResWindowAccess.get(band,"components"))
             if(child instanceof WButton && "Name".equals(((WButton)child).getLabel()))name=(WButton)child;
-        if(items && name!=null)FILTERS.put(table,new HighResInventoryFilter(table,name));
+        if(items && name!=null)FILTERS.put(table,new HighResInventoryFilter(table,name,itemSkin));
         BANDS.add(band); HEADINGS.put(band, table);
         band.sizeFlags = 0; band.setSize(band.width, height); band.sizeFlags = FlexComponent.FIXED_HEIGHT;
         HEADINGS.put(row, table);
@@ -341,6 +357,9 @@ public final class HighResWindowIntegration {
         for(HighResInventoryFilter filter:FILTERS.values())if(descendant(component,filter.field)) {
             pick.addText(HudMessages.tr("filter area"));return true;
         }
+        for(HighResInventoryFilter filter:FILTERS.values())if(descendant(component,filter.opacity)) {
+            pick.addText(HudMessages.tr("Inventory window opacity: {0}%",filter.opacity.value()));return true;
+        }
         for (HighResNativeWindow skin : WINDOWS.values()) {
             WWindow window = skin.window;
             if (window.resizable && !window.minimized && component == HighResWindowAccess.get(window, "southBar")
@@ -379,7 +398,7 @@ public final class HighResWindowIntegration {
     public static void windowShown(HeadsUpDisplay hud, WurmComponent component) {
         if (hud != currentHud) return;
         HighResNativeWindow skin = WINDOWS.get(component);
-        if (skin != null) { skin.tick(); sortContent(skin.window.getComponent()); }
+        if (skin != null) { if(skin.itemTable()!=null)skin.resetOpacity(); skin.tick(); sortContent(skin.window.getComponent()); }
     }
     public static void beforeSort(Object nativeTable, int column) {
         WurmTreeList<?> table = (WurmTreeList<?>) nativeTable;
@@ -418,7 +437,7 @@ public final class HighResWindowIntegration {
         HeadingBand(FlexComponent band) {
             super("highres.headings", band); pack(); sizeFlags = FIXED_HEIGHT;
             filter=FILTERS.get(HEADINGS.get(band));
-            if(filter!=null)filter.field.parent=this;
+            if(filter!=null) {filter.field.parent=this;filter.opacity.parent=this;}
         }
         @Override public FlexComponent getComponentAt(int x,int y) {
             FlexComponent input=filter==null?null:filter.at(x,y);

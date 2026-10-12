@@ -11,5 +11,5 @@ final class HighResWindowTypography {
     private HighResWindowTypography() { }
     static TextFont caption(boolean bold) { return ChamomiloUiV1Fonts.caption(CAPTION_PIXELS, bold, UiDensity.HIGH); }
     static TextFont heading() { return caption(true); }
-    static TextFont label() { return ChamomiloUiV1Fonts.caption(CAPTION_PIXELS, false, UiDensity.LOW); }
+    static TextFont label() { return ChamomiloUiV1Fonts.caption(HighResDataTypography.bodyPixels(CAPTION_PIXELS), false, UiDensity.LOW); }
 }

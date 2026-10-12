@@ -10,7 +10,15 @@ import org.chamomilo.wurm.ui.v1.UiTypography;
 /** Applies the shared body family through native data metrics, without global font changes. */
 final class HighResDataTypography {
     private HighResDataTypography() { }
+    static int bodyPixels(int normal) {
+        return org.highreshud.client.HighResWindowsSettings.fontSize > 0 ? pixels(normal) : normal;
+    }
     static int pixels(int startingSize) {
+        int override = org.highreshud.client.HighResWindowsSettings.fontSize;
+        if (override > 0) {
+            for (int size : UiTypography.sizes()) if (size >= override) return size;
+            return 128;
+        }
         int preference = Options.fontSizeDefault == null ? WurmComponent.fontSize : Math.round(Options.fontSizeDefault.value());
         int requested = Math.max(UiScale.BASE.pixels(startingSize), preference);
         for (int size : UiTypography.sizes()) if (size >= requested) return size;

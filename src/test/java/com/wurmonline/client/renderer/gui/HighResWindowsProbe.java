@@ -17,6 +17,7 @@ public final class HighResWindowsProbe {
     public static com.wurmonline.client.comm.SimpleServerConnectionClass connection;
     public static long movedTarget = Long.MIN_VALUE;
     public static long[] movedIds;
+    private static long dragNow;
     public static int modelWidth, modelHeight;
     public static int actionCount,actionId;
     public static long[] actionTargets;
@@ -153,6 +154,8 @@ public final class HighResWindowsProbe {
         inventoryContainers.put(200L, startupQuiver); hud.getComponents().add(startupQuiver);
         Object nativeHistory = HighResWindowAccess.get(chatManager.getActiveTab(), "textList");
         HighResWindowIntegration.hudReady(hud);
+        HighResWindowAccess.set(staticField(HighResWindowIntegration.class,"INVENTORY_DRAG"),"clock",
+                (java.util.function.LongSupplier)() -> dragNow);
         check(HighResWindowIntegration.owns(startupQuiver) && startupQuiver.getComponent() == HighResWindowAccess.get(startupQuiver, "list"),
                 "Player quiver already open at HUD readiness receives the shared presentation");
         startupQuiver.closePressed();
@@ -205,8 +208,9 @@ public final class HighResWindowsProbe {
         check(progress.parent.height == 18 && progress.parent.getClass().getSimpleName().equals("ProgressFrame"), "Native Events progress has a compact branded presentation");
         progress.setProgress(.5f, "Working", false);
         check(((Number) HighResWindowAccess.get(progress, "progress")).floatValue() == .5f, "Original action progress updates retained");
-        check(skins.get(existingBackpack) instanceof HighResContainerWindow && existingBackpack.width == 340,
-                "Container already open at HUD readiness retains width and gets the shared skin");
+        check(skins.get(existingBackpack) instanceof HighResContainerWindow
+                        && existingBackpack.width == HighResWindowIntegration.minimumWidth(existingBackpack,340),
+                "Container already open at HUD readiness accommodates filter and opacity controls");
         List<WWindow> previews = new ArrayList<>(); previews.add(existingBackpack);
         for (String name : new String[]{"vehicle hold", "quiver"}) {
             ContainerView container = new ContainerView(20 + previews.size(), name);
@@ -316,6 +320,12 @@ public final class HighResWindowsProbe {
         verifySkills(hud, eventManager, (HighResChatWindow) eventsSkin, output);
         verifyInventoryDrag(hud, inventorySkin);
         verifyCrossWindowDrop(hud,inventorySkin,skins.get(previews.get(0)));
+        verifyCrateTransfers(hud, containers, skins);
+        verifyAmphoraRoundTrip(hud, inventorySkin, items, containers, skins);
+        verifyFontTransferIntegration(hud, inventorySkin, items, containers, skins);
+        verifyInventoryOpacity(hud,inventorySkin,skins.get(previews.get(0)),output);
+        if(System.getProperty("olderSharedUiJar")==null)renderSettingsPreview(hud,output);
+        verifyTimedInventoryDrag(hud,containers,skins);
         verifyCharacter(hud,view,skins,output);
         input.setTextMoveToEnd("/say Chat input"); input.setKbFocus(true);
         BufferedImage reference = null;
@@ -435,7 +445,7 @@ public final class HighResWindowsProbe {
             check(hud.pick(materialButton.x+8,materialButton.y+8,materialHint)
                     && materialHint.getText().contains(HudMessages.tr("Item material type")),
                     "The compact material heading retains its full localized hover description");
-            check(filter.field.x+filter.field.width<=filter.name.x+filter.name.width-18,
+            check(filter.opacity.x+filter.opacity.width<=filter.name.x+filter.name.width-18,
                     "Filter reserves the native Name sort indicator at narrow widths: "+language+" name="+filter.name.width+" field="+filter.field.width
                     +" window="+skin.window.width+" table="+filter.table.width+" common="+filter.table.commonWidth+" row="+((WurmComponent)HighResWindowAccess.get(filter.table,"buttonRow")).width+" band="+filter.name.parent.width);
         }
@@ -460,6 +470,426 @@ public final class HighResWindowsProbe {
         check(movedTarget!=Long.MIN_VALUE&&movedIds!=null&&movedIds.length>0,
                 "An empty filtered destination accepts a native server move with source item IDs: "+targetDescription);
         check(HighResWindowAccess.get(hud,"draggedItem")==null,"Cross-window release clears drag focus");filter.reset();
+    }
+    private static void verifyCrateTransfers(HeadsUpDisplay hud, Map<InventoryMetaWindowView, ItemListWindow> containers,
+                                              Map<WurmComponent, HighResNativeWindow> skins) throws Exception {
+        ContainerView rack = new ContainerView(8100, "crate rack"), wagon = new ContainerView(8200, "wagon");
+        HighResWindowAccess.set(rack.root, "typeBits", (short)8);
+        HighResWindowAccess.set(wagon.root, "typeBits", (short)8);
+        hud.addInventoryWindow(rack); hud.addInventoryWindow(wagon);
+        ItemListWindow rackWindow = containers.get(rack), wagonWindow = containers.get(wagon);
+        rackWindow.setLocation(1180, 30, 420, 260); wagonWindow.setLocation(1180, 340, 420, 260);
+        HighResNativeWindow rackSkin = skins.get(rackWindow), wagonSkin = skins.get(wagonWindow);
+        InventoryListComponent rackList = (InventoryListComponent)HighResWindowAccess.get(rackWindow, "component");
+        InventoryListComponent wagonList = (InventoryListComponent)HighResWindowAccess.get(wagonWindow, "component");
+        InventoryMetaItem crate = item(8101, rack.id, "large crate", 50);
+        InventoryMetaItem otherCrate = item(8102, rack.id, "small crate", 50);
+        HighResWindowAccess.set(crate, "typeBits", (short)8);
+        HighResWindowAccess.set(otherCrate, "typeBits", (short)8);
+        rackList.addInventoryItem(crate); rackList.addInventoryItem(otherCrate);
+        rackSkin.tick(); wagonSkin.tick();
+        check(wagonSkin.itemTable().lines.isEmpty(), "Empty wagon fixture has no displayed items or filtered rows");
+        // External roots are hidden: a native drop outside the rows means the
+        // rack/wagon itself, never its first crate or the player's inventory.
+        FlexComponent wagonBody = (FlexComponent)HighResWindowAccess.get(wagonSkin.itemTable(), "treeList");
+        transferCrate(hud, rackSkin, crate.getId(), wagonSkin, wagonBody.parent.y + 40, wagon.id,
+                "Crate rack to genuinely empty wagon");
+        InventoryMetaItem wagonCrate = item(8201, wagon.id, "large crate", 50);
+        HighResWindowAccess.set(wagonCrate, "typeBits", (short)8);
+        wagonList.addInventoryItem(wagonCrate); wagonSkin.tick();
+        FlexComponent rackBody = (FlexComponent)HighResWindowAccess.get(rackSkin.itemTable(), "treeList");
+        int height = ((Number)HighResWindowAccess.get(rackSkin.itemTable(), "lineHeight")).intValue();
+        movedTarget = Long.MIN_VALUE;
+        rackList.itemDropped(rackBody.x + 100, rackBody.y + rackSkin.itemTable().lines.size() * height + height,
+                (DraggableComponent)wagonSkin.itemTable().lines.get(0).item);
+        check(movedTarget == rack.id, "Native reference drop resolves the hidden rack root");
+        transferCrate(hud, wagonSkin, wagonCrate.getId(), rackSkin, rackBody.y + 1, rack.id,
+                "Wagon to rack before its first crate");
+        rackBody = (FlexComponent)HighResWindowAccess.get(rackSkin.itemTable(), "treeList");
+        transferCrate(hud, wagonSkin, wagonCrate.getId(), rackSkin,
+                rackBody.y + rackSkin.itemTable().lines.size() * height + 30, rack.id,
+                "Wagon to rack in blank viewport space");
+        wagonBody = (FlexComponent)HighResWindowAccess.get(wagonSkin.itemTable(), "treeList");
+        transferCrate(hud, rackSkin, crate.getId(), wagonSkin, wagonBody.y + 1, wagon.id,
+                "Rack to wagon before an existing crate");
+        Map<WurmTreeList<?>,HighResInventoryFilter> filters =
+                (Map<WurmTreeList<?>,HighResInventoryFilter>)staticField(HighResWindowIntegration.class,"FILTERS");
+        HighResInventoryFilter filter = filters.get(rackSkin.itemTable());
+        filter.field.setText("small"); filter.field.handleInputChanged(null, "small");
+        rackBody = (FlexComponent)HighResWindowAccess.get(rackSkin.itemTable(), "treeList");
+        transferCrate(hud, wagonSkin, wagonCrate.getId(), rackSkin, rackBody.y + 1, rack.id,
+                "Filtered rack retains its hidden root instead of the first matching crate");
+        filter.reset();
+        // Contents may be unloaded even though the first row is a container.
+        // A drop over that row must still mean Put inside that exact item.
+        rackBody = (FlexComponent)HighResWindowAccess.get(rackSkin.itemTable(), "treeList");
+        transferCrate(hud, wagonSkin, wagonCrate.getId(), rackSkin, rackBody.y + height / 2, crate.getId(),
+                "Explicit Put inside retains the native container target");
+        ContainerView crateContents = new ContainerView(crate.getId(), "large crate");
+        HighResWindowAccess.set(crateContents.root, "typeBits", (short)8);
+        hud.addInventoryWindow(crateContents);
+        ItemListWindow crateWindow = containers.get(crateContents);
+        crateWindow.setLocation(1610, 30, 310, 260);
+        HighResNativeWindow crateSkin = skins.get(crateWindow); crateSkin.tick();
+        FlexComponent crateBody = (FlexComponent)HighResWindowAccess.get(crateSkin.itemTable(), "treeList");
+        transferCrate(hud, rackSkin, crate.getId(), crateSkin, crateBody.parent.y + 40, Long.MIN_VALUE,
+                "Empty container cannot accept a drop of itself");
+        crateWindow.closePressed(); rackWindow.closePressed(); wagonWindow.closePressed();
+        System.out.println("CRATE_TRANSFERS_OK: empty and populated wagon, rack row edges and blank space, filtered root, explicit container target, empty self-drop");
+    }
+    private static void verifyAmphoraRoundTrip(HeadsUpDisplay hud, HighResNativeWindow inventorySkin,
+            Map<Long, InventoryMetaItem> playerItems, Map<InventoryMetaWindowView, ItemListWindow> containers,
+            Map<WurmComponent, HighResNativeWindow> skins) throws Exception {
+        InventoryListComponent inventory = ((InventoryWindow)inventorySkin.window).getInventoryListComponent();
+        long inventoryId = playerInventory.getRootItem().getId();
+        ContainerView wagon = new ContainerView(9100, "wagon");
+        HighResWindowAccess.set(wagon.root, "typeBits", (short)8);
+        hud.addInventoryWindow(wagon);
+        ItemListWindow window = containers.get(wagon); window.setLocation(1180, 340, 420, 260);
+        HighResNativeWindow wagonSkin = skins.get(window);
+        InventoryListComponent wagonList = (InventoryListComponent)HighResWindowAccess.get(window, "component");
+        InventoryMetaItem amphora = item(9101, inventoryId, "amphora", 50);
+        InventoryMetaItem backpack = item(9102, inventoryId, "Z test backpack", 50);
+        InventoryMetaItem contents = item(9103, backpack.getId(), "thread", 50);
+        HighResWindowAccess.set(amphora, "typeBits", (short)8);
+        HighResWindowAccess.set(backpack, "typeBits", (short)8);
+        for (InventoryMetaItem value : new InventoryMetaItem[]{amphora, backpack, contents}) {
+            playerItems.put(value.getId(), value); inventory.addInventoryItem(value);
+        }
+        for (WTreeListNode<?> node : inventory.itemList.lines)
+            if (node.item instanceof InventoryListComponent.InventoryTreeListItem
+                    && ((InventoryListComponent.InventoryTreeListItem)node.item).item.getId() == backpack.getId()) node.setOpen(true);
+        inventory.itemList.recalcLines(); inventorySkin.tick(); wagonSkin.tick();
+        FlexComponent wagonBody = (FlexComponent)HighResWindowAccess.get(wagonSkin.itemTable(), "treeList");
+        transferCrate(hud, inventorySkin, amphora.getId(), wagonSkin, wagonBody.parent.y + 40, wagon.id,
+                "Amphora from player inventory to wagon");
+        // Apply the native listener/model changes received after the server move.
+        inventory.removeInventoryItem(amphora); playerItems.remove(amphora.getId());
+        HighResWindowAccess.set(amphora, "parentId", wagon.id); wagonList.addInventoryItem(amphora);
+        inventory.itemList.recalcLines(); wagonSkin.tick(); inventorySkin.tick();
+        check(((InventoryListComponent.InventoryTreeListItem)inventory.itemList.lines.get(inventory.itemList.lines.size()-1).item)
+                .item.getId() == contents.getId(), "Last player row is inside an expanded backpack after amphora removal");
+        FlexComponent body = (FlexComponent)HighResWindowAccess.get(inventory.itemList, "treeList");
+        int height = ((Number)HighResWindowAccess.get(inventory.itemList, "lineHeight")).intValue();
+        int blankY = body.y + inventory.itemList.lines.size() * height + 25;
+        movedTarget = Long.MIN_VALUE;
+        inventory.itemDropped(body.x + 100, blankY, (DraggableComponent)wagonSkin.itemTable().lines.get(0).item);
+        check(movedTarget == inventoryId, "Native blank inventory drop selects player inventory, not the last row's backpack");
+        transferCrate(hud, wagonSkin, amphora.getId(), inventorySkin, blankY, inventoryId,
+                "Amphora returns from wagon into blank player inventory after native model update");
+        body = (FlexComponent)HighResWindowAccess.get(inventory.itemList, "treeList");
+        int lastRowBottom = body.y + inventory.itemList.lines.size() * height;
+        transferCrate(hud, wagonSkin, amphora.getId(), inventorySkin, lastRowBottom + height/2, inventoryId,
+                "Incoming amphora leaves the last nested row's appended gap for blank player inventory", lastRowBottom - 1);
+        body = (FlexComponent)HighResWindowAccess.get(inventory.itemList, "treeList");
+        int backpackRow = -1;
+        for(int n=0;n<inventory.itemList.lines.size();n++)
+            if(((InventoryListComponent.InventoryTreeListItem)inventory.itemList.lines.get(n).item).item.getId()==backpack.getId()) backpackRow=n;
+        transferCrate(hud, wagonSkin, amphora.getId(), inventorySkin, body.y + backpackRow*height + height/2, backpack.getId(),
+                "Explicit backpack row drop still uses the backpack and native capacity rules");
+        wagonList.removeInventoryItem(amphora); HighResWindowAccess.set(amphora, "parentId", inventoryId);
+        playerItems.put(amphora.getId(), amphora); inventory.addInventoryItem(amphora);
+        for (InventoryMetaItem value : new InventoryMetaItem[]{contents, backpack, amphora}) {
+            inventory.removeInventoryItem(value); playerItems.remove(value.getId());
+        }
+        inventory.itemList.recalcLines(); inventorySkin.tick(); window.closePressed();
+        System.out.println("AMPHORA_ROUND_TRIP_OK: player to wagon, native listener updates, wagon to blank player inventory beside expanded backpack");
+    }
+    @SuppressWarnings("unchecked")
+    private static void verifyInventoryOpacity(HeadsUpDisplay hud,HighResNativeWindow skin,HighResNativeWindow other,File output) throws Exception {
+        com.wurmonline.client.renderer.backend.Queue batch=InventoryOpacityPreview.begin();
+        for(int n=0;n<3;n++) {
+            com.wurmonline.client.renderer.backend.Primitive primitive=(com.wurmonline.client.renderer.backend.Primitive)
+                    unsafe().allocateInstance(com.wurmonline.client.renderer.backend.Primitive.class);
+            primitive.a=n==1?.4f:1f;primitive.blendmode=n==1?com.wurmonline.client.renderer.backend.Primitive.BlendMode.ALPHABLEND:
+                    com.wurmonline.client.renderer.backend.Primitive.BlendMode.OPAQUE;
+            primitive.texture=new com.wurmonline.client.resources.textures.Texture[1];batch.getQueue()[n]=primitive;
+        }
+        HighResWindowAccess.set(batch,"queueCount",3);HighResInventoryOpacity.apply(batch,1,3,50);
+        check(batch.getQueue()[0].a==1f&&batch.getQueue()[0].blendmode==com.wurmonline.client.renderer.backend.Primitive.BlendMode.OPAQUE,
+                "Other windows' queued primitives remain unchanged");
+        check(Math.abs(batch.getQueue()[1].a-.2f)<.0001f&&batch.getQueue()[2].a==.5f
+                        &&batch.getQueue()[2].blendmode==com.wurmonline.client.renderer.backend.Primitive.BlendMode.ALPHABLEND,
+                "Existing texture masks multiply opacity and opaque native primitives enable alpha blending");
+        InventoryOpacityPreview.finish();
+        Map<WurmTreeList<?>,HighResInventoryFilter> filters=(Map<WurmTreeList<?>,HighResInventoryFilter>)staticField(HighResWindowIntegration.class,"FILTERS");
+        HighResInventoryFilter filter=filters.get(skin.itemTable());filter.layout();
+        HighResInventoryOpacity slider=filter.opacity;
+        check(slider.height==filter.field.height&&Math.abs(slider.width-filter.field.width/3*1.3f)<=.5f&&slider.x==filter.field.x+filter.field.width+6,
+                "Opacity field is 30 percent wider than its previous one-third width, immediately right of Filter");
+        int y=slider.y+slider.height/2;
+        check(hud.getComponentAt(slider.thumbX()+1,y)==slider,"Opacity thumb receives native HUD hit testing");
+        int otherValue=other.opacityPercent();
+        hud.mousePressed(slider.thumbX()+1,y,0,0);hud.mouseDragged(slider.x-100,y);hud.mouseReleased(slider.x-100,y,0);
+        check(skin.opacityPercent()==10&&other.opacityPercent()==otherValue,"Left drag clamps at 10 and only changes its own window");
+        check(HighResWindowAccess.get(hud,"draggedItem")==null,"Opacity gesture does not start an item drag");
+        hud.mousePressed(slider.thumbX()+1,y,0,0);hud.mouseDragged(slider.x+slider.width+100,y);hud.mouseReleased(slider.x+slider.width+100,y,0);
+        check(skin.opacityPercent()==100,"Right drag reaches full opacity");
+        int oldDefault=org.highreshud.client.HighResWindowsSettings.defaultInventoryOpacity;
+        org.highreshud.client.HighResWindowsSettings.defaultInventoryOpacity=35;
+        check(skin.opacityPercent()==100,"Changing the default keeps already-open windows independent");
+        hud.hideComponent(skin.window);
+        java.lang.reflect.Method show=HeadsUpDisplay.class.getDeclaredMethod("addComponent",WurmComponent.class);show.setAccessible(true);show.invoke(hud,skin.window);
+        check(skin.opacityPercent()==35,"Reopened inventory initializes from the current default");
+        ContainerView fresh=new ContainerView(9300,"Opacity test wagon");hud.addInventoryWindow(fresh);
+        Map<InventoryMetaWindowView,ItemListWindow> nativeWindows=(Map<InventoryMetaWindowView,ItemListWindow>)HighResWindowAccess.get(hud,"inventoryWindows");
+        WWindow freshWindow=nativeWindows.get(fresh);
+        check(((Map<WurmComponent,HighResNativeWindow>)staticField(HighResWindowIntegration.class,"WINDOWS")).get(freshWindow).opacityPercent()==35,
+                "New server container uses the configured default opacity");
+        freshWindow.closePressed();
+        for(String language:HudMessages.languageCodes()) {
+            HudMessages.useLanguage(language);filter.layout();
+            com.wurmonline.client.renderer.PickData pick=new com.wurmonline.client.renderer.PickData(hud);
+            check(hud.pick(slider.x+5,slider.y+5,pick)&&pick.getText().contains(HudMessages.tr("Inventory window opacity: {0}%",35)),
+                    "Opacity hover changes language without changing the percentage");
+        }
+        HudMessages.useLanguage("en");org.highreshud.client.HighResWindowsSettings.defaultInventoryOpacity=oldDefault;
+        int ox=skin.window.x,oy=skin.window.y,ow=skin.window.width,oh=skin.window.height;
+        BufferedImage image=new BufferedImage(1620,390,BufferedImage.TYPE_INT_ARGB);HudButtonProbe.previewGraphics(image);
+        HudButtonProbe.canvas.fill(UiColor.rgb(0x777d78),1f,0,0,image.getWidth(),image.getHeight());
+        com.wurmonline.client.renderer.backend.Queue queue=InventoryOpacityPreview.begin();
+        for(int n=0;n<3;n++) {
+            skin.window.setLocation(20+n*535,35,515,320);skin.opacityPercent(new int[]{10,50,100}[n]);
+            int first=queue.getQueueCount();HighResWindowIntegration.renderWindow(skin.window,queue);
+            int end=queue.getQueueCount(),sliderPrimitives=3;
+            for(int p=first;p<end-sliderPrimitives;p++)check(queue.getQueue()[p].a<=skin.opacityPercent()/100f+.0001f,
+                    "Window frames, fields, glyphs and text respect intentional per-window alpha");
+            for(int p=end-sliderPrimitives;p<end;p++)check(queue.getQueue()[p].a==1f,"Recovery slider remains fully visible");
+        }
+        InventoryOpacityPreview.finish();HudButtonProbe.finishPreview();
+        ImageIO.write(image,"png",new File(output.getParentFile(),"hud-inventory-opacity-preview.png"));
+        skin.window.setLocation(ox,oy,ow,oh);skin.opacityPercent(100);HudMessages.useLanguage("en");
+        System.out.println("INVENTORY_OPACITY_OK: 30 percent wider field, 10-100 native mouse drag, per-window isolation, reopen default, four languages, whole-window native queue alpha, visible recovery slider");
+    }
+    @SuppressWarnings("unchecked") private static void renderSettingsPreview(HeadsUpDisplay hud,File output) throws Exception {
+        java.lang.reflect.Method method=Class.forName("org.highreshud.client.ModSettingsSchema").getDeclaredMethod("specs");method.setAccessible(true);
+        final List<org.chamomilo.wurm.update.ModSetting> specs=(List<org.chamomilo.wurm.update.ModSetting>)method.invoke(null);
+        final Properties values=new Properties();for(org.chamomilo.wurm.update.ModSetting spec:specs)values.setProperty(spec.key,spec.defaultValue);
+        org.chamomilo.wurm.update.SharedModSettings.Provider provider=new org.chamomilo.wurm.update.SharedModSettings.Provider() {
+            public List<org.chamomilo.wurm.update.ModSetting> settings() {return specs;}
+            public String value(String key) {return values.getProperty(key);}
+            public void change(String key,String value) {throw new AssertionError("Documentation preview must not modify settings");}
+        };
+        org.chamomilo.wurm.update.UpdatePreferences previous=HudButtonProbe.updaterPreferences;
+        try {
+            HudButtonProbe.updaterPreferences=new org.chamomilo.wurm.update.UpdatePreferences(new File(output.getParentFile(),"settings-preview-preferences.properties").toPath());
+            HudButtonProbe.updaterPreferences.setForcedLanguage("en");
+            ChamomiloUpdateSettingsWindow window=new ChamomiloUpdateSettingsWindow(hud,"highres-hud","High-res HUD",provider);
+            window.setLocation(10,10,780,620);
+            check(((List<?>)HighResWindowAccess.get(window,"rows")).size()==specs.size(),"Latest updater Settings consumes the complete product schema");
+            BufferedImage image=new BufferedImage(800,640,BufferedImage.TYPE_INT_ARGB);HudButtonProbe.previewGraphics(image);
+            HudButtonProbe.canvas.fill(UiColor.rgb(0x17140f),1f,0,0,image.getWidth(),image.getHeight());
+            window.render(null,1f);HudButtonProbe.finishPreview();ImageIO.write(image,"png",new File(output.getParentFile(),"hud-settings-preview.png"));
+        } finally {HudButtonProbe.updaterPreferences=previous;}
+    }
+    private static void verifyFontTransferIntegration(HeadsUpDisplay hud, HighResNativeWindow inventorySkin,
+            Map<Long, InventoryMetaItem> playerItems, Map<InventoryMetaWindowView, ItemListWindow> containers,
+            Map<WurmComponent, HighResNativeWindow> skins) throws Exception {
+        int original = org.highreshud.client.HighResWindowsSettings.fontSize;
+        int rowHeight = ((Number)HighResWindowAccess.get(inventorySkin.itemTable(), "lineHeight")).intValue();
+        com.wurmonline.client.renderer.gui.text.TextFont heading = HighResWindowTypography.heading();
+        try {
+            org.highreshud.client.HighResWindowsSettings.fontSize = 24;
+            HighResWindowIntegration.refreshTypography();
+            check(HighResDataTypography.pixels(14) == 24
+                            && ((Number)HighResWindowAccess.get(inventorySkin.itemTable(), "lineHeight")).intValue() > rowHeight,
+                    "Live 0.7 font setting enlarges native item rows before transfers");
+            check(heading.getHeight() == HighResWindowTypography.heading().getHeight()
+                            && heading.getWidth("Heading Заголовок") == HighResWindowTypography.heading().getWidth("Heading Заголовок"),
+                    "Item font changes retain the existing heading role");
+            verifyCrateTransfers(hud, containers, skins);
+            verifyAmphoraRoundTrip(hud, inventorySkin, playerItems, containers, skins);
+        } finally {
+            org.highreshud.client.HighResWindowsSettings.fontSize = original;
+            HighResWindowIntegration.refreshTypography();
+        }
+        System.out.println("FONT_TRANSFER_INTEGRATION_OK: live 24px item rows, fixed headings, crate transfers and native amphora round trip");
+    }
+    private static void transferCrate(HeadsUpDisplay hud, HighResNativeWindow source, long sourceId,
+                                      HighResNativeWindow destination, int dropY, long expectedTarget, String scenario) {
+        transferCrate(hud,source,sourceId,destination,dropY,expectedTarget,scenario,Integer.MIN_VALUE);
+    }
+    private static void transferCrate(HeadsUpDisplay hud, HighResNativeWindow source, long sourceId,
+                                      HighResNativeWindow destination, int dropY, long expectedTarget, String scenario,int previewY) {
+        WurmTreeList<?> table = source.itemTable();
+        FlexComponent body = (FlexComponent)HighResWindowAccess.get(table, "treeList");
+        int height = ((Number)HighResWindowAccess.get(table, "lineHeight")).intValue(), row = -1;
+        for (int n = 0; n < table.lines.size(); n++)
+            if (((InventoryMetaItem)HighResWindowAccess.get(table.lines.get(n).item, "item")).getId() == sourceId) row = n;
+        check(row >= 0, scenario + ": source crate is visible");
+        int x = body.x + 100, y = body.y + row * height + height / 2;
+        check(hud.mousePressed(x, y, 0, 0), scenario + ": native item press");
+        hud.mouseDragged(x + 12, y);
+        check(HighResWindowAccess.get(hud, "draggedItem") != null, scenario + ": native drag starts");
+        FlexComponent targetBody = (FlexComponent)HighResWindowAccess.get(destination.itemTable(), "treeList");
+        x = targetBody.x + 100;
+        if(previewY!=Integer.MIN_VALUE) {
+            hud.mouseDragged(x,previewY);dragNow+=1_000_000_000L;
+            HighResWindowIntegration.inventoryDragFrame(hud,x,previewY);
+        }
+        hud.mouseDragged(x, dropY);
+        dragNow+=1_000_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,dropY);
+        movedTarget = Long.MIN_VALUE; movedIds = null;
+        hud.mouseReleased(x, dropY, 0);
+        check(movedTarget == expectedTarget && (expectedTarget == Long.MIN_VALUE ? movedIds == null : Arrays.equals(movedIds, new long[]{sourceId})),
+                scenario + ": expected native target " + expectedTarget + ", actual " + movedTarget + ", ids=" + Arrays.toString(movedIds));
+        check(HighResWindowAccess.get(hud, "draggedItem") == null, scenario + ": drag ends");
+    }
+
+    private static InventoryListComponent itemList(HighResNativeWindow skin) {
+        return (InventoryListComponent)HighResWindowAccess.get(skin.window,"component");
+    }
+    private static WTreeListNode<?> itemNode(WTreeListNode<?> node,long id) {
+        if(node.item instanceof InventoryContainerWindow.InventoryContainerItem
+                &&((InventoryContainerWindow.InventoryContainerItem)node.item).getId()==id)return node;
+        if(node.item instanceof InventoryListComponent.InventoryTreeListItem&&!node.item.getClass().getSimpleName().equals("GroupTreeListItem")
+                &&((InventoryListComponent.InventoryTreeListItem)node.item).item.getId()==id)return node;
+        for(WTreeListNode<?> child:node.children) {WTreeListNode<?> match=itemNode(child,id);if(match!=null)return match;}
+        return null;
+    }
+    private static WTreeListNode<?> itemNode(HighResNativeWindow skin,long id) {
+        return itemNode((WTreeListNode<?>)HighResWindowAccess.get(skin.itemTable(),"rootNode"),id);
+    }
+    private static int rowY(HighResNativeWindow skin,WTreeListNode<?> node,int offset) {
+        return ((FlexComponent)HighResWindowAccess.get(skin.itemTable(),"treeList")).y
+                +skin.itemTable().lines.indexOf(node)*((Number)HighResWindowAccess.get(skin.itemTable(),"lineHeight")).intValue()+offset;
+    }
+    private static void startItemDrag(HeadsUpDisplay hud,HighResNativeWindow skin,long id) {
+        FlexComponent body=(FlexComponent)HighResWindowAccess.get(skin.itemTable(),"treeList");
+        int height=((Number)HighResWindowAccess.get(skin.itemTable(),"lineHeight")).intValue();
+        int x=body.x+100,y=rowY(skin,itemNode(skin,id),height/2);
+        check(hud.mousePressed(x,y,0,0),"Timed drag starts at native row");hud.mouseDragged(x+12,y);
+        check(HighResWindowAccess.get(hud,"draggedItem")!=null,"Timed drag crosses native movement threshold");
+    }
+    private static void received(HeadsUpDisplay hud,HighResNativeWindow from,HighResNativeWindow to,InventoryMetaItem item,long parent) {
+        itemList(from).removeInventoryItem(item);HighResWindowAccess.set(item,"parentId",parent);itemList(to).addInventoryItem(item);
+        from.itemTable().recalcLines();to.itemTable().recalcLines();HighResWindowIntegration.beginFrame(hud);
+    }
+    private static void verifyTimedInventoryDrag(HeadsUpDisplay hud,Map<InventoryMetaWindowView,ItemListWindow> containers,
+            Map<WurmComponent,HighResNativeWindow> skins) throws Exception {
+        ContainerView from=new ContainerView(9400,"timed source"),to=new ContainerView(9500,"timed wagon");
+        HighResWindowAccess.set(from.root,"typeBits",(short)8);HighResWindowAccess.set(to.root,"typeBits",(short)8);
+        hud.addInventoryWindow(from);hud.addInventoryWindow(to);
+        ItemListWindow sourceWindow=containers.get(from),targetWindow=containers.get(to);
+        sourceWindow.setLocation(1180,30,420,260);targetWindow.setLocation(1180,340,420,300);
+        HighResNativeWindow source=skins.get(sourceWindow),destination=skins.get(targetWindow);
+        InventoryMetaItem incoming=item(9401,from.id,"A incoming",50),middle=item(9501,to.id,"Middle item",50),last=item(9502,to.id,"Z last",50);
+        InventoryMetaItem bag=item(9503,to.id,"bag",50),secondBag=item(9504,to.id,"bag",40),inside=item(9505,bag.getId(),"thread",50);
+        HighResWindowAccess.set(bag,"typeBits",(short)8);HighResWindowAccess.set(secondBag,"typeBits",(short)8);
+        itemList(source).addInventoryItem(incoming);
+        for(InventoryMetaItem value:new InventoryMetaItem[]{middle,last,bag,secondBag,inside})itemList(destination).addInventoryItem(value);
+        source.tick();destination.tick();destination.itemTable().recalcLines();
+        HighResInventoryDrag drag=(HighResInventoryDrag)staticField(HighResWindowIntegration.class,"INVENTORY_DRAG");
+        WTreeListNode<?> bagNode=itemNode(destination,bag.getId()),group=bagNode.parentNode;
+        check(group.item!=null&&group.item.getClass().getSimpleName().equals("GroupTreeListItem"),"Fixture contains real native grouped containers");
+        group.setOpen(false);destination.itemTable().recalcLines();
+        FlexComponent body=(FlexComponent)HighResWindowAccess.get(destination.itemTable(),"treeList");int x=body.x+100;
+        int height=((Number)HighResWindowAccess.get(destination.itemTable(),"lineHeight")).intValue();
+        int y=rowY(destination,group,height/2),count=destination.itemTable().lines.size();
+        startItemDrag(hud,source,incoming.getId());hud.mouseDragged(x,y);
+        dragNow+=999_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);
+        check(!group.isOpen()&&!drag.hasGap(destination.itemTable())&&destination.itemTable().lines.size()==count,
+                "At 999ms a grouped container stays closed and the destination has no position preview");
+        movedTarget=Long.MIN_VALUE;hud.mouseReleased(x,y,0);
+        check(movedTarget==to.id,"Fast drop over a container group selects the wagon root");
+        received(hud,source,destination,incoming,to.id);
+        WTreeListNode<?> arrived=itemNode(destination,incoming.getId());
+        check(arrived.parentNode.children.get(arrived.parentNode.children.size()-1)==arrived,"Quick incoming item is appended despite alphabetical name sorting");
+        destination.itemTable().recalcLines();check(destination.itemTable().lines.get(destination.itemTable().lines.size()-1)==arrived,"Append order survives native recalc");
+        received(hud,destination,source,incoming,from.id);
+        startItemDrag(hud,source,incoming.getId());y=rowY(destination,itemNode(destination,middle.getId()),1);hud.mouseDragged(x,y);
+        dragNow+=999_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);
+        check(!drag.hasGap(destination.itemTable()),"No row insertion during the first 999ms");
+        dragNow+=1_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);
+        check(drag.hasGap(destination.itemTable()),"At exactly 1000ms a stationary mouse activates the insertion row");
+        movedTarget=Long.MIN_VALUE;hud.mouseReleased(x,y,0);check(movedTarget==to.id,"Precise gap retains the physical wagon destination");
+        received(hud,source,destination,incoming,to.id);
+        arrived=itemNode(destination,incoming.getId());WTreeListNode<?> anchor=itemNode(destination,middle.getId());
+        check(arrived.parentNode==anchor.parentNode&&arrived.parentNode.children.indexOf(arrived)+1==arrived.parentNode.children.indexOf(anchor),
+                "Server arrival is inserted immediately before the chosen row");
+        received(hud,destination,source,incoming,from.id);
+        startItemDrag(hud,source,incoming.getId());y=rowY(destination,anchor,height-1);hud.mouseDragged(x,y);
+        dragNow+=1_000_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);hud.mouseReleased(x,y,0);
+        received(hud,source,destination,incoming,to.id);arrived=itemNode(destination,incoming.getId());
+        check(anchor.parentNode.children.indexOf(anchor)+1==anchor.parentNode.children.indexOf(arrived),"After-row position survives the asynchronous server arrival");
+        received(hud,destination,source,incoming,from.id);
+        group.setOpen(false);destination.itemTable().recalcLines();y=rowY(destination,group,height/2);
+        startItemDrag(hud,source,incoming.getId());hud.mouseDragged(x,y);dragNow+=999_000_000L;
+        HighResWindowIntegration.inventoryDragFrame(hud,x,y);hud.mouseDragged(-20,-20);hud.mouseDragged(x,y);
+        dragNow+=1_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);
+        check(!group.isOpen()&&!drag.hasGap(destination.itemTable()),"Leaving and re-entering resets both hover timers");
+        dragNow+=999_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);
+        check(group.isOpen()&&destination.itemTable().lines.contains(bagNode),"One uninterrupted second opens a real group without a click");
+        y=rowY(destination,bagNode,height/2);hud.mouseDragged(x,y);movedTarget=Long.MIN_VALUE;hud.mouseReleased(x,y,0);
+        check(movedTarget==bag.getId(),"Expanded group lets the player select a specific nested container");
+        received(hud,source,destination,incoming,bag.getId());
+        arrived=itemNode(destination,incoming.getId());check(arrived.parentNode==bagNode,"Native model puts the received item in the selected bag");
+        received(hud,destination,source,incoming,from.id);
+        InventoryMetaItem thirdBag=item(9403,from.id,"bag",30);HighResWindowAccess.set(thirdBag,"typeBits",(short)8);
+        itemList(source).addInventoryItem(thirdBag);source.itemTable().recalcLines();
+        group.setOpen(true);destination.itemTable().recalcLines();
+        WTreeListNode<?> secondBagNode=itemNode(destination,secondBag.getId());
+        startItemDrag(hud,source,thirdBag.getId());y=rowY(destination,secondBagNode,1);hud.mouseDragged(x,y);
+        dragNow+=1_000_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);movedTarget=Long.MIN_VALUE;hud.mouseReleased(x,y,0);
+        check(movedTarget==to.id,"Position inside a virtual group selects its physical inventory, not the first hidden bag");
+        received(hud,source,destination,thirdBag,to.id);WTreeListNode<?> thirdBagNode=itemNode(destination,thirdBag.getId());
+        check(thirdBagNode.parentNode==group&&group.children.indexOf(thirdBagNode)+1==group.children.indexOf(secondBagNode),
+                "Received grouped container retains the chosen position inside the expanded native group");
+        received(hud,destination,source,thirdBag,from.id);bagNode.setOpen(true);destination.itemTable().recalcLines();
+        startItemDrag(hud,source,thirdBag.getId());y=rowY(destination,bagNode,height-1);hud.mouseDragged(x,y);
+        dragNow+=1_000_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);
+        WTreeListNode<?> previewGap=(WTreeListNode<?>)HighResWindowAccess.get(drag,"gap");
+        check(destination.itemTable().lines.indexOf(previewGap)>destination.itemTable().lines.indexOf(itemNode(destination,inside.getId())),
+                "After an expanded bag, the preview follows its children instead of suggesting a false nested position");
+        y=rowY(destination,previewGap,height/2);hud.mouseReleased(x,y,0);received(hud,source,destination,thirdBag,to.id);
+        thirdBagNode=itemNode(destination,thirdBag.getId());
+        check(group.children.indexOf(bagNode)+1==group.children.indexOf(thirdBagNode)
+                        &&destination.itemTable().lines.indexOf(thirdBagNode)>destination.itemTable().lines.indexOf(itemNode(destination,inside.getId())),
+                "After-server position matches the preview following the expanded bag's subtree");
+        group.setOpen(false);destination.itemTable().recalcLines();
+        startItemDrag(hud,destination,middle.getId());y=rowY(destination,group,1);hud.mouseDragged(x,y);
+        dragNow+=999_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);check(!group.isOpen(),"Same-window group respects the hover delay");
+        dragNow+=1_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);check(group.isOpen(),"Same-window drag also expands a group at one second");
+        hud.resetDrag();
+        InventoryMetaItem secondIncoming=item(9402,from.id,"F incoming",50);itemList(source).addInventoryItem(secondIncoming);source.itemTable().recalcLines();
+        startItemDrag(hud,source,incoming.getId());itemNode(source,secondIncoming.getId()).setSelected(true);
+        y=rowY(destination,itemNode(destination,last.getId()),1);hud.mouseDragged(x,y);
+        dragNow+=1_000_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);hud.mouseReleased(x,y,0);
+        check(Arrays.equals(movedIds,new long[]{incoming.getId(),secondIncoming.getId()}),"Multi-selection preserves native move IDs");
+        received(hud,source,destination,secondIncoming,to.id);received(hud,source,destination,incoming,to.id);
+        WTreeListNode<?> firstArrival=itemNode(destination,incoming.getId()),secondArrival=itemNode(destination,secondIncoming.getId()),lastNode=itemNode(destination,last.getId());
+        check(lastNode.parentNode.children.indexOf(firstArrival)+1==lastNode.parentNode.children.indexOf(secondArrival)
+                        &&lastNode.parentNode.children.indexOf(secondArrival)+1==lastNode.parentNode.children.indexOf(lastNode),
+                "Multiple arrivals in reverse server order stay together at the chosen position");
+        received(hud,destination,source,incoming,from.id);
+        startItemDrag(hud,source,incoming.getId());y=rowY(destination,anchor,1);hud.mouseDragged(x,y);
+        dragNow+=1_000_000_000L;HighResWindowIntegration.inventoryDragFrame(hud,x,y);hud.mouseReleased(x,y,0);
+        List<?> unchanged=new ArrayList<>(anchor.parentNode.children);HighResWindowIntegration.beginFrame(hud);
+        check(unchanged.equals(anchor.parentNode.children),"Unconfirmed server move does not reorder unrelated target rows");
+        dragNow+=30_000_000_000L;HighResWindowIntegration.beginFrame(hud);
+        check(((List<?>)HighResWindowAccess.get(drag,"pending")).isEmpty(),"Unconfirmed positions expire after thirty seconds");
+        InventoryMetaItem quiverRoot=item(9600,1,"quiver",50);
+        InventoryContainerWindow quiver=new InventoryContainerWindow(quiverRoot,null);
+        Map<Long,InventoryContainerWindow> playerContainers=(Map<Long,InventoryContainerWindow>)HighResWindowAccess.get(hud,"inventoryContainerWindows");
+        playerContainers.put(quiverRoot.getId(),quiver);hud.getComponents().add(quiver);quiver.setLocation(1610,340,300,300);
+        HighResWindowIntegration.beginFrame(hud);HighResNativeWindow quiverSkin=skins.get(quiver);
+        InventoryMetaItem quiverLast=item(9601,quiverRoot.getId(),"Z quiver item",50);quiver.addInventoryItem(quiverLast);quiverSkin.itemTable().recalcLines();
+        startItemDrag(hud,source,incoming.getId());FlexComponent quiverBody=(FlexComponent)HighResWindowAccess.get(quiverSkin.itemTable(),"treeList");
+        int qx=quiverBody.x+100,qy=quiverBody.parent.y+40;hud.mouseDragged(qx,qy);hud.mouseReleased(qx,qy,0);
+        check(movedTarget==quiverRoot.getId(),"Quick player-container transfer uses its native root ID");
+        itemList(source).removeInventoryItem(incoming);HighResWindowAccess.set(incoming,"parentId",quiverRoot.getId());quiver.addInventoryItem(incoming);
+        quiverSkin.itemTable().recalcLines();HighResWindowIntegration.beginFrame(hud);
+        check(quiverSkin.itemTable().lines.get(quiverSkin.itemTable().lines.size()-1)==itemNode(quiverSkin,incoming.getId()),"Quick transfer also appends in the distinct native player-container window");
+        startItemDrag(hud,quiverSkin,incoming.getId());y=rowY(destination,anchor,1);hud.mouseDragged(x,y);hud.mouseReleased(x,y,0);
+        check(movedTarget==to.id&&Arrays.equals(movedIds,new long[]{incoming.getId()}),"Player-container source keeps the correct native item IDs");
+        quiver.removeInventoryItem(incoming);HighResWindowAccess.set(incoming,"parentId",to.id);itemList(destination).addInventoryItem(incoming);
+        destination.itemTable().recalcLines();HighResWindowIntegration.beginFrame(hud);
+        check(destination.itemTable().lines.get(destination.itemTable().lines.size()-1)==itemNode(destination,incoming.getId()),"Player-container source appends after the native server arrival");
+        received(hud,destination,source,incoming,from.id);quiver.closePressed();
+        startItemDrag(hud,source,incoming.getId());hud.mouseDragged(x,y);hud.mouseReleased(x,y,0);
+        sourceWindow.closePressed();targetWindow.closePressed();
+        check(((List<?>)HighResWindowAccess.get(drag,"pending")).isEmpty(),"Closing the target removes pending arrival positions");
+        System.out.println("TIMED_INVENTORY_DRAG_OK: 999/1000ms, quick root append, before/after server-arrival positions, hover reset, native groups and group positions, nested container, same-window expansion, multi-selection, rejection timeout, close cleanup");
     }
     private static void verifyCharacter(HeadsUpDisplay hud,InventoryMetaWindowView view,Map<WurmComponent,HighResNativeWindow> skins,File output) throws Exception {
         com.wurmonline.client.renderer.PlayerBodyRenderable body=(com.wurmonline.client.renderer.PlayerBodyRenderable)unsafe().allocateInstance(com.wurmonline.client.renderer.PlayerBodyRenderable.class);
@@ -690,6 +1120,20 @@ public final class HighResWindowsProbe {
         scroll.isAtBottom = true; panel.text = nativeFont; HighResDataTypography.apply(panel);
         check(scroll.yo == Math.max(0, panel.height - ((FlexComponent) scroll.offs).height) && scroll.isAtBottom,
                 "Sticky-bottom message scrolling survives font changes");
+        com.wurmonline.client.renderer.gui.text.TextFont heading=HighResWindowTypography.heading();
+        org.highreshud.client.HighResWindowsSettings.fontSize=24;
+        HighResDataTypography.apply(panel);assertDataFonts(panel);
+        check(HighResDataTypography.pixels(14)==24 && HighResDataTypography.pixels(16)==24,
+                "Explicit body font size controls both table data and paragraphs");
+        check(HighResWindowTypography.heading().getHeight()==heading.getHeight()
+                        && HighResWindowTypography.heading().getWidth("Heading Заголовок")==heading.getWidth("Heading Заголовок")
+                        && unrelated.text==unrelatedFont,
+                "Body font size does not change headings or unrelated native windows");
+        org.highreshud.client.HighResWindowsSettings.fontSize=12;
+        HighResDataTypography.apply(panel);check(HighResDataTypography.pixels(16)==12,
+                "Explicit body size can be smaller than the native font preference");
+        org.highreshud.client.HighResWindowsSettings.fontSize=0;
+        HighResDataTypography.apply(panel);assertDataFonts(panel);
         BufferedImage image = new BufferedImage(760, 190, BufferedImage.TYPE_INT_ARGB); HudButtonProbe.previewGraphics(image);
         int row = 0;
         for (int size : new int[]{14, 16}) for (boolean bold : new boolean[]{false, true}) {

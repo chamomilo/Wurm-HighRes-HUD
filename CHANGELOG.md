@@ -1,5 +1,75 @@
 # Changelog
 
+## 0.7.5 — 2026-10-13
+
+- Widen the inventory opacity field by 30%, including its mouse interaction
+  area. Preserve the 10–100% range, green fill and individual window values.
+- Embed the canonical Chamomilo updater 1.5.0 with its shared Settings editor
+  and the complete High-res HUD schema. Verify native layout and packaging.
+- Refresh the illustrated user guide and installation README. Keep the release
+  ZIP limited to four runtime files and README.txt.
+
+## 0.7.4 — 2026-10-13
+
+- Expand a collapsed item group or container after one second of continuous
+  drag hover, so nested containers and grouped positions become accessible.
+- During the first second in another item window, release moves to that
+  inventory's root and appends at the end. After one second, enable the
+  insertion preview and preserve the selected position after server arrival.
+- Preserve positions before/after a row and inside a group, including multiple
+  selections received in a different order. Retain native transfer restrictions
+  and discard unconfirmed positions after timeout or target window closure.
+
+## 0.7.3 — 2026-10-13
+
+- Reduce every inventory opacity slider to one third of the Filter field width,
+  retaining its height, position and green fill. Adjust minimum window widths.
+- Raise the minimum opacity to 10% for both per-window sliders and the default
+  setting. Older configured values below 10% are clamped to the new minimum.
+
+## 0.7.2 — 2026-10-13
+
+- Add Default opacity of inventory windows (5–100%, initially 100%). Each
+  newly opened inventory or container window uses the configured default.
+- Add a matching 22 px opacity slider immediately right of Filter in every
+  item window. Drag the vertical marker; green fill tracks its position.
+  Fade the whole window, including native item text, controls and frame, while
+  keeping the slider visible. Reopening resets the per-window adjustment.
+- Reserve space for both fields at narrow widths and verify native mouse
+  input, independent windows, lifecycle, blending and four-language hints.
+
+## 0.7.1 — 2026-10-13
+
+- Include the crate/rack/wagon destination fix and the amphora round-trip fix
+  with the shared Settings editor and window-content font controls from 0.7.0.
+- Verify exact item and destination IDs after live font changes, including
+  empty and populated containers, filtered rows and expanded backpack contents.
+
+## 0.7.0 — 2026-10-13
+
+- Add the shared registry Settings editor with every user-configurable property, hover help and immediate application where supported.
+- Warn immediately after a saved startup-only change and offer the standard Wurm quit confirmation after settings are saved.
+- Add Font size for window contents, preserving headings, text selections and scroll anchors.
+
+## 0.6.5 — 2026-10-13
+
+- Fix returning items such as amphoras from a wagon into free space in the
+  player inventory. Blank space now targets the inventory itself instead of
+  the expanded container owning the last visible row.
+- Release an incoming item from an appended insertion preview when it enters
+  blank space. Preserve manual sibling reordering and explicit container drops.
+- Verify a complete inventory-to-wagon-to-inventory cycle with native model
+  updates, expanded backpack contents and the exact source/destination IDs.
+
+## 0.6.4 — 2026-10-13
+
+- Fix crate/container transfers between external item windows. Insertion beside
+  a crate now resolves the hidden rack or wagon root, rather than sending the
+  move to the first visible crate. Keep native move handlers and server rules.
+- Check empty destinations against their hidden root to reject self-drops.
+  Verify actual source IDs and destination IDs through native HUD drag/release,
+  including an empty wagon, populated racks/wagons and filtered contents.
+
 ## 0.6.3 — 2026-10-12
 
 - Rebuild with the latest canonical Chamomilo updater and verify its complete
