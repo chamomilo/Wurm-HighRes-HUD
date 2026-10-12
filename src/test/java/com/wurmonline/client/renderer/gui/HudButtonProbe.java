@@ -16,12 +16,20 @@ import static org.highresfightinghud.client.FightingHudLayout.*;
 public final class HudButtonProbe {
     public static PreviewCanvas canvas;
     private static Graphics2D graphics;
+    private static final java.util.LinkedList<Shape> clips = new java.util.LinkedList<>();
+    public static boolean clip(int x, int y, int width, int height) {
+        clips.addLast(graphics.getClip()); graphics.clipRect(x, y, Math.max(0, width), Math.max(0, height));
+        return width > 0 && height > 0;
+    }
+    public static void unclip() { graphics.setClip(clips.removeLast()); }
     private static float textAlpha;
     private static BufferedImage actionAtlas;
+    private static final java.util.Map<Integer,BufferedImage> characterImages=new java.util.HashMap<>();
     private static final java.util.List<float[]> iconDraws=new java.util.ArrayList<>();
     private static float[] combatIcon;
     public static com.wurmonline.client.game.World world;
     public static String actionString = "";
+    public static org.chamomilo.wurm.update.UpdatePreferences updaterPreferences;
     private static final java.util.List<PaintedText> texts = new java.util.ArrayList<>();
     private static final class PaintedText {
         final String value; final Rectangle ink; final int baseline;
@@ -40,6 +48,25 @@ public final class HudButtonProbe {
         graphics.drawImage(actionAtlas,Math.round(x),Math.round(y),Math.round(x+w),Math.round(y+h),
                 Math.round(u*512),Math.round(v*512),Math.round((u+uw)*512),Math.round((v+vh)*512),null);
     }
+    public static void characterArtwork(Queue queue,int asset,UiColor tint,int x,int y,int width,int height,float u0,float v0,float u1,float v1) throws Exception {
+        if(asset==1)anatomyTints.add(new float[]{tint.red,tint.green,tint.blue});
+        BufferedImage source=characterImages.get(asset);
+        if(source==null) {
+            String[] names={"slots","anatomy","weight","body","hand"};
+            source=ImageIO.read(new File("resource-pack/gui/highres-character-"+names[asset]+".png"));
+            characterImages.put(asset,source);
+        }
+        BufferedImage image=new BufferedImage(source.getWidth(),source.getHeight(),BufferedImage.TYPE_INT_ARGB);
+        for(int py=0;py<image.getHeight();py++)for(int px=0;px<image.getWidth();px++) {
+            int color=source.getRGB(px,py);
+            image.setRGB(px,py,(color&0xff000000)|(Math.round(((color>>16)&255)*tint.red)<<16)
+                    |(Math.round(((color>>8)&255)*tint.green)<<8)|Math.round((color&255)*tint.blue));
+        }
+        graphics.setComposite(AlphaComposite.SrcOver);
+        graphics.drawImage(image,x,y,x+width,y+height,Math.round(u0*image.getWidth()),Math.round(v0*image.getHeight()),
+                Math.round(u1*image.getWidth()),Math.round(v1*image.getHeight()),null);
+    }
+    public static final java.util.List<float[]> anatomyTints=new java.util.ArrayList<float[]>();
 
     public static final class ProbeFont extends TextFont {
         final int size; final boolean bold; final UiDensity density; int x,y;
@@ -47,13 +74,14 @@ public final class HudButtonProbe {
         public ProbeFont(int size,boolean bold,UiDensity density) { this.size=size;this.bold=bold;this.density=density; }
         public void moveTo(int x,int y) {this.x=x;this.y=y;}
         public int paint(Queue q,String s,float r,float g,float b,float a) {
-            Rectangle ink=UiTypography.ink(s,size,bold,density);ink.translate(x,y);
+            Rectangle ink=UiTypography.font(size,bold,density).createGlyphVector(
+                    new java.awt.font.FontRenderContext(null,true,false),s).getPixelBounds(null,x,y);
             texts.add(new PaintedText(s,ink,y));
             textAlpha=a;graphics.setFont(UiTypography.font(size,bold,density));
             graphics.setComposite(AlphaComposite.SrcOver);graphics.setColor(new Color(r,g,b,a));
             graphics.drawString(s,x,y);return getWidth(s);
         }
-        public int getWidth(String s) {return UiTypography.width(s,size,bold,density);}
+        public int getWidth(String s) {return metrics().stringWidth(s);}
         public int getWidth(char[] s,int offset,int count) {return getWidth(new String(s,offset,count));}
         public int getHeight() {return metrics().getHeight();}
         private FontMetrics metrics() { return new java.awt.Canvas().getFontMetrics(UiTypography.font(size,bold,density)); }
@@ -247,16 +275,16 @@ public final class HudButtonProbe {
             button.mouseExited();ready[0]=false;button.renderComponent(null,.2f);
             check(combatIcon[3]==.4f && combatIcon[4]==SPECIAL_ICON_INSET,"Disabled native foreground keeps its stable material opacity");
             graphics.dispose();
-            check(POSITION_Y+POSITION_HEIGHT+8==SPECIAL_Y,"Position and special frames have an eight-pixel gap");
+            check(POSITION_Y+POSITION_HEIGHT+2==SPECIAL_Y,"Position clears the special buttons by two pixels");
             for(int i=0;i<6;i++) {
                 check(specialCellX(i)>=SPECIAL_X+3 && specialCellX(i)+SPECIAL_BUTTON_SIZE<=SPECIAL_X+SPECIAL_WIDTH-3,
                         "Special buttons stay inside their frame");
             }
-            check(specialCellY()+SPECIAL_BUTTON_SIZE<=SPECIAL_Y+SPECIAL_HEIGHT-3,"Special buttons leave the bottom frame clear");
-            check(UiTypography.width("8888",14,true,UiDensity.LOW)+1<=DISTANCE_VALUE_WIDTH,"Four digits fit the larger shared Chamomilo font");
-            check(DISTANCE_LABEL_X+UiTypography.width("Distance",14,true,UiDensity.LOW)+3<=DISTANCE_VALUE_X,"Distance label leaves space before the digits");
+            check(specialCellY()+SPECIAL_BUTTON_SIZE<=SPECIAL_Y+SPECIAL_HEIGHT,"Special buttons stay inside the panel");
+            check(new ProbeFont(12,true,UiDensity.LOW).getWidth("8888")+1<=DISTANCE_VALUE_WIDTH,"Four digits fit the readable shared Chamomilo font");
+            check(DISTANCE_LABEL_X+new ProbeFont(12,true,UiDensity.LOW).getWidth("Distance")+3<=DISTANCE_VALUE_X,"Distance label leaves space before the digits");
             check(DISTANCE_VALUE_X+DISTANCE_VALUE_WIDTH+4<=RANGE_ICON_X,"Four-digit distance does not touch the larger range icon");
-            check(FOOTING_LABEL_X+UiTypography.width("Footing",14,true,UiDensity.LOW)+4<=FOOTING_ICON_X,"Footing label clears its larger icon");
+            check(FOOTING_LABEL_X+new ProbeFont(12,true,UiDensity.LOW).getWidth("Footing")+3<=FOOTING_ICON_X,"Footing label clears its icon");
         } finally { graphics=main; }
     }
     private static HighResFightingHud productionFighter(int x,int y) throws Exception {
@@ -297,9 +325,12 @@ public final class HudButtonProbe {
         org.highresfightinghud.client.CombatFocusState state=new org.highresfightinghud.client.CombatFocusState();state.combatChanged(true);
         field(fighter,"focusState",state);
         HighResHudActionButton focus=new HighResHudActionButton(fighter,FOCUS_BUTTON_WIDTH,FOCUS_BUTTON_HEIGHT,
-                new HudCaptionGroup(FOCUS_BUTTON_WIDTH,FOCUS_BUTTON_HEIGHT,HudSkin.COMPACT,"Combat focus"),"Combat focus",()->{});
+                new HudCaptionGroup(FOCUS_BUTTON_WIDTH,FOCUS_BUTTON_HEIGHT,HudSkin.COMPACT,14,"Combat focus"),"Combat focus",()->{});
         focus.setLocation(x+FOCUS_BUTTON_X,y+FOCUS_BUTTON_Y,FOCUS_BUTTON_WIDTH,FOCUS_BUTTON_HEIGHT);
         focus.caption("Combat focus",false);field(fighter,"focusButton",focus);
+        // The fixture paints production blocks without the native attachment path.
+        // Match an already-visible panel after that path has sized its children.
+        field(fighter,"contentVisible",true);fighter.width=PANEL_WIDTH;fighter.height=PANEL_HEIGHT;
         return fighter;
     }
     private static void renderNativeBlock(HighResFightingHud fighter,String method) throws Exception {
@@ -307,15 +338,74 @@ public final class HudButtonProbe {
         texts.clear();paint.invoke(fighter,new Object[]{null});
     }
     private static void verifyAnalysisText(int x,int y) {
-        check(texts.size()==12,"All six analysis lines are rendered with shadows");
+        check(texts.size()==8,"All four analysis lines are rendered with shadows");
         int previousBottom=y+ANALYSIS_Y+3;
         for(int i=0;i<texts.size();i+=2) {
             Rectangle ink=texts.get(i).ink;
-            check(ink.x>=x+ANALYSIS_X+8 && ink.x+ink.width<=x+ANALYSIS_X+ANALYSIS_WIDTH-8,"Analysis text remains inside horizontal frame padding");
-            check(ink.y>=previousBottom+2 && ink.y+ink.height<=y+ANALYSIS_Y+ANALYSIS_HEIGHT-8,"Analysis rows clear the top/bottom rails and each other");
+            check(ink.x>=x+ANALYSIS_X+ANALYSIS_TEXT_INSET && ink.x+ink.width<=x+ANALYSIS_X+ANALYSIS_WIDTH-ANALYSIS_TEXT_INSET,"Analysis text remains inside horizontal frame padding");
+            check(ink.y>=previousBottom+1 && ink.y+ink.height<=y+ANALYSIS_Y+ANALYSIS_HEIGHT-4,"Analysis rows clear the top/bottom rails and each other");
             previousBottom=ink.y+ink.height;
         }
-        check(texts.get(6).value.startsWith("BEST LOW"),"Production analysis displays the best available unarmed zone");
+        check(texts.get(0).value.startsWith(org.highreshud.client.i18n.HudMessages.tr("BEST ")),
+                "Production analysis displays a translated available unarmed zone");
+        if (org.highreshud.client.i18n.HudMessages.language().equals("en"))
+            check(texts.get(0).value.startsWith("BEST LOW"),"Production analysis displays the best available unarmed zone");
+    }
+    private static void verifyFullHoverHints() throws Exception {
+        java.lang.reflect.Field uf=sun.misc.Unsafe.class.getDeclaredField("theUnsafe");uf.setAccessible(true);
+        sun.misc.Unsafe unsafe=(sun.misc.Unsafe)uf.get(null);
+        HighResFightingHud fighter=productionFighter(0,0);
+        field(fighter,"progressState",new org.highresfightinghud.client.FocusBarState());
+        HighResHudActionButton clear=new HighResHudActionButton(fighter,NO_TARGET_WIDTH,NO_TARGET_HEIGHT,
+                new HudCaptionGroup(NO_TARGET_WIDTH,NO_TARGET_HEIGHT,HudSkin.COMPACT,14,"No target"),"No target",()->{});
+        clear.setLocation(NO_TARGET_X,NO_TARGET_Y,NO_TARGET_WIDTH,NO_TARGET_HEIGHT);field(fighter,"noTargetButton",clear);
+        java.util.List<StaticComponent> modes=new java.util.ArrayList<>();
+        for(int i=0;i<4;i++) modes.add(new AttackButtonComponent("mode","Native mode",(short)i));
+        field(fighter,"modeButtons",modes);
+        org.highreshud.client.state.CreatureRelationState.observe((com.wurmonline.client.renderer.cell.CreatureCellRenderable)
+                HighResWindowAccess.get(fighter,"target"),com.wurmonline.shared.constants.AttitudeConstants.ATTITUDE_GM);
+        HighResFocusBar select=(HighResFocusBar)unsafe.allocateInstance(HighResFocusBar.class);
+        select.setLocation(0,0,438,126);field(select,"contentVisible",true);field(select,"showDistance",true);
+        org.highresfocusbar.client.FocusBarState state=new org.highresfocusbar.client.FocusBarState();
+        state.mirrorProgress(.5f,"Long server action title",false);field(select,"state",state);
+        field(select,"autoClose",new org.highresfocusbar.client.SelectAutoCloseTimer());
+        SelectBar nativeSelect=(SelectBar)unsafe.allocateInstance(SelectBar.class);
+        nativeSelect.selectedUnit=(com.wurmonline.client.renderer.PickableUnit)java.lang.reflect.Proxy.newProxyInstance(
+                HudButtonProbe.class.getClassLoader(),new Class[]{com.wurmonline.client.renderer.PickableUnit.class},(proxy,method,arguments)->{
+                    if(method.getName().equals("getId"))return 7L;
+                    if(method.getReturnType()==String.class)return "Selected test item";
+                    return null;
+                });
+        field(select,"selectBar",nativeSelect);
+        org.highresfocusbar.client.SelectedExamineState examined=new org.highresfocusbar.client.SelectedExamineState();
+        check(examined.observeFor(7L,":Event","QL 90.0 Dam 1.0"),"Select metadata fixture");
+        field(select,"selectedExamine",examined);
+        for(String code:org.highreshud.client.i18n.HudMessages.languageCodes()) {
+            org.highreshud.client.i18n.HudMessages.useLanguage(code);
+            com.wurmonline.client.renderer.PickData pick=new com.wurmonline.client.renderer.PickData(null);
+            select.pick(pick,120,52);
+            check(pick.getText().contains(org.highreshud.client.i18n.HudMessages.tr("Item quality: {0}","90.00"))
+                    && pick.getText().contains(org.highreshud.client.i18n.HudMessages.tr("Item damage: {0}","1.00")),"Select explains both abbreviations: "+code);
+            pick.reset();select.pick(pick,120,100);
+            check(pick.getText().contains("Long server action title") && pick.getText().contains(org.highreshud.client.i18n.HudMessages.tr("Action progress: {0}%",50)),"Select progress full title and value");
+            pick.reset();fighter.pick(pick,INFO_X+10,34);
+            check(pick.getText().stream().anyMatch(line->line.startsWith(org.highreshud.client.i18n.HudMessages.tr("Health: "))),"Fighting health hint: "+code);
+            pick.reset();fighter.pick(pick,INFO_X+10,65);
+            check(pick.getText().contains(org.highreshud.client.i18n.HudMessages.tr("Creature attitude: {0}",org.highreshud.client.i18n.HudMessages.tr("Game master"))),"GM abbreviation expanded");
+            pick.reset();fighter.pick(pick,POSITION_X+10,POSITION_Y+10);
+            check(pick.getText().contains(org.highreshud.client.i18n.HudMessages.tr("Distance to combat target: {0} m","1234")),"Combat distance includes units");
+            pick.reset();fighter.pick(pick,FOOTING_LABEL_X+3,POSITION_Y+10);
+            check(pick.getText().contains(org.highreshud.client.i18n.HudMessages.tr("Position indicator: terrain and balance advantage, not an action.")),"Footing label explains indicator");
+            java.util.List<?> attacks=(java.util.List<?>)HighResWindowAccess.get(fighter,"attackButtons");
+            for(Object attack:attacks) {pick.reset();check(fighter.pickNativeControl((WurmComponent)attack,pick) && pick.getText().size()==1,"Every attack icon has a full zone hint");}
+            for(StaticComponent mode:modes) {pick.reset();check(fighter.pickNativeControl(mode,pick) && pick.getText().size()==1,"Every mode icon has a hint");}
+            org.highresfightinghud.client.FocusBarState progress=(org.highresfightinghud.client.FocusBarState)HighResWindowAccess.get(fighter,"progressState");
+            progress.mirrorProgress(.5f,"Full combat action title",false);
+            UiRect cell=HudSkin.targetCell(0,0,true,2);pick.reset();fighter.pick(pick,cell.x+3,cell.y+3);
+            check(pick.getText().contains("Full combat action title") && pick.getText().contains(org.highreshud.client.i18n.HudMessages.tr("Action progress: {0}%",50)),"Combat progress hint");
+            progress.clearProgress();
+        }
+        org.highreshud.client.i18n.HudMessages.useLanguage("en");
     }
     public static void main(String[] args) throws Exception {
         WurmComponent.SCREEN_WIDTH=1920;WurmComponent.SCREEN_HEIGHT=1080;
@@ -323,10 +413,12 @@ public final class HudButtonProbe {
         graphics=sheet.createGraphics();graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         canvas=new PreviewCanvas();
+        updaterLanguageChecks();
+        verifyFullHoverHints();
         verifySpecialButtons();
         actionAtlas=ImageIO.read(new File("resource-pack/gui/highres-select-actions.png"));
         canvas.fill(UiColor.rgb(0x171610),1,0,0,850,870);
-        label("High-res HUD 0.2.3 / Chamomilo UI 0.4.4",24,28,18);
+        label("High-res HUD 0.4.2 / Chamomilo UI 0.4.9",24,28,18);
         label("Production artwork and compact captions; portraits and game data are placeholders",24,49,12);
         final int[] clicks={0};
         HudCaptionGroup sleepGroup=new HudCaptionGroup(76,14,HudSkin.COMPACT,"Activate","Deactivate");
@@ -376,15 +468,14 @@ public final class HudButtonProbe {
         nativeActionRow(sx,sy);
         UiPainter.button(canvas,1,0,HudSkin.COMPACT,1,sx+412,sy+2,22,22);UiIcon.CLOSE.paint(canvas,UiColor.TEXT,1,sx+417,sy+7,12);
         label("Select bar: 438 x 108 body (unchanged)",sx,sy+129,12);
-        HighResHudActionButton noTarget=new HighResHudActionButton(null,96,19,
-                new HudCaptionGroup(96,19,HudSkin.COMPACT,"No target"),"No target",()->{});
+        HighResHudActionButton noTarget=new HighResHudActionButton(null,NO_TARGET_WIDTH,NO_TARGET_HEIGHT,
+                new HudCaptionGroup(NO_TARGET_WIDTH,NO_TARGET_HEIGHT,HudSkin.COMPACT,14,"No target"),"No target",()->{});
         int fx=24,fy=242;HudSkin.fightingBack(canvas,fx,fy);
         HighResFightingHud live=productionFighter(fx,fy);
         HudSkin.panel(canvas,fx+ANALYSIS_X,fy+ANALYSIS_Y,ANALYSIS_WIDTH,ANALYSIS_HEIGHT);
         HudSkin.panel(canvas,fx+COMBAT_X,fy+COMBAT_Y,COMBAT_SIZE,COMBAT_HEIGHT);
         HudSkin.panel(canvas,fx+MODE_X,fy+MODE_Y,MODE_WIDTH,MODE_HEIGHT);HudSkin.panel(canvas,fx+POSITION_X,fy+POSITION_Y,POSITION_WIDTH,POSITION_HEIGHT);
-        HudSkin.panel(canvas,fx+SPECIAL_X,fy+SPECIAL_Y,SPECIAL_WIDTH,SPECIAL_HEIGHT);HudSkin.panel(canvas,fx+107,fy+90,314,36);
-        button(noTarget,fx+5,fy+4,"No target",true,false);
+        button(noTarget,fx+NO_TARGET_X,fy+NO_TARGET_Y,"No target",true,false);
         renderNativeBlock(live,"renderFocus");
         check(texts.get(2).baseline==texts.get(4).baseline,"Focus level and readiness share one baseline");
         check(texts.get(4).value.equals("Engaging ~0/3"),"Single-row Focus retains the full engagement status");
@@ -392,16 +483,18 @@ public final class HudButtonProbe {
             check(FOCUS_TEXT_X+UiTypography.width("Focus 0/5",14,true,UiDensity.LOW)+FOCUS_TEXT_GAP
                     +UiTypography.width(status,14,false,UiDensity.LOW)<=FOCUS_X+FOCUS_WIDTH-8,"Focus status fits its single-row block");
         }
-        label("Target portrait",fx+10,fy+76,10);label("Old unicorn",fx+140,fy+21,14);
+        label("Target",fx+PORTRAIT_X+9,fy+PORTRAIT_Y+30,10);
+        UiRect nameWell=HudSkin.targetCell(fx,fy,false,0);
+        label("Old unicorn",nameWell.x+6,nameWell.y+16,14);
         gauge(HudSkin.targetCell(fx,fy,false,1),.74f,0x198f35);
         UiRect healthWell=HudSkin.targetCell(fx,fy,false,1),relationWell=HudSkin.targetCell(fx,fy,false,2);
-        label("Health: 74%",healthWell.x+107,healthWell.y+16,12);
+        label("Health: 74%",healthWell.x+85,healthWell.y+16,12);
         label("Hostile",relationWell.x+6,relationWell.y+16,12);
         HudSkin.targetFront(canvas,fx,fy,false);
         renderNativeBlock(live,"renderAnalysis");verifyAnalysisText(fx,fy);
         renderNativeBlock(live,"renderCombatSections");
         for(PaintedText text:texts) if(text.value.equals("Distance") || text.value.equals("1234") || text.value.equals("Footing")) {
-            check(text.ink.y>=fy+POSITION_Y+20 && text.ink.y+text.ink.height<=fy+POSITION_Y+POSITION_HEIGHT-3,"Larger positioning text fits below its heading");
+            check(text.ink.y>=fy+POSITION_Y+3 && text.ink.y+text.ink.height<=fy+POSITION_Y+POSITION_HEIGHT-3,"Positioning text clears both frame rails");
             Rectangle range=new Rectangle(fx+RANGE_ICON_X,fy+POSITION_ICON_Y,POSITION_ICON_SIZE,POSITION_ICON_SIZE);
             Rectangle footing=new Rectangle(fx+FOOTING_ICON_X,fy+POSITION_ICON_Y,POSITION_ICON_SIZE,POSITION_ICON_SIZE);
             check(!text.ink.intersects(range) && !text.ink.intersects(footing),"Larger positioning icons do not cover labels or digits");
@@ -410,17 +503,17 @@ public final class HudButtonProbe {
         UiIcon.CHEVRON_UP.paint(canvas,UiColor.TEXT,1,fx+FOOTING_ICON_X,fy+POSITION_ICON_Y,POSITION_ICON_SIZE);
         for(int row=0;row<3;row++)for(int col=0;col<3;col++){
             int index=row*3+col;
-            int bx=fx+org.highresfightinghud.client.FightingHudLayout.stanceCellX(index,38);
-            int by=fy+org.highresfightinghud.client.FightingHudLayout.stanceCellY(index,38);
-            UiPainter.button(canvas,index<3?.5f:1f,0,HudSkin.COMPACT,1,bx,by,38,38);
-            UiIcon.CHEVRON_UP.paint(canvas,UiColor.TEXT,index<3?.4f:1f,bx+11,by+11,16);
+            int bx=fx+stanceCellX(index,STANCE_BUTTON_SIZE);
+            int by=fy+stanceCellY(index,STANCE_BUTTON_SIZE);
+            UiPainter.button(canvas,index<3?.5f:1f,0,HudSkin.COMPACT,1,bx,by,STANCE_BUTTON_SIZE,STANCE_BUTTON_SIZE);
+            UiIcon.CHEVRON_UP.paint(canvas,UiColor.TEXT,index<3?.4f:1f,bx+8,by+8,16);
         }
-        for(int i=0;i<4;i++)UiPainter.button(canvas,1,0,HudSkin.COMPACT,1,fx+MODE_X+(MODE_WIDTH-28)/2,fy+28+i*31,28,28);
+        for(int i=0;i<4;i++)UiPainter.button(canvas,1,0,HudSkin.COMPACT,1,fx+modeCellX(),fy+modeCellY(i),MODE_BUTTON_SIZE,MODE_BUTTON_SIZE);
         for(int i=0;i<6;i++) {
             HighResCombatHint special=specialButton(fx+specialCellX(i),fy+specialCellY(),new boolean[]{i<2});
             special.renderButton(null);
         }
-        label("Fighting HUD: 676 x 282 (unchanged); unarmed: head attacks unavailable",fx,fy+303,12);
+        label("Fighting HUD: 520 x 186; 49.3% less area; 32 px stance / 24 px mode buttons",fx,fy+209,12);
         label("Compact captions: normal / bold hover / disabled",24,584,14);
         sleep.mouseExited(); // reset motion after input checks
         button(sleep,24,600,"Activate",true,false);
@@ -432,16 +525,147 @@ public final class HudButtonProbe {
         label("Shared Sleep caption size: "+sleepGroup.fontPixels+" px, baseline: "+sleepGroup.baseline+" px",24,644,12);
         label("Target card during an action: the progress row appears only while active",24,676,14);
         int tx=24,ty=694;
-        button(noTarget,tx+5,ty+4,"No target",true,false);
+        button(noTarget,tx+NO_TARGET_X,ty+NO_TARGET_Y,"No target",true,false);
         gauge(HudSkin.targetCell(tx,ty,true,1),.74f,0x198f35);
         gauge(HudSkin.targetCell(tx,ty,true,2),.4f,0x2678c7);
-        HudSkin.targetFront(canvas,tx,ty,true);label("Old unicorn",tx+140,ty+21,14);
-        label("Focusing...",tx+217,ty+61,12);label("Hostile",tx+116,ty+81,12);
+        HudSkin.targetFront(canvas,tx,ty,true);label("Old unicorn",tx+INFO_X+8,ty+INFO_Y+17,14);
+        UiRect progressWell=HudSkin.targetCell(tx,ty,true,2),statusWell=HudSkin.targetCell(tx,ty,true,3);
+        label("Focusing...",progressWell.x+8,progressWell.y+13,12);label("Hostile",statusWell.x+6,statusWell.y+12,12);
         HighResFightingHud active=productionFighter(tx,ty);
         java.lang.reflect.Field stateField=HighResFightingHud.class.getDeclaredField("focusState");stateField.setAccessible(true);
         ((org.highresfightinghud.client.CombatFocusState)stateField.get(active)).levelReceived((byte)2,"");
         actionString="Focusing...";renderNativeBlock(active,"renderFocus");actionString="";
         graphics.dispose();File file=new File(args[0]);file.getParentFile().mkdirs();ImageIO.write(sheet,"png",file);
-        System.out.println("HUD_UI_OK: native release, disabled, drag cancellation, fixed-alpha pixels, full-slot glass at 0/50/100%, real quick-action atlas, press geometry, pointer targets, single-row Focus, analysis bounds, larger Position and available-attack recommendation; preview="+file);
+        localizationPreview(new File(file.getParentFile(), "hud-languages-preview.png"));
+        System.out.println("HUD_UI_OK: updater-only language choice, immediate repaint of existing Healthbar/Select/Fighting controls, saved choice, native release, disabled, drag cancellation, fixed-alpha pixels, full-slot glass at 0/50/100%, real quick-action atlas, press geometry, pointer targets, single-row Focus, analysis bounds, compact Position and available-attack recommendation; preview="+file);
+    }
+
+    static void previewGraphics(BufferedImage image) {
+        graphics = image.createGraphics();
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+    }
+    static void finishPreview() { graphics.dispose(); }
+
+    private static void updaterLanguageChecks() throws Exception {
+        org.highreshud.client.HighResHudMod mod = new org.highreshud.client.HighResHudMod();
+        java.nio.file.Path folder = java.nio.file.Files.createTempDirectory("hud-updater-language-");
+        java.nio.file.Path file = folder.resolve("highres-hud.properties");
+        java.nio.file.Path sharedFile = folder.resolve("updater.properties");
+        updaterPreferences=new org.chamomilo.wurm.update.UpdatePreferences(sharedFile);
+        field(mod,"languagePreferences",new org.highreshud.client.i18n.HudLanguagePreferences(file));
+        org.chamomilo.wurm.update.SharedLanguageCoordinator.modInitialized(
+                new org.gotti.wurmunlimited.modloader.interfaces.ModEntry<org.highreshud.client.HighResHudMod>() {
+                    public String getName() { return "highres-hud"; }
+                    public java.util.Properties getProperties() { return new java.util.Properties(); }
+                    public org.highreshud.client.HighResHudMod getWurmMod() { return mod; }
+                });
+        java.lang.reflect.Field uf=sun.misc.Unsafe.class.getDeclaredField("theUnsafe");uf.setAccessible(true);
+        sun.misc.Unsafe unsafe=(sun.misc.Unsafe)uf.get(null);
+        // Create each panel/control once, before any updater selection. Never attach,
+        // recreate, reopen or call applyPending between selecting and painting.
+        HighResFightingHud fighter=productionFighter(12,12);
+        HighResHealthBar health=(HighResHealthBar)unsafe.allocateInstance(HighResHealthBar.class);
+        field(health,"smallText",com.wurmonline.client.renderer.gui.text.HudTextFonts.small());
+        java.lang.reflect.Field player=HealthBar.class.getDeclaredField("player");player.setAccessible(true);
+        player.set(health,unsafe.allocateInstance(player.getType()));
+        java.lang.reflect.Method healthPaint=HighResHealthBar.class.getDeclaredMethod("drawGaugeLabels",Queue.class,int.class,int.class);
+        healthPaint.setAccessible(true);
+        HighResFocusBar select=(HighResFocusBar)unsafe.allocateInstance(HighResFocusBar.class);
+        select.setLocation(12,260,438,126);
+        field(select,"owner",unsafe.allocateInstance(HeadsUpDisplay.class));
+        field(select,"regular",com.wurmonline.client.renderer.gui.text.HudTextFonts.regular());
+        field(select,"showDistance",true);
+        java.lang.reflect.Method selectPaint=HighResFocusBar.class.getDeclaredMethod("renderDistanceFooter",Queue.class,
+                com.wurmonline.client.renderer.PickableUnit.class);selectPaint.setAccessible(true);
+        HudCaptionGroup group=new HudCaptionGroup(76,14,HudSkin.COMPACT,"Activate","Deactivate");
+        HighResHudActionButton existing=new HighResHudActionButton(health,76,14,group,"Activate",()->{});
+        int screenWidth=WurmComponent.SCREEN_WIDTH, screenHeight=WurmComponent.SCREEN_HEIGHT;
+        try {
+            for (int[] viewport : new int[][]{{800,600},{1920,1080},{2560,1440},{3840,2160}}) {
+                WurmComponent.SCREEN_WIDTH=viewport[0]; WurmComponent.SCREEN_HEIGHT=viewport[1];
+            for (String code : org.highreshud.client.i18n.HudMessages.languageCodes()) {
+                org.chamomilo.wurm.update.SharedLanguageCoordinator.selectLanguage(code.equals("ru") ? "en" : "ru");
+                org.chamomilo.wurm.update.SharedLanguageCoordinator.selectLanguage(code);
+                check(mod.getLanguage().equals(code),"Updater sets the production language synchronously");
+                check(new org.chamomilo.wurm.update.UpdatePreferences(sharedFile).getForcedLanguage().equals(code),
+                        "Updater retains the shared choice");
+                check(new org.highreshud.client.i18n.HudLanguagePreferences(file).language().equals(code),
+                        "Updater selection saves the HUD preference immediately");
+                texts.clear(); existing.renderComponent(null,1f);
+                check(texts.stream().anyMatch(t -> t.value.equals(org.highreshud.client.i18n.HudMessages.tr("Activate"))),
+                        "The already-created native button redraws the selected language");
+                check(existing.width==76 && existing.height==14,"Updater selection preserves button geometry");
+                texts.clear(); healthPaint.invoke(health,null,0,107);
+                check(texts.stream().anyMatch(t -> t.value.equals(org.highreshud.client.i18n.HudMessages.tr("Water"))),
+                        "Existing Healthbar labels repaint immediately");
+                texts.clear(); selectPaint.invoke(select,null,null);
+                check(texts.stream().anyMatch(t -> t.value.equals(org.highreshud.client.i18n.HudMessages.tr("Distance:"))),
+                        "Existing Select footer repaints immediately");
+                renderNativeBlock(fighter,"renderFocus");
+                check(texts.stream().anyMatch(t -> t.value.equals(org.highreshud.client.i18n.HudMessages.tr("Combat focus"))),
+                        "Existing Fighting focus control repaints immediately");
+                renderNativeBlock(fighter,"renderAnalysis");verifyAnalysisText(12,12);
+                check(texts.stream().anyMatch(t -> t.value.contains("31/31")),"Language changes retain learned samples");
+                check(fighter.x==12 && fighter.y==12 && fighter.width==PANEL_WIDTH && fighter.height==PANEL_HEIGHT,
+                        "Updater language selection retains the existing Fighting panel bounds");
+            }
+            }
+        } finally {
+            org.highreshud.client.i18n.HudMessages.useLanguage("en");
+            java.nio.file.Files.deleteIfExists(file); java.nio.file.Files.deleteIfExists(sharedFile);
+            java.nio.file.Files.deleteIfExists(folder);
+            WurmComponent.SCREEN_WIDTH=screenWidth; WurmComponent.SCREEN_HEIGHT=screenHeight;
+        }
+    }
+
+    private static void localizationPreview(File file) throws Exception {
+        int screenHeight = WurmComponent.SCREEN_HEIGHT;
+        WurmComponent.SCREEN_HEIGHT = 2160; // A tall contact sheet must not trigger native viewport clamping.
+        org.highreshud.client.i18n.HudMessages.useLanguage("en");
+        HudCaptionGroup sleepGroup = new HudCaptionGroup(76,14,HudSkin.COMPACT,"Activate","Deactivate");
+        HighResHudActionButton sleep = new HighResHudActionButton(null,76,14,sleepGroup,"Activate",()->{});
+        HighResHudActionButton ride = new HighResHudActionButton(null,76,16,
+                new HudCaptionGroup(76,16,HudSkin.COMPACT,"Disembark"),"Disembark",()->{});
+        HighResHudActionButton noTarget = new HighResHudActionButton(null,NO_TARGET_WIDTH,NO_TARGET_HEIGHT,
+                new HudCaptionGroup(NO_TARGET_WIDTH,NO_TARGET_HEIGHT,HudSkin.COMPACT,14,"No target"),"No target",()->{});
+        BufferedImage sheet = new BufferedImage(820, 1120, BufferedImage.TYPE_INT_ARGB);
+        graphics = sheet.createGraphics();
+        graphics.setColor(new Color(25,21,18)); graphics.fillRect(0,0,sheet.getWidth(),sheet.getHeight());
+        try {
+            int row = 0;
+            for (String code : org.highreshud.client.i18n.HudMessages.languageCodes()) {
+                org.highreshud.client.i18n.HudMessages.useLanguage(code);
+                int top = row++ * 280;
+                label(code + " — live native HUD text and action buttons", 24, top + 25, 14);
+                button(sleep,24,top+37,"Activate",true,false);
+                button(sleep,108,top+37,"Deactivate",true,true);
+                button(ride,200,top+36,"Disembark",true,false);
+                button(noTarget,292,top+35,"No target",true,false);
+                check(sleep.width==76 && sleep.height==14 && ride.width==76,
+                        "Language selection never resizes live buttons");
+                int fx = 24, fy = top + 72;
+                HudSkin.fightingBack(canvas, fx, fy);
+                HighResFightingHud live = productionFighter(fx, fy);
+                texts.clear(); renderNativeBlock(live,"renderFocus");
+                check(texts.stream().anyMatch(t -> t.value.equals(org.highreshud.client.i18n.HudMessages.tr("Combat focus"))),
+                        "Native focus button relocalizes in " + code);
+                renderNativeBlock(live,"renderAnalysis"); verifyAnalysisText(fx,fy);
+                texts.clear(); renderNativeBlock(live,"renderCombatSections");
+                Rectangle value = null;
+                for (PaintedText t : texts) if (t.value.equals("1234")) value = t.ink;
+                for (PaintedText t : texts) if (t.value.equals(org.highreshud.client.i18n.HudMessages.tr("Distance")))
+                    check(value==null || !t.ink.intersects(value),"Translated Distance cannot overlap its value in " + code);
+                for (PaintedText t : texts) if (t.value.equals(org.highreshud.client.i18n.HudMessages.tr("Footing")))
+                    check(!t.ink.intersects(new Rectangle(fx+FOOTING_ICON_X,fy+POSITION_ICON_Y,POSITION_ICON_SIZE,POSITION_ICON_SIZE)),
+                            "Translated Footing cannot overlap its indicator in " + code);
+                label(org.highreshud.client.i18n.HudMessages.tr("Sleep bonus: OFF"),580,top+107,12);
+                label(org.highreshud.client.i18n.HudMessages.tr("Water"),580,top+132,12);
+                label(org.highreshud.client.i18n.HudMessages.tr("Food"),580,top+157,12);
+            }
+            ImageIO.write(sheet,"png",file);
+        } finally {
+            graphics.dispose(); org.highreshud.client.i18n.HudMessages.useLanguage("en");
+            WurmComponent.SCREEN_HEIGHT = screenHeight;
+        }
     }
 }

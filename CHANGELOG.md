@@ -1,5 +1,218 @@
 # Changelog
 
+## 0.6.3 — 2026-10-12
+
+- Rebuild with the latest canonical Chamomilo updater and verify its complete
+  module in the mod JAR and installable ZIP.
+- Replace the user guide with an illustrated README and a plain-text install
+  guide. Include only runtime JARs, mod configuration, bundled portrait profiles
+  and README.txt in the ZIP; retain license notices inside the JAR.
+- Remove artwork prompts, migration reports and temporary development materials
+  from the repository.
+
+## 0.6.2 — 2026-10-12
+
+- Match the inventory filter background to the supplied Chamomilo input
+  reference (#241d14), keeping its frameless 22 px height and five-letter width.
+- Use a single `m` in the native 16 px material column. Keep the full material
+  description in the localized hover and remove the extra column/data padding.
+- Apply detailed equipment images to every empty Character slot,
+  remapping each subject to its native body part and preparing exact 44 px cells.
+  Apply a muted gray tint only to empty-slot backdrops, distinguishing them from
+  equipped items at full color and brightness.
+  Replace corner art with distinct weight, body and hand images without plaques
+  or frames, preserving native targets, weight-limit hovers and hand selection.
+- Add the compact Unequip all action under the doll. Dispatch the native
+  Unequip all armor command to the player's body; cancelled gestures do nothing.
+- Remove the extra rotation-reset button. Keep healthy anatomy in its original
+  ivory colors; green begins with minor wounds, progressing to yellow/red.
+
+## 0.6.1 — 2026-10-12
+
+- Move the inventory filter three caption letters farther from Name, reduce its
+  height to 22 px and use the canonical Chamomilo input surface color. Retain
+  five visible letters, frameless editing and clearance in narrow locales.
+- Animate the Character model with the Healthbar pose controller: smooth turns
+  every 60–120 seconds and on click, retaining the full-body scale. Manual drag
+  cancels the transition and postpones the next automatic turn.
+- Hide insertion feedback above the native inventory root and cancel drops in
+  that area. Keep the root indicator first and ordinary item moves available.
+- Replace the geometric body silhouette with a detailed anatomical skeleton
+  based on the original illustration. Restore the native slot/corner images,
+  prepared as 44 px icons and small corner thumbnails. Show total carried weight,
+  preserve native weight-limit hovers and body/Manage targets, and display the
+  hand's own selected/unselected state instead of another active tool's name.
+
+## 0.6.0 — 2026-10-12
+
+- Migrate the native Character screen to Chamomilo frames, controls and sharp
+  equipment glyphs, retaining the original inventory model and equipment layout.
+  Default to the central rotating 3D model with a twice-density offscreen target.
+  Keep weight, body, active hand and rotation reset in the corners.
+- Add Body zones with continuous green/yellow/orange/red wound severity,
+  visible wound counts/damage and native wound selection, treatment details and
+  context actions. View switching retains rotation and item state.
+- Route Inventory and both container types directly to their clipped native
+  item bodies. Add a temporary Insert here row for native sibling reordering,
+  a Put inside/Move here destination marker, and cancel self/descendant drops.
+- Build wrapped Chat/Events channel rows upward. Newly opened channels extend
+  the window above the primary row while preserving the message area when
+  there is space above it. Paint and input use the same reversed row geometry.
+- Add an unlabelled native text filter beside Name in every item window, with
+  a frameless contrasting background, width for five letters, a filter area
+  hint, case-insensitive matching and parent context for nested
+  items. Clear the text when closing; never persist it.
+- Sort once on opening or heading activation. Keep later item updates and
+  manual row order intact. Expand the material heading and hover description.
+- Verify character rotation, model density, equipment/body/wound hits, native
+  drag/reorder/drop dispatch, upward rows, four languages and constant alpha.
+
+## 0.5.2 — 2026-10-11
+
+- Give all migrated table headings full localized hover descriptions, including
+  item quality, damage, weight, volume, price, improvement tools/materials and
+  Friends name/status. Resolve hints at native HUD pick time so language changes
+  work before repainting, including optional and narrow/ellipsized columns.
+- Expand built-in Chat/Event channel hints and skill-detail controls. Retain
+  custom channel names and full status/action titles in Events hovers.
+- Add Select health, quality/damage/status and action-progress hovers; expand
+  vehicle quality/damage in Healthbar. Complete Fighting target rows, distance,
+  footing, attack zones and modes, and explain analysis abbreviations and weapon
+  quality without changing native control input or compact panel geometry.
+- Refresh and verify the complete canonical shared updater before packaging.
+
+## 0.5.1 — 2026-10-11
+
+- Apply the shared item-window presentation to the separate native
+  InventoryContainerWindow used by player backpacks and quivers. Cover native
+  add/toggle paths, already-open containers and frame scans; retain original
+  item models, listeners, drag/drop, saved geometry and close behavior. Translate
+  standard titles and add the same compact sortable headings and initial
+  name-ascending order, including items arriving after opening.
+- Fix the painted resize corner's real press route through HUD mouse handling,
+  retaining the original native resize drag and release behavior for all migrated
+  windows. Reflow the tab rows during resizing.
+- Wrap overflowing channel tabs into second, third and further 21 px rows.
+  Redistribute them when width, membership or language changes, preserving native
+  order, shaped hit areas and shared Compact 14 px captions. Keep the body frame's
+  upper rail below the final row and the original chat input at the bottom.
+- Use Russian item-column abbreviations Кч (QL) and Пвр (DMG).
+- Apply the updated Chamomilo data typography to all migrated item/Friends
+  lists, player names and Chat/Event histories: shared Alegreya Sans Regular/Bold,
+  14 px table/list data and 16 px messages, honoring larger native readability
+  settings. Recompute native row/wrapping metrics, preserve original case,
+  multicolor segments, message selection and scroll anchors. Headings remain
+  Alegreya Sans SC; native editor caret/clipboard metrics remain intact.
+- Verify both actual native container classes, add/toggle/close/reopen and listener
+  cleanup, completed HUD resize presses/drags/releases, and translated multirow tabs.
+- Refresh the complete canonical shared updater module before packaging.
+
+## 0.5.0 — 2026-10-11
+
+- Add Change detalization level to the Skills tab's native context menu, with
+  a localized Compact dialog for All, 1, 0.1, 0.01, 0.001, 0.0001, 0.00001
+  and 0.000001 (native six-decimal message precision). Persist the choice and
+  filter smaller future ticks without changing skill values or existing history.
+  Keep affinity/status messages. When configured, enable all upstream native
+  ticks so the selected display threshold can see their full precision.
+- Centralize all migrated window caption roles: shared Alegreya Sans SC for
+  Compact controls, SC Bold for titles/headings, and Alegreya Sans for short
+  status/settings labels. Keep native fonts for long body text and editing as
+  required by the kit. Retain 14 px captions and established control dimensions.
+
+- Translate Recruit and Info/Infos channel captions and hints in the shared HUD
+  catalogue, including uppercase and native-prefixed names. Russian labels are
+  Набор and Инфо; also translate Friends, backpack, quiver and vehicle hold.
+  Keep the Compact 14 px role, native channel IDs and custom container names.
+- Reserve a visible 24 px bottom row for the original chat editor, including
+  native focus, typing, command submission, history and clipboard behavior.
+  Remove horizontal scrollbars from chat, message/player panes and Friends;
+  overflow channel tabs remain reachable by wheel and active-tab selection.
+- Fix zero-height decorators that hid table headings and the chat editor.
+  Show a minimal 21 px Chamomilo heading row in Inventory, all item containers
+  and Friends, with shared 14 px Bold captions, native column widths and sorting.
+- Move translated Activated and the current tool from Inventory's old footer
+  into its title. Skin Events' existing action progress with a compact dark bar.
+  Reduce the obsolete bottom-window band to frame thickness while keeping
+  native corner resizing and saved window geometry.
+- Reset item and Friends tables to native name-ascending order whenever their
+  window or tab opens, including contents arriving afterward. Preserve subsequent
+  user sorting until the next opening.
+- Catch native containers opened through another mod's window creation path.
+- Verify actual HUD chat subclass/focus hit testing, native input painting,
+  visible heading/editor geometry, Friends switching and reopen sorting.
+  Exercise the real Skills context menu, completed/cancelled actions, preference
+  persistence, threshold boundaries, four languages and detached dropdown alpha.
+
+## 0.4.3 — 2026-10-10
+
+- Show Events and Chat as joined channel buttons directly above their content.
+  Remove their title band, three window buttons and upper exterior frame. Show
+  the channel scrollbar only when tabs overflow; retain HUD show/hide controls.
+  Join tab bottoms to a continuous body-frame top rail across the window width.
+
+- Fix startup failure when Avatar2 or Keybinder has already loaded native GUI
+  base classes. Hook HUD/renderer call sites and use presentation decorators;
+  never attempt to rewrite or defrost classes already defined in the shared loader.
+- Keep native clipping, completed clicks, sorting, resize, collapsed input and
+  item/editor identities while preserving Compact geometry and caption sizes.
+- Use distinct canonical Compact entry points that also work with an older
+  shared SDK loaded first. Embed updater 1.2.7 and complete Chamomilo UI 0.4.10.
+- Exercise real packaged-mod preInit after native GUI preload, plus window
+  interaction/rendering with both the current and older shared SDK.
+- Include the hook failure cause in the log message for client formatters that
+  omit exception stack traces.
+
+## 0.4.2 — 2026-10-10
+
+- Apply the shared High-res item interface to backpack, vehicle hold, quiver
+  and other native container windows, including dynamic opening and reconnect.
+  Retain their item models, server close notifications, listeners and saved geometry.
+- Use the explicit SDK Compact preset for window controls and channel captions.
+  Keep title/tab text at 14 px, reduce header heights and retain native column widths.
+- Embed canonical updater 1.2.6 with the complete reviewed Chamomilo UI 0.4.9 SDK.
+- Verify container lifecycle, Compact roles and unchanged widths in the native
+  window fixture alongside input, unread, sorting and fixed-alpha checks.
+
+## 0.4.1 — 2026-10-10
+
+- Embed canonical updater 1.2.6 with only concrete language choices and no Off
+  option. The updater remains the only selector and applies its language to
+  all participating installed mods, including HUD panels and windows.
+- Apply the shared language at HUD readiness even without a previous manual choice.
+
+## 0.4.0 — 2026-10-10
+
+- Add High-res Inventory, Events and Chat adapters to the unified HUD. Retain the exact native window instances, saved positions, hotkeys, inventory model, message histories, server commands and chat editor.
+- Use Chamomilo walnut/leather frames, title controls, native resize/drag handlers and shared scrollbars. Collapse, maximize and restore retain the underlying window state.
+- Add sloped overlapping channel tabs with one shared caption size/baseline, native selection/context menus and horizontal overflow scrolling. Unread gray is stable; selected channels keep unread messages while their window is hidden.
+- Add a single framed Inventory heading band, shared Bold small-cap captions and sorting glyphs. Numeric columns reserve caption/indicator space; each newly selected sort column starts ascending.
+- Localize window titles, standard channel names and headings in all four supported languages. Preserve custom server channel names and game text.
+- Verify native inventory/editor/manager behavior, HUD registration, drag cancellation, hidden unread, sorting, window controls, locale changes and fixed-alpha pixels in an offline fixture.
+
+## 0.3.2 — 2026-10-10
+
+- Remove the Healthbar language submenu and its callbacks. The shared updater is the only language selector.
+- Retain synchronous updater language application and next-frame repaint of already-open HUD panels and existing buttons, without recreating interfaces or restarting the client.
+- Verify all four updater language choices against existing Healthbar labels, Select footer, Fighting focus/analysis and action buttons, retaining panel geometry and learned samples.
+
+## 0.3.1 — 2026-10-10
+
+- Fix startup failure in `HudMessages` when Wurm's shared Javassist loader hides the packaged translation catalogue. Read the resource from the installed HUD JAR as a fallback and close the archive eagerly.
+- Reduce Fighting HUD from 676 × 282 to 520 × 186, saving 49.3% of its area through tighter layout. Keep a 52 px portrait, 32 px attack-zone buttons, 24 px modes, 28 px specials and readable 12/14 px body text.
+- Show four compact analysis rows. Retain confidence ranges, weapon details, enemy stance and incoming damage types in the analysis hover. Preserve native commands, availability and learned observations.
+- Verify configuration and all four HUD/updater catalogues through Wurm's real HookManager loader with embedded resources hidden from Java's parent classpath. Verify compact frame/text geometry and native input before packaging.
+- Embed the complete current updater 1.2.4 and Chamomilo UI 0.4.8. The canonical updater receives the same packaged-translation fallback fix.
+
+## 0.3.0 — 2026-10-10
+
+- Localize HUD-owned labels, menus, tooltips, Examine status and combat analysis in English, Brazilian Portuguese, German and Russian.
+- Expose the HUD language capability to the shared updater dropdown. Apply selections immediately to all three panels and save the HUD's user preference outside the game installation; manual upgrades and updater Off retain it.
+- Add a discreet Language submenu to the Healthbar right-click menu with four autonyms and a current-choice marker. It shares the updater's language selection, so either selector redraws existing panels and the updater without a game restart.
+- Remeasure existing action caption groups on language changes without resizing controls. Verify full translated captions in Regular/Bold, bundled Cyrillic/accent glyphs, native layout/input and four-language previews.
+- Preserve canonical server text parsing, command IDs, creature/item names, native action text and learned combat state across language changes.
+- Embed and verify the complete current updater 1.2.1 and its pinned Chamomilo UI 0.4.7 SDK.
+
 ## 0.2.3 — 2026-10-10
 
 - Rank only attack zones currently available in the native client. BEST and its highlight choose the next best allowed zone when a weapon disables head attacks, update immediately when availability changes, and show no recommendation when every attack is unavailable. Stored combat observations remain intact.

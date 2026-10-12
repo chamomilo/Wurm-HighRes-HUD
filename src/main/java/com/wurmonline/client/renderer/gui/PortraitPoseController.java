@@ -69,6 +69,13 @@ final class PortraitPoseController {
         return rotation;
     }
 
+    /** Keep manual rotation and postpone the next automatic turn. */
+    void setRotation(float value, long now) {
+        rotation = rotationFrom = rotationTarget = value;
+        turnStart = turnEnd = 0L;
+        nextTurn = now + randomDelay();
+    }
+
     float zoom() {
         return zoom;
     }

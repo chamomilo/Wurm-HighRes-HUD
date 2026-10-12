@@ -12,12 +12,24 @@ import static org.junit.Assert.assertTrue;
 public class UnifiedHookCompilationTest {
     @Test
     public void everyUnifiedHookCompilesAgainstClient() throws Exception {
+        compileHooks(false);
+    }
+
+    @Test
+    public void hooksCompileWhenAvatarAndKeybinderHaveLoadedGuiBases() throws Exception {
+        compileHooks(true);
+    }
+
+    private void compileHooks(boolean preloadGui) throws Exception {
         File libs = new File(System.getProperty("wurmClientLibDir"));
         ClassPool pool = new ClassPool(true);
         pool.appendClassPath(new File(libs, "client-patched.jar")
                 .getAbsolutePath());
         pool.appendClassPath(new File(libs, "common.jar").getAbsolutePath());
 
+        if (preloadGui) for (String name : new String[]{"WurmComponent", "WurmBorderPanel", "WWindow", "InventoryWindow",
+                "WButton", "WurmArrayPanel", "WurmTreeList", "WurmInputField", "WurmScrollPanel"})
+            pool.get("com.wurmonline.client.renderer.gui." + name).toBytecode();
         UnifiedHookInstaller.installOn(pool);
 
         String[] changed = {
@@ -31,7 +43,9 @@ public class UnifiedHookCompilationTest {
                 "com.wurmonline.client.comm.ServerConnectionListenerClass",
                 "com.wurmonline.client.renderer.cell.CellRenderer",
                 "com.wurmonline.client.renderer.cell.CreatureCellRenderable",
-                "com.wurmonline.client.renderer.gui.ChatPanelComponent"
+                "com.wurmonline.client.renderer.gui.ChatPanelComponent",
+                "com.wurmonline.client.renderer.gui.Renderer",
+                "com.wurmonline.client.renderer.gui.PaperDollInventory"
         };
         for (String name : changed) {
             CtClass type = pool.get(name);

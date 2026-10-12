@@ -19,6 +19,8 @@ import org.highreshealthbar.client.MountStatusText;
 import org.highreshealthbar.client.SleepBonusToggleTracker;
 import org.highreshud.client.ui.HudCaptionGroup;
 import org.highreshud.client.ui.HudSkin;
+import static org.highreshud.client.i18n.HudMessages.tr;
+import org.highreshud.client.i18n.HudMessages;
 import org.chamomilo.wurm.ui.v1.*;
 
 import java.lang.reflect.Field;
@@ -338,7 +340,7 @@ public final class HighResHealthBar extends HealthBar {
                         mountY + (index + animalRowOffset) * MOUNT_ROW_HEIGHT);
             }
         } else {
-            paintRideRow(queue, "Riding " + mountName(mount), mountY);
+            paintRideRow(queue, tr("Riding ") + mountName(mount), mountY);
             renderCreatureHealthRow(queue, mount, mountY + MOUNT_ROW_HEIGHT);
         }
     }
@@ -425,7 +427,7 @@ public final class HighResHealthBar extends HealthBar {
                 MOUNT_GAUGE_WIDTH, MOUNT_GAUGE_HEIGHT,
                 health, 0.10f, 0.62f, 0.22f,
                 -1, 0f, 0f, 0f);
-        paintMountRow(queue, mountName(creature) + "  Health: "
+        paintMountRow(queue, mountName(creature) + tr("  Health: ")
                         + percent(health), rowY,
                 0.96f, 0.96f, 0.93f);
     }
@@ -451,17 +453,17 @@ public final class HighResHealthBar extends HealthBar {
     }
 
     private static String mountName(CreatureCellRenderable mount) {
-        if (mount == null || mount.getCreatureData() == null) return "mount";
+        if (mount == null || mount.getCreatureData() == null) return tr("mount");
         String name = mount.getCreatureData().getName();
         String clean = MountStatusText.cleanCreatureName(name);
-        return clean.isEmpty() ? "mount" : clean;
+        return clean.isEmpty() ? tr("mount") : clean;
     }
 
     private String vehicleStatusLine(CreatureCellRenderable vehicle) {
         String details = vehicleDetails(vehicle);
         String[] stats = controller.vehicleStats(vehicle.getId(), details);
-        return "Riding " + mountName(vehicle)
-                + "  QL " + stats[0] + ", Dam " + stats[1];
+        return tr("Riding ") + mountName(vehicle)
+                + tr("  QL ") + stats[0] + tr(", Dam ") + stats[1];
     }
 
     private static String vehicleDetails(CreatureCellRenderable vehicle) {
@@ -754,11 +756,11 @@ public final class HighResHealthBar extends HealthBar {
         paintFooterPair(queue, "FPS:", String.valueOf(Stats.fps.getCurrent()),
                 highText, 0, FOOTER_FIRST_DIVIDER, baseline,
                 0.94f, 0.94f, 0.91f);
-        paintFooterPair(queue, "Fatigue:", controller.fatigueShortText(),
+        paintFooterPair(queue, tr("Fatigue:"), controller.fatigueShortText(),
                 highBold, FOOTER_FIRST_DIVIDER + 1,
                 FOOTER_SECOND_DIVIDER, baseline,
                 0.98f, 0.78f, 0.28f);
-        paintFooterPair(queue, "Speed:", Stats.speed.getCurrent(),
+        paintFooterPair(queue, tr("Speed:"), Stats.speed.getCurrent(),
                 highText, FOOTER_SECOND_DIVIDER + 1, PANEL_WIDTH, baseline,
                 0.94f, 0.94f, 0.91f);
     }
@@ -781,15 +783,15 @@ public final class HighResHealthBar extends HealthBar {
     }
 
     private void drawGaugeLabels(Queue queue, int contentY, int left) {
-        paintGaugeLabel(queue, "Stamina / HP", left,
+        paintGaugeLabel(queue, tr("Stamina / HP"), left,
                 contentY + STAMINA_Y, STAMINA_HEIGHT);
-        paintGaugeLabel(queue, "Water", left,
+        paintGaugeLabel(queue, tr("Water"), left,
                 contentY + WATER_FOOD_Y, WATER_FOOD_HEIGHT);
-        paintGaugeLabel(queue, "Food", left + WATER_WIDTH + WATER_FOOD_GAP,
+        paintGaugeLabel(queue, tr("Food"), left + WATER_WIDTH + WATER_FOOD_GAP,
                 contentY + WATER_FOOD_Y, WATER_FOOD_HEIGHT);
         if (showCCFP()) {
             String[] labels = new String[]{
-                    "Calories", "Carbs", "Fats", "Proteins"
+                    tr("Calories"), tr("Carbs"), tr("Fats"), tr("Prot.")
             };
             for (int index = 0; index < labels.length; index++) {
                 paintGaugeLabel(queue, labels[index],
@@ -798,10 +800,10 @@ public final class HighResHealthBar extends HealthBar {
             }
         }
         paintGaugeLabel(queue, player.isSleepBonusActive()
-                        ? "Sleep bonus: ON" : "Sleep bonus: OFF", left,
+                        ? tr("Sleep bonus: ON") : tr("Sleep bonus: OFF"), left,
                 contentY + SLEEP_BONUS_Y, SLEEP_BONUS_HEIGHT);
         if (isPriest) {
-            paintGaugeLabel(queue, "Favor", left,
+            paintGaugeLabel(queue, tr("Favor"), left,
                     contentY + FAVOR_Y, FAVOR_HEIGHT);
         }
     }
@@ -918,17 +920,17 @@ public final class HighResHealthBar extends HealthBar {
     @Override
     protected void rightPressed(int mouseX, int mouseY, int buttons) {
         final WurmPopup popup = new WurmPopup(
-                "highResHealthBarMenu", "Options", mouseX, mouseY);
+                "highResHealthBarMenu", tr("Options"), mouseX, mouseY);
         popup.addSeparator();
         addDragContextMenuEntry(popup);
-        popup.addButton(popup.new WPopupLiveButton("Toggle name display") {
+        popup.addButton(popup.new WPopupLiveButton(tr("Toggle name display")) {
             @Override
             protected void handleLeftClick() {
                 HighResHealthBar.this.toggleName();
             }
         });
         popup.addButton(popup.new WPopupLiveButton(
-                showTitles ? "Titles: ON" : "Titles: OFF") {
+                showTitles ? tr("Titles: ON") : tr("Titles: OFF")) {
             @Override
             protected void handleLeftClick() {
                 showTitles = !showTitles;
@@ -936,7 +938,7 @@ public final class HighResHealthBar extends HealthBar {
                 updateHighResSize();
             }
         });
-        popup.addButton(popup.new WPopupLiveButton("Toggle number values") {
+        popup.addButton(popup.new WPopupLiveButton(tr("Toggle number values")) {
             @Override
             protected void handleLeftClick() {
                 showNumberValues = !showNumberValues;
@@ -944,8 +946,8 @@ public final class HighResHealthBar extends HealthBar {
             }
         });
         popup.addButton(popup.new WPopupLiveButton(showHitchedAnimals
-                ? "Show hitched animals: ON"
-                : "Show hitched animals: OFF") {
+                ? tr("Show hitched animals: ON")
+                : tr("Show hitched animals: OFF")) {
             @Override
             protected void handleLeftClick() {
                 showHitchedAnimals = !showHitchedAnimals;
@@ -953,7 +955,7 @@ public final class HighResHealthBar extends HealthBar {
             }
         });
         popup.addButton(popup.new WPopupLiveButton(
-                showRide ? "Ride: ON" : "Ride: OFF") {
+                showRide ? tr("Ride: ON") : tr("Ride: OFF")) {
             @Override
             protected void handleLeftClick() {
                 showRide = !showRide;
@@ -1047,18 +1049,18 @@ public final class HighResHealthBar extends HealthBar {
                 WATER_WIDTH, WATER_FOOD_HEIGHT)) {
             float waterValue = clamp(water.getValue(0f));
             float waterModifier = waterStaminaModifier(waterValue);
-            pickData.addText("Water: " + percent(waterValue));
+            pickData.addText(tr("Water: ") + percent(waterValue));
             if (showCCFP()) {
                 float carbsValue = clamp(carbs.getValue(0f));
                 float usageModifier = waterUsageModifier(carbsValue);
-                pickData.addText("Water usage: " + modifierPercent(usageModifier)
+                pickData.addText(tr("Water usage: ") + modifierPercent(usageModifier)
                         + "% (-" + reductionPercent(usageModifier)
-                        + "% from Carbs " + percent(carbsValue) + ")");
+                        + tr("% from Carbs ") + percent(carbsValue) + ")");
             }
-            pickData.addText("Stamina regeneration modifier: x"
+            pickData.addText(tr("Stamina regeneration modifier: x")
                     + twoDecimals(waterModifier) + " (-"
                     + reductionPercent(waterModifier) + "%)");
-            pickData.addText("Server formula: hydration cubed");
+            pickData.addText(tr("Server formula: hydration cubed"));
             return;
         }
         if (inside(mouseX, mouseY,
@@ -1068,29 +1070,29 @@ public final class HighResHealthBar extends HealthBar {
             float foodValue = clamp(food.getValue(0f));
             float nutritionValue = currentNutritionLevel();
             float foodModifier = foodStaminaModifier(foodValue);
-            pickData.addText("Food: " + percent(foodValue));
+            pickData.addText(tr("Food: ") + percent(foodValue));
             if (showCCFP()) {
                 float proteinsValue = clamp(proteins.getValue(0f));
                 float usageModifier = foodUsageModifier(proteinsValue);
-                pickData.addText("Food usage: " + modifierPercent(usageModifier)
+                pickData.addText(tr("Food usage: ") + modifierPercent(usageModifier)
                         + "% (-" + reductionPercent(usageModifier)
-                        + "% from Proteins " + percent(proteinsValue) + ")");
+                        + tr("% from Proteins ") + percent(proteinsValue) + ")");
             }
-            pickData.addText("Stamina regeneration modifier: x"
+            pickData.addText(tr("Stamina regeneration modifier: x")
                     + twoDecimals(foodModifier) + " (-"
                     + reductionPercent(foodModifier) + "%)");
-            pickData.addText("Heavy work: "
-                    + (heavyWorkAvailable(foodValue) ? "available" : "blocked"));
-            pickData.addText("Nutrition: " + percent(nutritionValue));
-            pickData.addText("Skill-gain bonus: +" + nutritionSkillBonus(
+            pickData.addText(tr("Heavy work: ")
+                    + (heavyWorkAvailable(foodValue) ? tr("available") : tr("blocked")));
+            pickData.addText(tr("Nutrition: ") + percent(nutritionValue));
+            pickData.addText(tr("Skill-gain bonus: +") + nutritionSkillBonus(
                     nutritionValue) + "%");
             pickData.addText(nutritionValue > 0.60f
-                    ? "Natural healing: bonus active"
-                    : "Natural healing: bonus starts above 60%");
+                    ? tr("Natural healing: bonus active")
+                    : tr("Natural healing: bonus starts above 60%"));
             return;
         }
         if (showCCFP()) {
-            String[] names = new String[]{"Calories", "Carbohydrates", "Fats", "Proteins"};
+            String[] names = new String[]{tr("Calories"), tr("Carbohydrates"), tr("Fats"), tr("Proteins")};
             float[] values = new float[]{calories.getValue(0f), carbs.getValue(0f),
                     fats.getValue(0f), proteins.getValue(0f)};
             for (int index = 0; index < 4; index++) {
@@ -1106,47 +1108,45 @@ public final class HighResHealthBar extends HealthBar {
                 GAUGE_WIDTH, SLEEP_BONUS_HEIGHT)) {
             boolean active = player.isSleepBonusActive();
             int cooldown = controller.sleepBonusActivationCooldownSeconds();
-            pickData.addText("Sleep bonus: "
+            pickData.addText(tr("Sleep bonus: ")
                     + hoursMinutes(player.getSleepBonusSecondsLeft()));
-            pickData.addText(active ? "Active (ON)" : "Inactive (OFF)");
-            pickData.addText("Skill gain: " + (active ? "x2" : "x1 (bonus OFF)"));
-            pickData.addText("Stamina regeneration: "
-                    + (active ? "x3" : "x1 (bonus OFF)"));
+            pickData.addText(active ? tr("Active (ON)") : tr("Inactive (OFF)"));
+            pickData.addText(tr("Skill gain: ") + (active ? "x2" : tr("x1 (bonus OFF)")));
+            pickData.addText(tr("Stamina regeneration: ")
+                    + (active ? "x3" : tr("x1 (bonus OFF)")));
             if (active && showCCFP()) {
                 float fatsValue = clamp(fats.getValue(0f));
                 float consumptionModifier = sleepBonusConsumptionModifier(fatsValue);
-                pickData.addText("Sleep consumption: "
+                pickData.addText(tr("Sleep consumption: ")
                         + modifierPercent(consumptionModifier) + "% (-"
                         + reductionPercent(consumptionModifier)
-                        + "% from Fats " + percent(fatsValue) + ")");
+                        + tr("% from Fats ") + percent(fatsValue) + ")");
             } else {
                 pickData.addText(active
-                        ? "Sleep consumption: 100%"
-                        : "Sleep consumption: paused");
+                        ? tr("Sleep consumption: 100%")
+                        : tr("Sleep consumption: paused"));
             }
-            pickData.addText("Next activation: " + (cooldown > 0
+            pickData.addText(tr("Next activation: ") + (cooldown > 0
                     ? SleepBonusToggleTracker.formatCountdown(cooldown)
-                    : "available"));
+                    : tr("available")));
             if (!active && player.getSleepBonusSecondsLeft() <= 0) {
-                pickData.addText("Activate unavailable: no stored sleep bonus");
+                pickData.addText(tr("Activate unavailable: no stored sleep bonus"));
             } else if (!controller.canToggleSleepBonus()) {
-                pickData.addText("Activate unavailable until cooldown expires");
+                pickData.addText(tr("Activate unavailable until cooldown expires"));
             }
-            pickData.addText("Left-click the "
-                    + (active ? "Deactivate" : "Activate")
-                    + " button to toggle (/fsleep)");
+            pickData.addText(tr("Left-click {0} to toggle (/fsleep)", tr(active ? "Deactivate" : "Activate")));
             return;
         }
         if (isPriest && inside(mouseX, mouseY, left, contentY + FAVOR_Y,
                 GAUGE_WIDTH, FAVOR_HEIGHT)) {
-            pickData.addText("Favor: " + oneDecimal(favorValue));
-            pickData.addText("Faith: " + oneDecimal(faithValue));
+            pickData.addText(tr("Favor: ") + oneDecimal(favorValue));
+            pickData.addText(tr("Faith: ") + oneDecimal(faithValue));
             if (showCCFP()) {
                 float fatsValue = clamp(fats.getValue(0f));
                 float favorModifier = favorRegenerationModifier(fatsValue);
-                pickData.addText("Favor regeneration from Fats: "
+                pickData.addText(tr("Favor regeneration from Fats: ")
                         + modifierPercent(favorModifier) + "% (+"
-                        + increasePercent(favorModifier) + "% at Fats "
+                        + increasePercent(favorModifier) + tr("% at Fats ")
                         + percent(fatsValue) + ")");
             }
             return;
@@ -1158,13 +1158,16 @@ public final class HighResHealthBar extends HealthBar {
         if (mount != null && inside(mouseX, mouseY,
                 x, mountY, PANEL_WIDTH, currentMountHeight)) {
             if (overDisembarkButton(mouseX, mouseY)) {
-                pickData.addText("Disembark");
+                pickData.addText(tr("Disembark"));
                 return;
             }
             int row = Math.max(0, (mouseY - mountY) / MOUNT_ROW_HEIGHT);
             if (mount.isItem()) {
                 if (showRide && row == 0) {
-                    pickData.addText(vehicleStatusLine(mount));
+                    String[] stats = controller.vehicleStats(mount.getId(), vehicleDetails(mount));
+                    pickData.addText(tr("Riding ") + mountName(mount));
+                    pickData.addText(tr("Item quality: {0}", stats[0]));
+                    pickData.addText(tr("Item damage: {0}", stats[1]));
                 } else {
                     int animalIndex = rideStatus.hitchedIndexForRow(
                             row, showRide, showHitchedAnimals);
@@ -1172,13 +1175,13 @@ public final class HighResHealthBar extends HealthBar {
                     CreatureCellRenderable animal = rideStatus
                             .visibleHitched(true).get(animalIndex);
                     float health = clamp(animal.getPercentHealth() / 100f);
-                    pickData.addText("Hitched creature: " + mountName(animal));
-                    pickData.addText("Hitched creature health: "
+                    pickData.addText(tr("Hitched creature: ") + mountName(animal));
+                    pickData.addText(tr("Hitched creature health: ")
                             + percent(health));
                 }
             } else {
-                pickData.addText("Riding " + mountName(mount));
-                pickData.addText("Mount health: " + percent(clamp(
+                pickData.addText(tr("Riding ") + mountName(mount));
+                pickData.addText(tr("Mount health: ") + percent(clamp(
                         mount.getPercentHealth() / 100f)));
             }
             return;
@@ -1188,11 +1191,11 @@ public final class HighResHealthBar extends HealthBar {
         if (showNumberValues && mouseY >= footerTop) {
             int localX = mouseX - x;
             if (localX < FOOTER_FIRST_DIVIDER) {
-                pickData.addText("Frames per second: " + Stats.fps.getCurrent());
+                pickData.addText(tr("Frames per second: ") + Stats.fps.getCurrent());
             } else if (localX < FOOTER_SECOND_DIVIDER) {
                 pickData.addText(controller.fatigueHoverText());
             } else {
-                pickData.addText("Speed: " + Stats.speed.getCurrent());
+                pickData.addText(tr("Speed: ") + Stats.speed.getCurrent());
             }
         }
     }
@@ -1204,53 +1207,53 @@ public final class HighResHealthBar extends HealthBar {
         }
         pickData.addText(name.toString());
         if (!controller.sorceryTitle().isEmpty()) {
-            pickData.addText("Sorcery title: " + controller.sorceryTitle());
+            pickData.addText(tr("Sorcery title: ") + controller.sorceryTitle());
         }
         if (meditationTitle != null && !meditationTitle.isEmpty()) {
-            pickData.addText("Meditation title: " + meditationTitle);
+            pickData.addText(tr("Meditation title: ") + meditationTitle);
         }
         addStaminaAndHealth(pickData);
         if (showCCFP()) {
             float waterUsage = waterUsageModifier(carbs.getValue(0f));
             float foodUsage = foodUsageModifier(proteins.getValue(0f));
-            pickData.addText("Water: " + percent(water.getValue(0f))
-                    + " (usage -" + reductionPercent(waterUsage)
-                    + "% from Carbs)");
-            pickData.addText("Food: " + percent(food.getValue(0f))
-                    + " (usage -" + reductionPercent(foodUsage)
-                    + "% from Proteins), Nutrition: "
+            pickData.addText(tr("Water: ") + percent(water.getValue(0f))
+                    + tr(" (usage -") + reductionPercent(waterUsage)
+                    + tr("% from Carbs)"));
+            pickData.addText(tr("Food: ") + percent(food.getValue(0f))
+                    + tr(" (usage -") + reductionPercent(foodUsage)
+                    + tr("% from Proteins), Nutrition: ")
                     + percent(currentNutritionLevel()));
         } else {
-            pickData.addText("Water: " + percent(water.getValue(0f)));
-            pickData.addText("Food: " + percent(food.getValue(0f))
-                    + ", Nutrition: " + percent(currentNutritionLevel()));
+            pickData.addText(tr("Water: ") + percent(water.getValue(0f)));
+            pickData.addText(tr("Food: ") + percent(food.getValue(0f))
+                    + tr(", Nutrition: ") + percent(currentNutritionLevel()));
         }
         if (showCCFP()) {
-            pickData.addText("Calories: " + percent(calories.getValue(0f))
-                    + ", Carbs: " + percent(carbs.getValue(0f)));
-            pickData.addText("Fats: " + percent(fats.getValue(0f))
-                    + ", Proteins: " + percent(proteins.getValue(0f)));
+            pickData.addText(tr("Calories: ") + percent(calories.getValue(0f))
+                    + tr(", Carbs: ") + percent(carbs.getValue(0f)));
+            pickData.addText(tr("Fats: ") + percent(fats.getValue(0f))
+                    + tr(", Proteins: ") + percent(proteins.getValue(0f)));
         }
         boolean sleepActive = player.isSleepBonusActive();
-        StringBuilder sleepSummary = new StringBuilder("Sleep bonus: ")
+        StringBuilder sleepSummary = new StringBuilder(tr("Sleep bonus: "))
                 .append(hoursMinutes(player.getSleepBonusSecondsLeft()))
-                .append(sleepActive ? " ON" : " OFF");
+                .append(sleepActive ? tr(" ON") : tr(" OFF"));
         if (sleepActive && showCCFP()) {
-            sleepSummary.append(" (consumption -")
+            sleepSummary.append(tr(" (consumption -"))
                     .append(reductionPercent(sleepBonusConsumptionModifier(
                             fats.getValue(0f))))
-                    .append("% from Fats)");
+                    .append(tr("% from Fats)"));
         }
         pickData.addText(sleepSummary.toString());
         if (isPriest) {
-            StringBuilder favorSummary = new StringBuilder("Favor: ")
+            StringBuilder favorSummary = new StringBuilder(tr("Favor: "))
                     .append(oneDecimal(favorValue))
-                    .append(", Faith: ").append(oneDecimal(faithValue));
+                    .append(tr(", Faith: ")).append(oneDecimal(faithValue));
             if (showCCFP()) {
-                favorSummary.append(" (regeneration +")
+                favorSummary.append(tr(" (regeneration +"))
                         .append(increasePercent(favorRegenerationModifier(
                                 fats.getValue(0f))))
-                        .append("% from Fats)");
+                        .append(tr("% from Fats)"));
             }
             pickData.addText(favorSummary.toString());
         }
@@ -1264,18 +1267,18 @@ public final class HighResHealthBar extends HealthBar {
         float regenerationModifier = staminaRegenerationModifier(
                 water.getValue(0f), food.getValue(0f), sleepBonusActive);
 
-        pickData.addText("Stamina: " + percent(stamina.getValue(0f)));
+        pickData.addText(tr("Stamina: ") + percent(stamina.getValue(0f)));
         if (showCCFP()) {
             float drainModifier = staminaDrainModifier(calories.getValue(0f));
-            pickData.addText("Stamina drain: -" + reductionPercent(drainModifier)
-                    + "% (Calories)");
+            pickData.addText(tr("Stamina drain: -") + reductionPercent(drainModifier)
+                    + tr("% (Calories)"));
         }
-        pickData.addText("Stamina regeneration: "
-                + modifierPercent(regenerationModifier) + "% of base (Water -"
-                + reductionPercent(waterModifier) + "%, Food -"
+        pickData.addText(tr("Stamina regeneration: ")
+                + modifierPercent(regenerationModifier) + tr("% of base (Water -")
+                + reductionPercent(waterModifier) + tr("%, Food -")
                 + reductionPercent(foodModifier) + "%"
-                + (sleepBonusActive ? ", Sleep x3" : "") + ")");
-        pickData.addText("Health: " + percent(1f - damage.getValue(0f)));
+                + (sleepBonusActive ? tr(", Sleep x3") : "") + ")");
+        pickData.addText(tr("Health: ") + percent(1f - damage.getValue(0f)));
     }
 
     private static void addCcfpTooltip(PickData pickData, int index,
@@ -1284,27 +1287,27 @@ public final class HighResHealthBar extends HealthBar {
         pickData.addText(name + ": " + percent(value));
         if (index == 0) {
             float multiplier = 1f / (1f + value / 3f);
-            pickData.addText("Effect: reduces stamina drain");
-            pickData.addText("Current modifier: x" + twoDecimals(multiplier)
+            pickData.addText(tr("Effect: reduces stamina drain"));
+            pickData.addText(tr("Current modifier: x") + twoDecimals(multiplier)
                     + " (-" + Math.round((1f - multiplier) * 100f) + "%)");
         } else if (index == 1) {
             float multiplier = waterUsageModifier(value);
-            pickData.addText("Effect: reduces water usage");
-            pickData.addText("Current modifier: x" + twoDecimals(multiplier)
+            pickData.addText(tr("Effect: reduces water usage"));
+            pickData.addText(tr("Current modifier: x") + twoDecimals(multiplier)
                     + " (-" + Math.round((1f - multiplier) * 100f) + "%)");
         } else if (index == 2) {
             float favorMultiplier = favorRegenerationModifier(value);
             float sleepMultiplier = sleepBonusConsumptionModifier(value);
-            pickData.addText("Favor regeneration: x"
+            pickData.addText(tr("Favor regeneration: x")
                     + twoDecimals(favorMultiplier) + " (+"
                     + increasePercent(favorMultiplier) + "%)");
-            pickData.addText("Sleep consumption: x"
+            pickData.addText(tr("Sleep consumption: x")
                     + twoDecimals(sleepMultiplier) + " (-"
                     + reductionPercent(sleepMultiplier) + "%)");
         } else {
             float multiplier = foodUsageModifier(value);
-            pickData.addText("Effect: reduces food usage");
-            pickData.addText("Current modifier: x" + twoDecimals(multiplier)
+            pickData.addText(tr("Effect: reduces food usage"));
+            pickData.addText(tr("Current modifier: x") + twoDecimals(multiplier)
                     + " (-" + Math.round((1f - multiplier) * 100f) + "%)");
         }
     }

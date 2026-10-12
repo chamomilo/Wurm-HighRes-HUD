@@ -2,12 +2,16 @@ package org.highreshud.client;
 
 import com.wurmonline.client.game.inventory.InventoryMetaWindowView;
 import com.wurmonline.client.renderer.PickableUnit;
+import com.wurmonline.client.renderer.PickData;
 import com.wurmonline.client.renderer.cell.CellRenderable;
 import com.wurmonline.client.renderer.cell.CreatureCellRenderable;
 import com.wurmonline.client.renderer.gui.HeadsUpDisplay;
 import com.wurmonline.client.renderer.gui.SelectBar;
 import com.wurmonline.client.renderer.gui.StaticComponent;
 import com.wurmonline.client.renderer.gui.WurmComponent;
+import com.wurmonline.client.renderer.gui.FlexComponent;
+import com.wurmonline.client.renderer.gui.HighResWindowIntegration;
+import com.wurmonline.client.renderer.backend.Queue;
 import com.wurmonline.shared.constants.PlayerAction;
 import com.wurmonline.shared.util.MulticolorLineSegment;
 import org.highreshud.core.ActionEvent;
@@ -51,6 +55,7 @@ public final class HighResHudRuntime {
             stage = lifecycle.stage();
         }
         if (stage == LifecycleCoordinator.Stage.CREATED) lifecycle.hudReady();
+        guarded("windows.attach", () -> HighResWindowIntegration.hudReady(hud));
         guarded("healthbar.attach", new Task() {
             @Override public void run() { HighResHealthBarMod.hudReady(hud); }
         });
@@ -67,6 +72,7 @@ public final class HighResHudRuntime {
     }
 
     public static void beginFrame(final HeadsUpDisplay hud) {
+        guarded("windows.frame", () -> HighResWindowIntegration.beginFrame(hud));
         SharedPortraitCoordinator.beginFrame();
         guarded("healthbar.frame.begin", new Task() {
             @Override public void run() { HighResHealthBarMod.beginPortraitFrame(hud); }
@@ -78,6 +84,60 @@ public final class HighResHudRuntime {
             @Override public void run() { HighResFightingHudMod.beginPortraitFrame(hud); }
         });
         SharedPortraitCoordinator.dispatch();
+    }
+
+    public static boolean ownsWindowComponent(WurmComponent component) { return HighResWindowIntegration.owns(component); }
+    public static boolean pickComponentHint(WurmComponent component, PickData pick, int x, int y) {
+        return HighResWindowIntegration.pickHeading(component, pick, x, y)
+                || HighResWindowIntegration.pickWindowChrome(component, pick, x, y)
+                || HighResFightingHudMod.pickNativeControl(component, pick);
+    }
+    public static boolean renderWindow(WurmComponent component, Queue queue) {
+        return HighResWindowIntegration.renderWindow(component, queue);
+    }
+    public static boolean minimizedWindow(WurmComponent component) { return HighResWindowIntegration.minimized(component); }
+    public static boolean hiddenChatManager(Object manager) { return HighResWindowIntegration.hiddenChatManager(manager); }
+    public static FlexComponent minimizedWindowComponent(WurmComponent component, int x, int y) {
+        return HighResWindowIntegration.minimizedComponent(component, x, y);
+    }
+    public static void windowCollapsed(WurmComponent component) { HighResWindowIntegration.collapsedChanged(component); }
+    public static void windowResized(WurmComponent component) { HighResWindowIntegration.resized(component); }
+    public static void inventoryDragFrame(HeadsUpDisplay hud,int x,int y) {HighResWindowIntegration.inventoryDragFrame(hud,x,y);}
+    public static boolean inventoryDrop(HeadsUpDisplay hud,int x,int y,int button) {return HighResWindowIntegration.inventoryDrop(hud,x,y,button);}
+    public static void inventoryDragCleared() {HighResWindowIntegration.inventoryDragCleared();}
+    public static void containerOpened(HeadsUpDisplay hud, InventoryMetaWindowView view) {
+        guarded("windows.container.open", () -> HighResWindowIntegration.containerOpened(hud, view));
+    }
+    public static void inventoryContainerOpened(HeadsUpDisplay hud, long id) {
+        guarded("windows.inventory.container.open", () -> HighResWindowIntegration.inventoryContainerOpened(hud, id));
+    }
+    public static void windowRemoved(HeadsUpDisplay hud, WurmComponent window) {
+        HighResWindowIntegration.windowRemoved(hud, window);
+    }
+    public static void windowHidden(HeadsUpDisplay hud,WurmComponent window) {HighResWindowIntegration.windowHidden(hud,window);}
+    public static void windowShown(HeadsUpDisplay hud, WurmComponent component) {
+        guarded("windows.show", () -> HighResWindowIntegration.windowShown(hud, component));
+    }
+    public static WurmComponent windowComponentAt(WurmComponent component, int x, int y) {
+        return HighResWindowIntegration.windowComponentAt(component, x, y);
+    }
+    public static void containerClosed(HeadsUpDisplay hud, InventoryMetaWindowView view) {
+        HighResWindowIntegration.containerClosed(hud, view);
+    }
+    public static void windowsReconnected(HeadsUpDisplay hud) { HighResWindowIntegration.reconnected(hud); }
+    public static int windowWidth(WurmComponent component, int value) { return HighResWindowIntegration.minimumWidth(component, value); }
+    public static int windowHeight(WurmComponent component, int value) { return HighResWindowIntegration.minimumHeight(component, value); }
+    public static boolean renderInventoryHeadingBand(WurmComponent component, Queue queue) {
+        return HighResWindowIntegration.renderHeadingBand(component, queue);
+    }
+    public static boolean renderInventoryHeading(WurmComponent component, Queue queue) {
+        return HighResWindowIntegration.renderHeading(component, queue);
+    }
+    public static void beforeInventorySort(Object table, int column) { HighResWindowIntegration.beforeSort(table, column); }
+    public static void beforeWindowButtonRelease(WurmComponent component, int x, int y) { HighResWindowIntegration.beforeButtonRelease(component, x, y); }
+    public static void inputFieldFront(WurmComponent component, Queue queue) { HighResWindowIntegration.inputFront(component, queue); }
+    public static boolean windowScroll(WurmComponent component, int x, int y, int delta) {
+        return HighResWindowIntegration.mouseWheeled(component, x, y, delta);
     }
 
     public static void endFrame(final HeadsUpDisplay hud) {
@@ -163,6 +223,12 @@ public final class HighResHudRuntime {
 
     public static boolean serverText(String title, String message) {
         return routeServerText(title, message, false);
+    }
+    public static boolean hiddenSkillTick(String channel, String message) {
+        return SkillDetailSettings.hidden(channel, message);
+    }
+    public static boolean hiddenSkillTickSegments(String channel, List segments) {
+        return SkillDetailSettings.hidden(channel, plainText(segments));
     }
 
     public static boolean serverMulticolorText(String title, List segments) {
@@ -365,7 +431,7 @@ public final class HighResHudRuntime {
         try {
             task.run();
         } catch (Throwable error) {
-            LOG.log(Level.WARNING, name + " failed; vanilla flow continues", error);
+            LOG.log(Level.WARNING, name + " failed; vanilla flow continues: " + error, error);
         }
     }
 
@@ -373,7 +439,7 @@ public final class HighResHudRuntime {
         try {
             return decision.get();
         } catch (Throwable error) {
-            LOG.log(Level.WARNING, name + " failed; vanilla flow continues", error);
+            LOG.log(Level.WARNING, name + " failed; vanilla flow continues: " + error, error);
             return false;
         }
     }

@@ -36,6 +36,8 @@ import org.highreshud.core.HighResHudApi;
 import org.highreshud.client.HiddenExamineCoordinator;
 import org.highreshud.client.HighResHudRuntime;
 import org.highreshud.client.ui.HudSkin;
+import static org.highreshud.client.i18n.HudMessages.tr;
+import org.highreshud.client.i18n.HudMessages;
 import org.highreshud.client.ui.HudCaptionGroup;
 import org.chamomilo.wurm.ui.v1.UiRect;
 import org.chamomilo.wurm.ui.v1.UiColor;
@@ -66,8 +68,8 @@ public final class HighResFightingHud extends StaticComponent
     private static final float RAIL_RED = 109f / 255f;
     private static final float RAIL_GREEN = 95f / 255f;
     private static final float RAIL_BLUE = 83f / 255f;
-    private static final int STANCE_ICON = 38;
-    private static final int MODE_ICON = 28;
+    private static final int STANCE_ICON = STANCE_BUTTON_SIZE;
+    private static final int MODE_ICON = MODE_BUTTON_SIZE;
 
     private final HeadsUpDisplay owner;
     private final TargetWindow targetWindow;
@@ -131,12 +133,12 @@ public final class HighResFightingHud extends StaticComponent
         this.noTargetButton = new HighResHudActionButton(this,
                 NO_TARGET_WIDTH, NO_TARGET_HEIGHT,
                 new HudCaptionGroup(NO_TARGET_WIDTH, NO_TARGET_HEIGHT,
-                        HudSkin.COMPACT, "No target"),
+                        HudSkin.COMPACT, 14, "No target"),
                 "No target", this::clearCombatTarget);
         this.focusButton = new HighResHudActionButton(this,
                 FOCUS_BUTTON_WIDTH, FOCUS_BUTTON_HEIGHT,
                 new HudCaptionGroup(FOCUS_BUTTON_WIDTH, FOCUS_BUTTON_HEIGHT,
-                        HudSkin.COMPACT, "Combat focus"),
+                        HudSkin.COMPACT, 14, "Combat focus"),
                 "Combat focus", this::attemptFocus);
         activateKnowledgeBook();
         syncTarget();
@@ -424,7 +426,7 @@ public final class HighResFightingHud extends StaticComponent
                     1f, 1f, 1f, 1f, px, py, PORTRAIT_SIZE, PORTRAIT_SIZE,
                     0f, 0f, 1f, 1f);
         } else {
-            paintCentered(bold, queue, "?", px, py + 53, PORTRAIT_SIZE,
+            paintCentered(bold, queue, "?", px, centeredLowerEdge(py, PORTRAIT_SIZE, bold.getHeight()), PORTRAIT_SIZE,
                     0.77f, 0.64f, 0.42f);
         }
     }
@@ -443,7 +445,7 @@ public final class HighResFightingHud extends StaticComponent
 
     private void renderIdentity(Queue queue) {
         String name = targetName();
-        if (name.isEmpty()) name = "No combat target";
+        if (name.isEmpty()) name = tr("No combat target");
         UiRect cell = targetCell(0);
         paintCentered(title, queue, fit(title, name, cell.width - 12),
                 cell.x + 6, centeredLowerEdge(cell.y, cell.height, title.getHeight()),
@@ -461,7 +463,7 @@ public final class HighResFightingHud extends StaticComponent
         renderGauge(queue, gx, gy, gw, cell.height,
                 smoothedHealth, 0.055f, 0.61f, 0.18f);
         paintCentered(small, queue,
-                "Health: " + Math.round(clamp(smoothedHealth) * 100f) + "%",
+                tr("Health: ") + Math.round(clamp(smoothedHealth) * 100f) + "%",
                 gx, centeredLowerEdge(gy, cell.height, small.getHeight()),
                 gw, 0.94f, 0.92f, 0.84f);
     }
@@ -484,7 +486,7 @@ public final class HighResFightingHud extends StaticComponent
     private void renderStatus(Queue queue) {
         if (!(target instanceof CreatureCellRenderable)) return;
         CreatureCellRenderable creature = (CreatureCellRenderable) target;
-        String label = CreatureRelationState.label(creature);
+        String label = tr(CreatureRelationState.label(creature));
         boolean hostile = CreatureRelationState.isHostile(creature);
         UiRect cell = targetCell(hasActionProgress() ? 3 : 2);
         paintShadowed(small, queue, fit(small, label, cell.width - 12),
@@ -539,7 +541,7 @@ public final class HighResFightingHud extends StaticComponent
     private void renderFocus(Queue queue) {
         HudSkin.panel(ui.begin(queue), x + FOCUS_X, y + FOCUS_Y, FOCUS_WIDTH, FOCUS_HEIGHT);
         focusButton.render(queue, 1.0f);
-        String level = "Focus " + focusState.level() + "/5";
+        String level = tr("Focus ") + focusState.level() + "/5";
         int baseline = y + FOCUS_BUTTON_Y + (FOCUS_BUTTON_HEIGHT + Math.max(bold.getHeight(), regular.getHeight())) / 2;
         paintShadowed(bold, queue, level, x + FOCUS_TEXT_X, baseline,
                 0.94f, 0.86f, 0.68f);
@@ -547,7 +549,7 @@ public final class HighResFightingHud extends StaticComponent
         boolean ready = CombatFocusState.ready(status);
         int statusX = x + FOCUS_TEXT_X + bold.getWidth(level) + FOCUS_TEXT_GAP;
         int available = x + FOCUS_X + FOCUS_WIDTH - 8 - statusX;
-        paintShadowed(regular, queue, fit(regular, status, available), statusX, baseline,
+        paintShadowed(regular, queue, fit(regular, HudMessages.detail(status), available), statusX, baseline,
                 ready ? 0.48f : 0.83f, ready ? 0.78f : 0.65f, 0.42f);
     }
 
@@ -571,66 +573,73 @@ public final class HighResFightingHud extends StaticComponent
         int ay = y + ANALYSIS_Y;
         org.highreshud.client.ui.HudSkin.panel(ui.begin(queue), ax, ay, ANALYSIS_WIDTH, ANALYSIS_HEIGHT);
         if (targetProfile == null) {
-            paintCentered(regular, queue, "TARGET ANALYSIS", ax, ay + ANALYSIS_TEXT_INSET + regular.getHeight(),
+            paintCentered(small, queue, tr("TARGET ANALYSIS"), ax, ay + 24,
                     ANALYSIS_WIDTH, 0.88f, 0.77f, 0.58f);
-            paintCentered(small, queue, "Select a creature to build its model",
-                    ax, ay + 62, ANALYSIS_WIDTH,
+            paintCentered(small, queue, fit(small, tr("Select a creature to build its model"), ANALYSIS_WIDTH - 12),
+                    ax, ay + 46, ANALYSIS_WIDTH,
                     0.70f, 0.63f, 0.52f);
             return;
         }
 
-        CombatKnowledge.Snapshot overall = knowledgeBook.snapshot(
-                targetProfile.knowledgeKey(), playerStance());
-        CombatKnowledge.Snapshot stats = combatRecommendation();
         int top = ay + ANALYSIS_TEXT_INSET;
-        top = analysisRow(queue, regular,
-                "KNOWLEDGE " + overall.studyPercent + "%  ·  KILLS "
-                        + overall.kills + "  ·  SAMPLES "
-                        + stats.outgoingAttempts + "/" + overall.outgoingAttempts,
-                ax, top, 0.91f, 0.80f, 0.60f);
-        top = analysisRow(queue, small,
-                "Hit " + probability(stats.hitChance)
-                        + "  Parry " + probability(stats.parryChance),
-                ax, top, 0.86f, 0.80f, 0.69f);
-        top = analysisRow(queue, small,
-                "Glance " + probability(stats.glanceChance)
-                        + "  Dmg index avg/max "
-                        + decimal(stats.meanDamageIndex) + "/"
-                        + decimal(stats.maximumDamageIndex),
-                ax, top, 0.86f, 0.80f, 0.69f);
-        top = analysisRow(queue, bold,
-                stats.bestStance < 0 ? "BEST — no attack available" : "BEST " + AttackStanceModel.label(stats.bestStance)
-                        + "  +" + Math.round(stats.projectedGainPercent)
-                        + "%  (n=" + stats.bestStanceSamples + ")",
-                ax, top, 0.96f, 0.72f, 0.30f);
-        top = analysisRow(queue, small,
-                "Enemy stance " + AttackStanceModel.label(targetStance())
-                        + "  ·  incoming " + overall.incomingDamageTypes,
-                ax, top, 0.78f, 0.75f, 0.66f);
-        String shield = loadout.hasShield()
-                ? "Shield " + probability(stats.shieldBlockChance) : "Shield not equipped";
-        analysisRow(queue, small, shield + " · " + equipmentLine(), ax, top, 0.78f, 0.75f, 0.66f);
+        String[] lines = compactAnalysisLines();
+        for (int row = 0; row < lines.length; row++) {
+            top = analysisRow(queue, row == 0 ? bold : small, lines[row], ax, top,
+                    row == 0 ? .96f : .86f, row == 0 ? .72f : .80f, row == 0 ? .30f : .69f);
+        }
+    }
+
+    private String bestLine(CombatKnowledge.Snapshot stats) {
+        return stats.bestStance < 0 ? tr("BEST — no attack available")
+                : tr("BEST ") + tr(AttackStanceModel.label(stats.bestStance)) + "  +"
+                + Math.round(stats.projectedGainPercent) + "%  (n=" + stats.bestStanceSamples + ")";
+    }
+
+    private String[] compactAnalysisLines() {
+        CombatKnowledge.Snapshot overall = knowledgeBook.snapshot(targetProfile.knowledgeKey(), playerStance());
+        CombatKnowledge.Snapshot stats = combatRecommendation();
+        String shield = loadout.hasShield() ? tr("Shield ") + percentage(stats.shieldBlockChance)
+                : tr("Shield not equipped");
+        return new String[]{bestLine(stats),
+                tr("Hit {0} · Parry {1} · Glance {2}", percentage(stats.hitChance),
+                        percentage(stats.parryChance), percentage(stats.glanceChance)),
+                tr("Study {0}% · Kills {1} · Samples {2}/{3}", overall.studyPercent, overall.kills,
+                        stats.outgoingAttempts, overall.outgoingAttempts),
+                tr("Damage {0}/{1} · {2}", decimal(stats.meanDamageIndex), decimal(stats.maximumDamageIndex), shield)};
+    }
+
+    /** The compact card keeps rates; the native hover retains every detailed statistic. */
+    private String[] analysisDetails() {
+        CombatKnowledge.Snapshot overall = knowledgeBook.snapshot(targetProfile.knowledgeKey(), playerStance());
+        CombatKnowledge.Snapshot stats = combatRecommendation();
+        return new String[]{bestLine(stats),
+                tr("KNOWLEDGE ") + overall.studyPercent + tr("%  ·  KILLS ") + overall.kills
+                        + tr("  ·  SAMPLES ") + stats.outgoingAttempts + "/" + overall.outgoingAttempts,
+                tr("Hit ") + probability(stats.hitChance) + tr("  Parry ") + probability(stats.parryChance),
+                tr("Glance ") + probability(stats.glanceChance) + "  " + tr("Damage index, average/maximum: ")
+                        + decimal(stats.meanDamageIndex) + "/" + decimal(stats.maximumDamageIndex),
+                tr("Enemy stance ") + tr(AttackStanceModel.label(targetStance())) + tr("  ·  incoming ")
+                        + translatedDamageTypes(overall.incomingDamageTypes),
+                (loadout.hasShield() ? tr("Shield ") + probability(stats.shieldBlockChance) : tr("Shield not equipped"))
+                        + " · " + equipmentLine()};
     }
 
     private int analysisRow(Queue queue, TextFont font, String text, int ax, int top, float red, float green, float blue) {
         paintShadowed(font, queue, fit(font, text, ANALYSIS_WIDTH - 2 * ANALYSIS_TEXT_INSET - 1),
-                ax + ANALYSIS_TEXT_INSET, top + font.getHeight(), red, green, blue);
-        return top + font.getHeight() + ANALYSIS_ROW_GAP;
+                ax + ANALYSIS_TEXT_INSET, centeredLowerEdge(top, ANALYSIS_ROW_HEIGHT, font.getHeight()), red, green, blue);
+        return top + ANALYSIS_ROW_HEIGHT;
     }
 
     private void renderCombatSections(Queue queue) {
         section(queue, x + COMBAT_X, y + COMBAT_Y,
-                COMBAT_SIZE, COMBAT_HEIGHT, "ATTACK ZONE");
+                COMBAT_SIZE, COMBAT_HEIGHT, tr("ATTACK ZONE"));
         section(queue, x + MODE_X, y + MODE_Y,
-                MODE_WIDTH, MODE_HEIGHT, "MODE");
-        section(queue, x + POSITION_X, y + POSITION_Y,
-                POSITION_WIDTH, POSITION_HEIGHT, "POSITION");
-        section(queue, x + SPECIAL_X, y + SPECIAL_Y,
-                SPECIAL_WIDTH, SPECIAL_HEIGHT, "SPECIAL MOVES");
-        paintShadowed(bold, queue, "Distance", x + DISTANCE_LABEL_X, y + POSITION_TEXT_Y, .86f, .80f, .69f);
-        paintShadowed(bold, queue, targetDistance(), x + DISTANCE_VALUE_X, y + POSITION_TEXT_Y,
+                MODE_WIDTH, MODE_HEIGHT, tr("MODE"));
+        HudSkin.panel(ui.begin(queue), x + POSITION_X, y + POSITION_Y, POSITION_WIDTH, POSITION_HEIGHT);
+        paintShadowed(small, queue, tr("Distance"), x + DISTANCE_LABEL_X, y + POSITION_TEXT_Y, .86f, .80f, .69f);
+        paintShadowed(small, queue, targetDistance(), x + DISTANCE_VALUE_X, y + POSITION_TEXT_Y,
                 .94f, .90f, .77f);
-        paintShadowed(bold, queue, "Footing", x + FOOTING_LABEL_X, y + POSITION_TEXT_Y, .86f, .80f, .69f);
+        paintShadowed(small, queue, tr("Footing"), x + FOOTING_LABEL_X, y + POSITION_TEXT_Y, .86f, .80f, .69f);
         if (targetProfile == null) return;
         CombatKnowledge.Snapshot stats = combatRecommendation();
         if (stats.bestStance >= 0) {
@@ -660,15 +669,15 @@ public final class HighResFightingHud extends StaticComponent
     private void section(Queue queue, int sx, int sy, int sw, int sh,
                          String label) {
         org.highreshud.client.ui.HudSkin.panel(ui.begin(queue), sx, sy, sw, sh);
-        paintCentered(title, queue, label, sx, sy + SECTION_TITLE_Y, sw,
+        paintCentered(small, queue, label, sx, sy + SECTION_TITLE_Y, sw,
                 0.86f, 0.75f, 0.56f);
     }
 
     private void renderFightOptions(Queue queue, float alpha) {
         if (fightOptions == null) return;
         if (!resolveNativeChildren()) {
-            paintCentered(small, queue, "Combat controls unavailable", x + SPECIAL_X,
-                    y + SPECIAL_Y + 35, SPECIAL_WIDTH, .70f, .63f, .52f);
+            paintCentered(small, queue, tr("Combat controls unavailable"), x + SPECIAL_X,
+                    y + SPECIAL_Y + 19, SPECIAL_WIDTH, .70f, .63f, .52f);
             return;
         }
         layoutNativeControls();
@@ -694,7 +703,7 @@ public final class HighResFightingHud extends StaticComponent
                 boolean savedHidden = action.hidden;
                 try {
                     // Native icon, availability/difficulty colors and input remain native.
-                    component.setLocation(cx + 3, cy + 3, cw - 6, ch - 6);
+                    component.setLocation(cx + 2, cy + 2, cw - 4, ch - 4);
                     if (unavailable) action.hidden = true;
                     component.render(queue, 1.0f);
                 } finally { action.hidden = savedHidden; component.setLocation(cx, cy, cw, ch); }
@@ -739,16 +748,16 @@ public final class HighResFightingHud extends StaticComponent
                     final int index = i;
                     final StaticComponent button = specialButtons.get(i);
                     combatHints.add(new HighResCombatHint(this, button, () -> specialAvailable(button),
-                            () -> new String[]{index == 0 ? "Shield bash: shield attack; server controls readiness."
-                                    : "Weapon special move: unlocked by the server during combat.",
-                                    specialAvailable(button) ? "Ready" : index == 0
-                                            ? "Unavailable: shield missing, cooldown, or combat state."
-                                            : "Unavailable until the server grants this move."}, true));
+                            () -> new String[]{index == 0 ? tr("Shield bash: shield attack; server controls readiness.")
+                                    : tr("Weapon special move: unlocked by the server during combat."),
+                                    specialAvailable(button) ? tr("Ready") : index == 0
+                                            ? tr("Unavailable: shield missing, cooldown, or combat state.")
+                                            : tr("Unavailable until the server grants this move.")}, true));
                 }
                 for (StaticComponent position : positionControls) combatHints.add(new HighResCombatHint(this,
                         position, () -> false, () -> new String[]{position instanceof DistMeterComponent
-                            ? "Position indicator: relative weapon range, not an action."
-                            : "Position indicator: terrain and balance advantage, not an action."}));
+                            ? tr("Position indicator: relative weapon range, not an action.")
+                            : tr("Position indicator: terrain and balance advantage, not an action.")}));
             }
             return nativeChildrenResolved;
         } catch (Throwable ignored) {
@@ -797,15 +806,11 @@ public final class HighResFightingHud extends StaticComponent
                     y + FightingHudLayout.stanceCellY(i, STANCE_ICON),
                     STANCE_ICON, STANCE_ICON);
         }
-        int modeGap = 3;
-        int modeContent = MODE_ICON * 4 + modeGap * 3;
-        int modeTop = y + MODE_Y + 18
-                + Math.max(0, (MODE_HEIGHT - 18 - modeContent) / 2);
         for (int i = 0; i < modeButtons.size(); i++) {
             StaticComponent component = modeButtons.get(i);
             component.setSize(true);
-            component.setLocation(x + MODE_X + (MODE_WIDTH - MODE_ICON) / 2,
-                    modeTop + i * (MODE_ICON + modeGap),
+            component.setLocation(x + FightingHudLayout.modeCellX(),
+                    y + FightingHudLayout.modeCellY(i),
                     MODE_ICON, MODE_ICON);
         }
         positionControls.get(0).setSize(false);
@@ -893,12 +898,12 @@ public final class HighResFightingHud extends StaticComponent
             return;
         }
         final WurmPopup popup = new WurmPopup(
-                "highResFightingHudMenu", "highres-Fighting HUD",
+                "highResFightingHudMenu", tr("highres-Fighting HUD"),
                 mouseX, mouseY);
         popup.addSeparator();
         dragger.addContextMenuEntry(popup);
         if (portrait != null) {
-            popup.addButton(popup.new WPopupLiveButton("Resume portrait motion") {
+            popup.addButton(popup.new WPopupLiveButton(tr("Resume portrait motion")) {
                 @Override
                 protected void handleLeftClick() {
                     portrait.resumeMotion();
@@ -912,33 +917,85 @@ public final class HighResFightingHud extends StaticComponent
     public void pick(PickData pickData, int mouseX, int mouseY) {
         if (!contentVisible || !contains(mouseX, mouseY)) return;
         if (noTargetButton.contains(mouseX, mouseY)) {
-            pickData.addText("Clear the current combat target");
+            pickData.addText(tr("Clear the current combat target"));
             return;
         }
         if (inside(mouseX, mouseY, x + FOCUS_X, y + FOCUS_Y, FOCUS_WIDTH, FOCUS_HEIGHT)) {
-            pickData.addText("Combat focus level " + focusState.level() + "/5");
+            pickData.addText(tr("Combat focus level ") + focusState.level() + "/5");
             pickData.addText(focusState.levelMessage());
-            pickData.addText(focusStatus());
-            pickData.addText("~ marks estimated initial engagement; the server decides whether the attempt succeeds.");
-            pickData.addText("Manual combat controls required. Focusing temporarily stops weapon attacks.");
+            pickData.addText(HudMessages.detail(focusStatus()));
+            pickData.addText(tr("~ marks estimated initial engagement; the server decides whether the attempt succeeds."));
+            pickData.addText(tr("Manual combat controls required. Focusing temporarily stops weapon attacks."));
             return;
         }
         if (portraitAt(mouseX, mouseY)) {
-            pickData.addText("Target portrait: drag to rotate, wheel to zoom");
-            pickData.addText("Double-click to clear target");
-            pickData.addText("Right-click for the native target menu");
+            pickData.addText(tr("Target portrait: drag to rotate, wheel to zoom"));
+            pickData.addText(tr("Double-click to clear target"));
+            pickData.addText(tr("Right-click for the native target menu"));
+            return;
+        }
+        for (int row = 0; row < (hasActionProgress() ? 4 : 3); row++) {
+            UiRect cell = targetCell(row);
+            if (!inside(mouseX, mouseY, cell.x, cell.y, cell.width, cell.height)) continue;
+            if (row == 0) pickData.addText(target == null ? tr("No combat target") : targetName());
+            else if (row == 1) {
+                CreatureCellRenderable creature = target instanceof CreatureCellRenderable ? (CreatureCellRenderable) target : null;
+                pickData.addText(creature == null ? tr("Combat target health")
+                        : tr("Health: ") + Math.round(clamp(creature.getPercentHealth() / 100f) * 100f) + "%");
+            } else if (row == 2 && hasActionProgress()) {
+                FocusBarState.Progress action = progressState.progress();
+                pickData.addText(tr(action.title));
+                pickData.addText(tr("Action progress: {0}%", Math.round(clamp(action.value) * 100f)));
+            } else if (target instanceof CreatureCellRenderable) {
+                pickData.addText(tr("Creature attitude: {0}", HudMessages.detail(CreatureRelationState.label((CreatureCellRenderable) target))));
+            }
+            return;
+        }
+        if (inside(mouseX, mouseY, x + POSITION_X, y + POSITION_Y, POSITION_WIDTH, POSITION_HEIGHT)) {
+            if (mouseX < x + FOOTING_LABEL_X) {
+                pickData.addText(tr("Distance to combat target: {0} m", targetDistance()));
+                pickData.addText(tr("Position indicator: relative weapon range, not an action."));
+            } else pickData.addText(tr("Position indicator: terrain and balance advantage, not an action."));
+            return;
+        }
+        if (inside(mouseX, mouseY, x + COMBAT_X, y + COMBAT_Y, COMBAT_SIZE, COMBAT_HEIGHT)) {
+            pickData.addText(tr("Attack zone: choose where to strike the target"));
+            return;
+        }
+        if (inside(mouseX, mouseY, x + MODE_X, y + MODE_Y, MODE_WIDTH, MODE_HEIGHT)) {
+            pickData.addText(tr("Combat mode: aggressive, normal, defensive or ranged"));
             return;
         }
         if (inside(mouseX, mouseY, x + ANALYSIS_X, y + ANALYSIS_Y,
                 ANALYSIS_WIDTH, ANALYSIS_HEIGHT)) {
-            pickData.addText("Statistics are learned per server, character,"
-                    + " and creature type");
-            pickData.addText("Ranges are 95% confidence intervals");
-            pickData.addText("Damage index is inferred from combat text");
+            if (targetProfile != null) for (String line : analysisDetails()) pickData.addText(line);
+            pickData.addText(tr("BEST: recommended available attack zone; n is the number of observed attacks"));
+            pickData.addText(tr("Damage index: average and maximum observed damage estimate"));
+            pickData.addText(tr("Statistics are learned per server, character, and creature type"));
+            pickData.addText(tr("Ranges are 95% confidence intervals"));
+            pickData.addText(tr("Damage index is inferred from combat text"));
+            return;
+        }
+        if (inside(mouseX, mouseY, x + SPECIAL_X, y + SPECIAL_Y, SPECIAL_WIDTH, SPECIAL_HEIGHT)) {
+            pickData.addText(tr("SPECIAL MOVES"));
             return;
         }
         pickData.addText(target == null
-                ? "highres-Fighting HUD" : targetName());
+                ? tr("highres-Fighting HUD") : targetName());
+    }
+
+    /** Full descriptions leave native press/release and command names intact. */
+    public boolean pickNativeControl(WurmComponent component, PickData pickData) {
+        int attack = attackButtons.indexOf(component);
+        if (attack >= 0) {
+            pickData.addText(tr("Attack zone: {0}", tr(AttackStanceModel.label(AttackStanceModel.idAt(attack)))));
+            return true;
+        }
+        int mode = modeButtons.indexOf(component);
+        if (mode < 0) return false;
+        String[] hints = {"Aggressive combat mode", "Normal combat mode", "Defensive combat mode", "Ranged combat mode"};
+        pickData.addText(tr(hints[mode]));
+        return true;
     }
 
     /** Records the kill and keeps Wurm's useful corpse replacement selection. */
@@ -1007,17 +1064,23 @@ public final class HighResFightingHud extends StaticComponent
     }
 
     private String equipmentLine() {
-        if (loadout.weaponId < 0L) return "weapon unknown";
+        if (loadout.weaponId < 0L) return tr("weapon unknown");
         String rarity = loadout.weaponRarity <= 0 ? ""
-                : " r" + loadout.weaponRarity;
+                : tr(" rarity ") + loadout.weaponRarity;
         CombatExamineQueue.Snapshot examined = examineQueue.snapshot(
                 CombatExamineQueue.Kind.WEAPON);
         String effects = examined == null
                 || examined.targetId != loadout.weaponId
                 || examined.effects.isEmpty() ? ""
-                : " fx" + examined.effects.size();
-        return limit(loadout.weaponName, 22) + rarity + " ql"
+                : tr(" effects ") + examined.effects.size();
+        return loadout.weaponName + rarity + tr(" — Weapon quality: ")
                 + Math.round(loadout.weaponQuality) + effects;
+    }
+
+    private static String translatedDamageTypes(String source) {
+        String[] values = source.split("/");
+        for (int i = 0; i < values.length; i++) values[i] = tr(values[i]);
+        return String.join("/", values);
     }
 
     private String combatContextKey() {
@@ -1049,6 +1112,10 @@ public final class HighResFightingHud extends StaticComponent
         return Math.round(value.value * 100.0) + "% ["
                 + Math.round(value.lower * 100.0) + '-'
                 + Math.round(value.upper * 100.0) + "]";
+    }
+
+    private static String percentage(CombatKnowledge.Probability value) {
+        return value.samples == 0 ? "—" : Math.round(value.value * 100.0) + "%";
     }
 
     private static String decimal(double value) {

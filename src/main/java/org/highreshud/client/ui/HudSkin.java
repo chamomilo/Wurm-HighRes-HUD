@@ -13,10 +13,10 @@ public final class HudSkin {
             new int[]{24,19,19,19,24}, new int[][]{{1},{107,109},{54,53,54,55},{1},{1}});
     private static final UiFrameGrid SELECT = new UiFrameGrid(3,
             new int[]{24,19,19,33,10}, new int[][]{{1},{1},{1},{1},{1}});
-    private static final UiFrameGrid TARGET_IDLE = new UiFrameGrid(3,
-            new int[]{26,28,28}, new int[][]{{1},{1},{1}});
-    private static final UiFrameGrid TARGET_PROGRESS = new UiFrameGrid(3,
-            new int[]{26,19,19,18}, new int[][]{{1},{1},{1},{1}});
+    private static final UiFrameGrid TARGET_IDLE = new UiFrameGrid(2,
+            new int[]{22,22,28}, new int[][]{{1},{1},{1}});
+    private static final UiFrameGrid TARGET_PROGRESS = new UiFrameGrid(2,
+            new int[]{20,17,17,16}, new int[][]{{1},{1},{1},{1}});
 
     private HudSkin() { }
 
@@ -95,7 +95,7 @@ public final class HudSkin {
                 x + INFO_X, y + INFO_Y, INFO_WIDTH, INFO_HEIGHT, row, 0);
     }
     public static void targetFront(UiCanvas ui, int x, int y, boolean progress) {
-        UiPainter.frame(ui,PORTRAIT_BORDER,1.0f,x+5,y+25,96,96);
+        UiPainter.frame(ui,3,1.0f,x+PORTRAIT_X-3,y+PORTRAIT_Y-3,PORTRAIT_SIZE+6,PORTRAIT_SIZE+6);
         (progress ? TARGET_PROGRESS : TARGET_IDLE).foreground(ui,1.0f,
                 x+INFO_X,y+INFO_Y,INFO_WIDTH,INFO_HEIGHT);
     }

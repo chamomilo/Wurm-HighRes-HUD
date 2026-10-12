@@ -54,8 +54,8 @@ public final class FatigueTracker {
 
     public synchronized String hoverText() {
         return fatigueSeconds < 0L
-                ? "Remaining fatigue: waiting for server"
-                : "Remaining fatigue: " + formatHoursMinutes(fatigueSeconds);
+                ? org.highreshud.client.i18n.HudMessages.tr("Remaining fatigue: waiting for server")
+                : org.highreshud.client.i18n.HudMessages.tr("Remaining fatigue: ") + formatHoursMinutes(fatigueSeconds);
     }
 
     public static long parseSeconds(String message) {

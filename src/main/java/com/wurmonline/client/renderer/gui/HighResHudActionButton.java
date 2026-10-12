@@ -8,6 +8,7 @@ import org.chamomilo.wurm.ui.v1.UiButtonMotion;
 import org.chamomilo.wurm.ui.v1.UiColor;
 import org.chamomilo.wurm.ui.v1.UiPainter;
 import org.highreshud.client.ui.HudCaptionGroup;
+import org.highreshud.client.i18n.HudMessages;
 
 /** Compact native HUD child: exact bounds, release activation and drag cancellation. */
 final class HighResHudActionButton extends StaticComponent {
@@ -34,6 +35,7 @@ final class HighResHudActionButton extends StaticComponent {
     }
 
     @Override protected void renderComponent(Queue queue, float ignoredAlpha) {
+        group.refreshLanguage();
         motion.update(available, hovered, held, System.nanoTime());
         UiPainter.button(canvas.begin(queue), motion.brightness(), motion.depth(), group.scale,
                 1.0f, x, y, width, height);
@@ -69,7 +71,7 @@ final class HighResHudActionButton extends StaticComponent {
         return available ? MOUSE_CURSOR_HAND : MOUSE_CURSOR_NORMAL;
     }
     @Override public void pick(PickData pick, int mx, int my) {
-        pick.addText(caption);
+        pick.addText(HudMessages.tr(caption));
         parent.pick(pick, mx, my);
     }
 }

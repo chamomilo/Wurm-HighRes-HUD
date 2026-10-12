@@ -13,6 +13,8 @@ public final class HudTextFonts {
     public static TextFont bold() { return font(14, true, UiDensity.LOW); }
     public static TextFont title() { return font(14, true, UiDensity.HIGH); }
     public static TextFont small() { return font(12, true, UiDensity.LOW); }
+    /** Native data painters use lower-edge coordinates, unlike SDK captions. */
+    public static TextFont body(int pixels, boolean bold) { return font(pixels, bold, UiDensity.LOW); }
 
     private static TextFont font(int size, boolean bold, UiDensity density) {
         int key = size + (bold ? 256 : 0) + (density == UiDensity.HIGH ? 512 : 0);

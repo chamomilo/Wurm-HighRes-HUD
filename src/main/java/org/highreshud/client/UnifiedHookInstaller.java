@@ -5,6 +5,9 @@ import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
 import javassist.Modifier;
+import javassist.expr.ExprEditor;
+import javassist.expr.MethodCall;
+import javassist.CannotCompileException;
 import org.gotti.wurmunlimited.modloader.classhooks.HookManager;
 
 import java.util.logging.Level;
@@ -26,10 +29,9 @@ public final class UnifiedHookInstaller {
             installed = true;
             LOG.info("Unified High-res HUD hooks installed");
         } catch (Throwable error) {
-            LOG.log(Level.SEVERE,
-                    "Unable to install unified High-res HUD hooks", error);
-            throw new RuntimeException(
-                    "Unable to install unified High-res HUD hooks", error);
+            String message = "Unable to install unified High-res HUD hooks: " + error;
+            LOG.log(Level.SEVERE, message, error);
+            throw new RuntimeException(message, error);
         }
     }
 
@@ -42,6 +44,91 @@ public final class UnifiedHookInstaller {
         installActionHooks(pool);
         installCombatHooks(pool);
         installHealthbarHooks(pool);
+        installWindowHooks(pool);
+    }
+
+    static void installWindowHooks(ClassPool pool) throws Exception {
+        String gui = "com.wurmonline.client.renderer.gui.";
+        String runtime = "org.highreshud.client.HighResHudRuntime.";
+        installCharacterHooks(pool);
+        CtClass hud = pool.get(gui + "HeadsUpDisplay");
+        hud.getDeclaredMethod("beginRender").insertBefore(runtime+"inventoryDragFrame(this,$3,$4);");
+        hud.getDeclaredMethod("mouseDragged").insertAfter(runtime+"inventoryDragFrame(this,$1,$2);");
+        hud.getDeclaredMethod("mouseReleased").insertBefore("{if("+runtime+"inventoryDrop(this,$1,$2,$3))return;}");
+        hud.getDeclaredMethod("resetDrag").insertAfter(runtime+"inventoryDragCleared();");
+        hud.getDeclaredMethod("addInventoryWindow").insertAfter(runtime + "containerOpened(this,$1);");
+        hud.getDeclaredMethod("removeInventoryWindow").insertBefore(runtime + "containerClosed(this,$1);");
+        for (String method : new String[]{"addInventoryContainerWindow", "toggleInventoryContainerWindow"})
+            hud.getDeclaredMethod(method).insertAfter(runtime + "inventoryContainerOpened(this,$1);");
+        hud.getDeclaredMethod("removeDynamicComponent").insertBefore(runtime + "windowRemoved(this,$1);");
+        hud.getDeclaredMethod("removeComponent").insertBefore(runtime + "windowHidden(this,$1);");
+        hud.getDeclaredMethod("reconnected").insertAfter(runtime + "windowsReconnected(this);");
+        hud.getDeclaredMethod("addComponent").insertAfter("{if($_)" + runtime + "windowShown(this,$1);}");
+        // Avatar2/Keybinder define GUI base classes before preInit. Instrument the
+        // still-unloaded HUD/renderer callers, never defrost already defined classes.
+        pool.get(gui + "Renderer").getDeclaredMethod("execute").instrument(new ExprEditor() {
+            @Override public void edit(MethodCall call) throws CannotCompileException {
+                if (call.getClassName().equals(gui + "WurmComponent") && call.getMethodName().equals("render"))
+                    call.replace("{if(!" + runtime + "renderWindow($0,$1))$proceed($$);}");
+            }
+        });
+        // Press/hover call the window directly; hooking HUD.getComponentAt alone
+        // leaves its resize corner painted but unreachable during a real press.
+        for (String method : new String[]{"getComponentAt", "mousePressed", "mouseMoved"}) hud.getDeclaredMethod(method).instrument(new ExprEditor() {
+            @Override public void edit(MethodCall call) throws CannotCompileException {
+                if (call.getClassName().equals(gui + "WurmComponent") && call.getMethodName().equals("getComponentAt"))
+                    call.replace("{$_=" + runtime + "windowComponentAt($0,$1,$2);if($_==null)$_=$proceed($$);}");
+            }
+        });
+        hud.getDeclaredMethod("mouseReleased").instrument(new ExprEditor() {
+            @Override public void edit(MethodCall call) throws CannotCompileException {
+                if (call.getClassName().equals(gui + "WurmComponent") && call.getMethodName().equals("leftReleased"))
+                    call.replace("{" + runtime + "beforeWindowButtonRelease($0,$1,$2);$proceed($$);}");
+            }
+        });
+        // Resolve hints at pick time, including a language change before the next paint.
+        // Leave preloaded WButton/GUI base classes intact.
+        hud.getDeclaredMethod("pick").instrument(new ExprEditor() {
+            @Override public void edit(MethodCall call) throws CannotCompileException {
+                if (call.getClassName().equals(gui + "WurmComponent") && call.getMethodName().equals("pick"))
+                    call.replace("{if(!" + runtime + "pickComponentHint($0,$1,$2,$3))$proceed($$);}");
+            }
+        });
+        hud.getDeclaredMethod("mouseWheeled").instrument(new ExprEditor() {
+            @Override public void edit(MethodCall call) throws CannotCompileException {
+                if (call.getClassName().equals(gui + "WurmComponent") && call.getMethodName().equals("mouseWheeled"))
+                    call.replace("{if(!" + runtime + "windowScroll($0,$1,$2,$3))$proceed($$);}");
+            }
+        });
+        hud.getDeclaredMethod("mouseDragged").instrument(new ExprEditor() {
+            @Override public void edit(MethodCall call) throws CannotCompileException {
+                if (call.getClassName().equals(gui + "WurmComponent") && call.getMethodName().equals("mouseDragged"))
+                    call.replace("{$proceed($$);" + runtime + "windowResized($0);}");
+            }
+        });
+        pool.get(gui + "ChatPanelComponent").getDeclaredMethod("isMinimized")
+                .insertBefore("{if(" + runtime + "hiddenChatManager(this))return true;}");
+        pool.get(gui + "ChatPanelComponent").getDeclaredMethod("addText", new CtClass[]{pool.get("java.lang.String"), pool.get("java.lang.String"),
+                CtClass.floatType, CtClass.floatType, CtClass.floatType, CtClass.booleanType})
+                .insertBefore("{if(" + runtime + "hiddenSkillTick($1,$2))return;}");
+        pool.get(gui + "ChatPanelComponent").getDeclaredMethod("addText", new CtClass[]{pool.get("java.lang.String"), pool.get("java.util.List"), CtClass.booleanType})
+                .insertBefore("{if(" + runtime + "hiddenSkillTickSegments($1,$2))return;}");
+    }
+
+    private static void installCharacterHooks(ClassPool pool) throws Exception {
+        CtClass character=pool.get("com.wurmonline.client.renderer.gui.PaperDollInventory");
+        String bridge="com.wurmonline.client.renderer.gui.HighResWindowIntegration.";
+        for(String method:new String[]{"getPositionX","getPositionY","getWoundPositionX","getWoundPositionY"})
+            character.getDeclaredMethod(method).insertBefore("{if("+bridge+"characterOwned(this))return "+bridge+"characterPosition(this,$1,"+method.endsWith("Y")+","+method.startsWith("getWound")+");}");
+        for(String method:new String[]{"getSlotNumberAt","getWoundButtonAt"})
+            character.getDeclaredMethod(method).insertBefore("{if("+bridge+"characterOwned(this))return "+bridge+"characterHit(this,$1,$2,"+method.startsWith("getWound")+");}");
+        character.getDeclaredMethod("checkIfClickedAtPlayer").insertBefore("{if("+bridge+"characterOwned(this))return "+bridge+"characterPlayerHit(this,$1,$2);}");
+        character.getDeclaredMethod("getWoundAt").insertBefore("{if("+bridge+"characterOwned(this))return "+bridge+"characterWoundAt(this,$1,$2);}");
+        character.getDeclaredMethod("leftPressed").insertAfter(bridge+"characterPressed(this,$1,$2);");
+        character.getDeclaredMethod("leftReleased").insertAfter(bridge+"characterReleased(this,$1,$2);");
+        for(String method:new String[]{"pick","rightPressed","leftPressed","getDraggableComponentAt","getInventoryMetaItemAt","itemDropped"})
+            character.getDeclaredMethod(method).insertBefore(bridge+"characterLayout(this);");
+        character.getDeclaredMethod("pick").insertBefore("{if("+bridge+"characterPick(this,$1,$2,$3))return;}");
     }
 
     private static void installResourceHook(ClassPool pool) throws Exception {

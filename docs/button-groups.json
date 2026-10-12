@@ -1,12 +1,337 @@
 {
-  "baseline": [1920, 1080],
-  "geometryPolicy": "Keep Healthbar and Select dimensions; Fighting HUD grows slightly to 676 x 282 for larger Special moves buttons; explicitly scale compact artwork",
-  "groups": [
-    {"id":"health.sleep-toggle","block":"sleep bonus action","members":["sleep-toggle"],"captionVariants":["Activate","Deactivate"],"density":"HIGH","family":"Alegreya Sans SC","height":14,"widths":[76],"captionRows":1,"typographicLevel":"compact-action","scale":0.5,"sharedFontSize":"largest supported size fitting both variants in Regular and Bold","baseline":"union of ink bounds across both variants and weights","overflow":"ellipsis with original caption in tooltip"},
-    {"id":"health.ride-action","block":"ride status row","members":["disembark"],"captionVariants":["Disembark"],"density":"HIGH","family":"Alegreya Sans SC","height":16,"widths":[76],"captionRows":1,"typographicLevel":"compact-action","scale":0.5,"sharedFontSize":"largest fitting supported size in both weights","baseline":"common ink bounds","overflow":"ellipsis with original caption in tooltip"},
-    {"id":"select.action-pages","block":"action shelf page control","members":["pager"],"density":"HIGH","family":"Alegreya Sans SC","height":28,"widths":[29],"captionRows":1,"typographicLevel":"compact-navigation","scale":0.5,"sharedFontSize":12,"baseline":"union of numeric caption ink bounds","overflow":"ellipsis with page count in tooltip"},
-    {"id":"fighting.target-action","block":"target portrait header","members":["no-target"],"captionVariants":["No target"],"density":"HIGH","family":"Alegreya Sans SC","height":19,"widths":[96],"captionRows":1,"typographicLevel":"compact-action","scale":0.5,"sharedFontSize":"largest fitting supported size in Regular and Bold","baseline":"common ink bounds","overflow":"ellipsis with original caption in tooltip"},
-    {"id":"fighting.focus-action","block":"combat focus","members":["combat-focus"],"captionVariants":["Combat focus"],"density":"HIGH","family":"Alegreya Sans SC","height":24,"widths":[126],"captionRows":1,"typographicLevel":"combat-action","scale":0.5,"sharedFontSize":"largest fitting supported size in Regular and Bold","baseline":"common ink bounds","overflow":"ellipsis with original caption in tooltip"}
+  "baseline": [
+    1920,
+    1080
   ],
-  "excluded": "Select actions/hotkey badges, pin/close, and native combat controls are icons or indicators, not captioned peer buttons. Native combat actions and tooltips remain native. Updater groups belong to the canonical reference."
+  "geometryPolicy": "Keep Healthbar and Select dimensions; Fighting HUD is 520 x 186 (49.3% less area), with readable 12/14 px text and vanilla-sized native combat controls; explicitly scale compact artwork",
+  "groups": [
+    {
+      "id": "character.equipment-actions",
+      "block": "Character footer under the central doll",
+      "members": ["Unequip all"],
+      "captionVariants": ["Unequip all"],
+      "density": "HIGH",
+      "family": "Alegreya Sans SC",
+      "height": 24,
+      "widths": [200],
+      "captionRows": 1,
+      "typographicLevel": "compact-action",
+      "scale": 1,
+      "sharedFontSize": "fixed nominal 16 px Compact preset",
+      "baseline": "UiCompactLayout group union of both weights",
+      "overflow": "Full concise translations fit, with the full native armor action in the hover",
+      "languages": ["en", "pt-BR", "de", "ru"]
+    },
+    {
+      "id": "character.view",
+      "block": "central character viewport",
+      "members": ["Model", "Body zones"],
+      "captionVariants": ["Model", "Body zones"],
+      "density": "HIGH",
+      "family": "Alegreya Sans SC",
+      "height": 28,
+      "widths": [125, 125],
+      "captionRows": 1,
+      "typographicLevel": "view-selector",
+      "scale": 1,
+      "sharedFontSize": "largest common supported size up to 18 px fitting both weights",
+      "baseline": "union of both captions and weights",
+      "overflow": "Full concise translations fit without per-button shrinking",
+      "languages": ["en", "pt-BR", "de", "ru"]
+    },
+    {
+      "id": "health.sleep-toggle",
+      "block": "sleep bonus action",
+      "members": [
+        "sleep-toggle"
+      ],
+      "captionVariants": [
+        "Activate",
+        "Deactivate"
+      ],
+      "density": "HIGH",
+      "family": "Alegreya Sans SC",
+      "height": 14,
+      "widths": [
+        76
+      ],
+      "captionRows": 1,
+      "typographicLevel": "compact-action",
+      "scale": 0.5,
+      "sharedFontSize": "largest supported size fitting both variants in Regular and Bold",
+      "baseline": "union of ink bounds across both variants and weights",
+      "overflow": "Full concise translations must fit; ask the user for any unresolved Russian wording",
+      "languages": [
+        "en",
+        "pt-BR",
+        "de",
+        "ru"
+      ],
+      "localizedCaptionVariants": {
+        "en": [
+          "Activate",
+          "Deactivate"
+        ],
+        "pt-BR": [
+          "Ativar",
+          "Desativar"
+        ],
+        "de": [
+          "Aktivieren",
+          "Deaktivieren"
+        ],
+        "ru": [
+          "Включить",
+          "Выключить"
+        ]
+      }
+    },
+    {
+      "id": "health.ride-action",
+      "block": "ride status row",
+      "members": [
+        "disembark"
+      ],
+      "captionVariants": [
+        "Disembark"
+      ],
+      "density": "HIGH",
+      "family": "Alegreya Sans SC",
+      "height": 16,
+      "widths": [
+        76
+      ],
+      "captionRows": 1,
+      "typographicLevel": "compact-action",
+      "scale": 0.5,
+      "sharedFontSize": "largest fitting supported size in both weights",
+      "baseline": "common ink bounds",
+      "overflow": "Full concise translations must fit; ask the user for any unresolved Russian wording",
+      "languages": [
+        "en",
+        "pt-BR",
+        "de",
+        "ru"
+      ],
+      "localizedCaptionVariants": {
+        "en": [
+          "Disembark"
+        ],
+        "pt-BR": [
+          "Descer"
+        ],
+        "de": [
+          "Absteigen"
+        ],
+        "ru": [
+          "Сойти"
+        ]
+      }
+    },
+    {
+      "id": "select.action-pages",
+      "block": "action shelf page control",
+      "members": [
+        "pager"
+      ],
+      "density": "HIGH",
+      "family": "Alegreya Sans SC",
+      "height": 28,
+      "widths": [
+        29
+      ],
+      "captionRows": 1,
+      "typographicLevel": "compact-navigation",
+      "scale": 0.5,
+      "sharedFontSize": 12,
+      "baseline": "union of numeric caption ink bounds",
+      "overflow": "Full concise translations must fit; ask the user for any unresolved Russian wording",
+      "languages": [
+        "en",
+        "pt-BR",
+        "de",
+        "ru"
+      ]
+    },
+    {
+      "id": "fighting.target-action",
+      "block": "target portrait header",
+      "members": [
+        "no-target"
+      ],
+      "captionVariants": [
+        "No target"
+      ],
+      "density": "HIGH",
+      "family": "Alegreya Sans SC",
+      "height": 20,
+      "widths": [
+        78
+      ],
+      "captionRows": 1,
+      "typographicLevel": "compact-action",
+      "scale": 0.5,
+      "sharedFontSize": "largest fitting supported size in Regular and Bold, capped at 14 px",
+      "baseline": "common ink bounds",
+      "overflow": "Full concise translations must fit; ask the user for any unresolved Russian wording",
+      "languages": [
+        "en",
+        "pt-BR",
+        "de",
+        "ru"
+      ],
+      "localizedCaptionVariants": {
+        "en": [
+          "No target"
+        ],
+        "pt-BR": [
+          "Sem alvo"
+        ],
+        "de": [
+          "Kein Ziel"
+        ],
+        "ru": [
+          "Без цели"
+        ]
+      }
+    },
+    {
+      "id": "fighting.focus-action",
+      "block": "combat focus",
+      "members": [
+        "combat-focus"
+      ],
+      "captionVariants": [
+        "Combat focus"
+      ],
+      "density": "HIGH",
+      "family": "Alegreya Sans SC",
+      "height": 20,
+      "widths": [
+        96
+      ],
+      "captionRows": 1,
+      "typographicLevel": "combat-action",
+      "scale": 0.5,
+      "sharedFontSize": "largest fitting supported size in Regular and Bold, capped at 14 px",
+      "baseline": "common ink bounds",
+      "overflow": "Full concise translations must fit; ask the user for any unresolved Russian wording",
+      "languages": [
+        "en",
+        "pt-BR",
+        "de",
+        "ru"
+      ],
+      "localizedCaptionVariants": {
+        "en": [
+          "Combat focus"
+        ],
+        "pt-BR": [
+          "Foco"
+        ],
+        "de": [
+          "Fokus"
+        ],
+        "ru": [
+          "Фокус"
+        ]
+      }
+    },
+    {
+      "widths": "48..220 px, close to native widths, reserved sloped edges and 15% overlap",
+      "overflow": "Wrap native order into additional 21 px rows; reflow on width/membership/locale changes; one shared caption group across all rows; full caption hint",
+      "sharedFontSize": "14 px, UiCompactLayout.group with Compact preset at scale 0.875",
+      "density": "HIGH",
+      "typographicLevel": "channel-navigation",
+      "captionRows": 1,
+      "block": "chat channel strip",
+      "members": [
+        "all native channels across every wrapped row"
+      ],
+      "id": "chat.channels",
+      "family": "Alegreya Sans SC",
+      "baseline": "shared union of source captions in both weights",
+      "height": 21
+    },
+    {
+      "overflow": "Wrap native order into additional 21 px rows; reflow on width/membership/locale changes; one shared caption group across all rows; full caption hint",
+      "sharedFontSize": "14 px, UiCompactLayout.group with Compact preset at scale 0.875",
+      "density": "HIGH",
+      "typographicLevel": "channel-navigation",
+      "captionRows": 1,
+      "block": "event channel strip",
+      "members": [
+        "all native event/combat/skill log tabs"
+      ],
+      "id": "events.channels",
+      "family": "Alegreya Sans SC",
+      "baseline": "shared union of source captions in both weights",
+      "height": 21
+    },
+    {
+      "overflow": "fixed trailing indicator slot, ellipsis and full translated hover hint",
+      "sharedFontSize": 14,
+      "density": "HIGH",
+      "typographicLevel": "table-heading",
+      "captionRows": 1,
+      "block": "single framed native inventory/container table header; retain column widths",
+      "members": [
+        "Name",
+        "QL",
+        "DMG",
+        "Weight or Volume",
+        "optional Price",
+        "m (full material type hover)"
+      ],
+      "id": "inventory.column-headings",
+      "family": "Alegreya Sans SC Bold",
+      "baseline": 19,
+      "height": 28
+    },
+    {
+      "id": "friends.column-headings",
+      "block": "single framed native Friends table header; retain column widths",
+      "members": ["Name", "Status"],
+      "family": "Alegreya Sans SC Bold",
+      "density": "HIGH",
+      "typographicLevel": "table-heading",
+      "captionRows": 1,
+      "sharedFontSize": 14,
+      "baseline": 16,
+      "height": 21,
+      "overflow": "fixed trailing indicator slot, ellipsis and full translated hover hint"
+    },
+    {
+      "id": "skills.context-detail",
+      "block": "Skills native tab context menu extension",
+      "members": ["Change detalization level"],
+      "family": "Alegreya Sans SC",
+      "density": "HIGH",
+      "typographicLevel": "compact-menu-action",
+      "captionRows": 1,
+      "sharedFontSize": 14,
+      "height": 21,
+      "scale": 0.875,
+      "baseline": "UiCompactLayout singleton union of both weights",
+      "widths": "natural measured width, at least 120 px",
+      "overflow": "Grow width; full translated caption and hint"
+    },
+    {
+      "id": "skills.detail-actions",
+      "block": "minimum skill tick dialog footer",
+      "members": ["Apply", "Cancel"],
+      "family": "Alegreya Sans SC",
+      "density": "HIGH",
+      "typographicLevel": "compact-dialog-action",
+      "captionRows": 1,
+      "sharedFontSize": 14,
+      "height": 21,
+      "scale": 0.875,
+      "baseline": "UiCompactLayout.group union of both weights",
+      "widths": [120, 120],
+      "overflow": "Fixed-width approved ellipsis with full translated hint",
+      "languages": ["en", "pt-BR", "de", "ru"]
+    }
+  ],
+  "excluded": "Select actions/hotkey badges, pin/close, and native combat controls are icons or indicators, not captioned peer buttons. Native combat actions and tooltips remain native. Data typography uses shared original-case Alegreya Sans Regular/Bold (14 px lists, 16 px message text); editor fonts retain native caret/clipboard metrics. Updater groups belong to the canonical reference."
 }

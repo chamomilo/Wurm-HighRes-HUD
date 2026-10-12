@@ -11,7 +11,7 @@ public final class ActionTooltip {
         if (!atlas.isEmpty()) return atlas;
         String server = clean(serverName);
         if (!server.isEmpty()) return server;
-        return "Action " + actionId;
+        return org.highreshud.client.i18n.HudMessages.tr("Action {0}", actionId);
     }
 
     private static String clean(String value) {

@@ -7,13 +7,17 @@ import org.chamomilo.wurm.ui.v1.UiButtonLayout;
 import org.chamomilo.wurm.ui.v1.UiDensity;
 import org.chamomilo.wurm.ui.v1.UiScale;
 import org.chamomilo.wurm.ui.v1.UiTypography;
+import org.highreshud.client.i18n.HudMessages;
 
 /** One size and ink baseline across every known state/peer, including hover. */
 public final class HudCaptionGroup {
-    public final int fontPixels, baseline;
+    public int fontPixels, baseline;
     public final UiScale scale;
     public final UiDensity density = UiDensity.HIGH;
     private final Map<String, String> captions = new LinkedHashMap<>();
+    private final int width, height, ceiling;
+    private final String[] variants;
+    private long languageRevision = -1;
 
     public HudCaptionGroup(int width, int height, UiScale scale, String... variants) {
         this(width, height, scale, 128, variants);
@@ -22,10 +26,18 @@ public final class HudCaptionGroup {
     public HudCaptionGroup(int width, int height, UiScale scale, int ceiling, String... variants) {
         if (variants.length == 0) throw new IllegalArgumentException("Empty typography group");
         this.scale = scale;
+        this.width = width; this.height = height; this.ceiling = ceiling;
+        this.variants = variants.clone();
+        refreshLanguage();
+    }
+
+    public void refreshLanguage() {
+        if (languageRevision == HudMessages.revision()) return;
+        captions.clear();
         int limit = ceiling;
         // Use the SDK's density, outer-edge and readable-floor policy first.
         for (String value : variants) {
-            UiButtonLayout fit = UiButtonLayout.fit(new String[]{value}, width, height, density, scale, true);
+            UiButtonLayout fit = UiButtonLayout.fit(new String[]{HudMessages.tr(value)}, width, height, density, scale, true);
             limit = Math.min(limit, fit.fontPixels);
             captions.put(value, fit.rows()[0]);
         }
@@ -49,6 +61,7 @@ public final class HudCaptionGroup {
         }
         fontPixels = chosen;
         baseline = (height - (bottom - top)) / 2 - top;
+        languageRevision = HudMessages.revision();
     }
 
     private int extent(String value, int size, boolean bold) {
@@ -57,6 +70,7 @@ public final class HudCaptionGroup {
     }
 
     public String caption(String original) {
+        refreshLanguage();
         String value = captions.get(original);
         if (value == null) throw new IllegalArgumentException("Unmeasured caption: " + original);
         return value;

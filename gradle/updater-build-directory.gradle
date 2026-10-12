@@ -1,0 +1,4 @@
+gradle.beforeProject { project ->
+    def isolated = gradle.startParameter.projectProperties['highResUpdaterBuildDir']
+    if (isolated && project == project.rootProject) project.buildDir = new File(isolated)
+}

@@ -1,0 +1,378 @@
+# English	pt-BR	de	ru
+filter area	Área de filtro	Filterbereich	Область фильтра
+Material type	Tipo de material	Materialtyp	Тип материала
+Item material type	Tipo de material do item	Materialtyp des Gegenstands	Тип материала предмета
+Previous wounds	Ferimentos anteriores	Vorherige Wunden	Предыдущие повреждения
+Next wounds	Próximos ferimentos	Weitere Wunden	Следующие повреждения
+Character	Personagem	Charakter	Персонаж
+Model	Modelo	Modell	Кукла
+Body zones	Zonas do corpo	Körperzonen	Зоны тела
+Unequip all	Desequipar tudo	Alles ablegen	Снять всё
+Unequip all armor	Remover toda a armadura	Gesamte Rüstung ablegen	Снять всю броню
+Head	Cabeça	Kopf	Голова
+Torso	Tronco	Rumpf	Торс
+Legs	Pernas	Beine	Ноги
+Left arm	Braço esquerdo	Linker Arm	Левая рука
+Right arm	Braço direito	Rechter Arm	Правая рука
+Left hand	Mão esquerda	Linke Hand	Левая кисть
+Right hand	Mão direita	Rechte Hand	Правая кисть
+Left foot	Pé esquerdo	Linker Fuß	Левая стопа
+Right foot	Pé direito	Rechter Fuß	Правая стопа
+Face	Rosto	Gesicht	Лицо
+Body	Corpo	Körper	Тело
+Active hand	Mão ativa	Aktive Hand	Активная рука
+Wounds	Ferimentos	Wunden	Раны
+Wounds: {0}	Ferimentos: {0}	Wunden: {0}	Раны: {0}
+Damage: {0}%	Dano: {0}%	Schaden: {0}%	Повреждения: {0}%
+Bandaged	Enfaixado	Verbunden	Перевязана
+Treated	Tratado	Behandelt	Обработана
+Reset rotation	Redefinir rotação	Drehung zurücksetzen	Сбросить поворот
+Drag to rotate	Arraste para girar	Zum Drehen ziehen	Тяните для вращения
+Healthy → Critical	Saudável → Crítico	Gesund → Kritisch	Здоров → Критично
+Insert here	Inserir aqui	Hier einfügen	Вставить здесь
+Put inside	Colocar dentro	Hineinlegen	Положить внутрь
+Move here	Mover para cá	Hierher verschieben	Переместить сюда
+Cannot move here	Não é possível mover aqui	Hierher nicht möglich	Нельзя переместить сюда
+Activate	Ativar	Aktivieren	Включить
+Deactivate	Desativar	Deaktivieren	Выключить
+Disembark	Descer	Absteigen	Сойти
+No target	Sem alvo	Kein Ziel	Без цели
+Combat focus	Foco	Fokus	Фокус
+Stamina / HP	Vigor / PV	Ausdauer / LP	Выносл. / ОЗ
+Water	Água	Wasser	Вода
+Food	Comida	Nahrung	Еда
+Calories	Calorias	Kalorien	Калории
+Carbs	Carboidr.	Kohlenh.	Углев.
+Carbohydrates	Carboidratos	Kohlenhydrate	Углеводы
+Fats	Gorduras	Fette	Жиры
+Proteins	Proteínas	Proteine	Белки
+Prot.	Prot.	Prot.	Белки
+Sleep bonus: ON	Bônus de sono: ON	Schlafbonus: AN	Бонус сна: ВКЛ
+Sleep bonus: OFF	Bônus de sono: OFF	Schlafbonus: AUS	Бонус сна: ВЫКЛ
+Favor	Favor	Gunst	Благодать
+Fatigue:	Fadiga:	Erschöpf.:	Усталость:
+Speed:	Veloc.:	Tempo:	Скорость:
+Options	Opções	Optionen	Настройки
+Toggle name display	Mostrar/ocultar nome	Namen ein-/ausblenden	Показать/скрыть имя
+Toggle number values	Mostrar/ocultar valores	Werte ein-/ausblenden	Показать/скрыть числа
+Titles: ON	Títulos: ON	Titel: AN	Титулы: ВКЛ
+Titles: OFF	Títulos: OFF	Titel: AUS	Титулы: ВЫКЛ
+Show hitched animals: ON	Animais atrelados: ON	Zugtiere: AN	Упряжные животные: ВКЛ
+Show hitched animals: OFF	Animais atrelados: OFF	Zugtiere: AUS	Упряжные животные: ВЫКЛ
+Ride: ON	Montaria: ON	Reittier: AN	Транспорт: ВКЛ
+Ride: OFF	Montaria: OFF	Reittier: AUS	Транспорт: ВЫКЛ
+Riding 	Montado em 	Auf 	Верхом на 
+mount	montaria	Reittier	ездовое животное
+  Health: 	  Vida: 	  Gesundheit: 	  Здоровье: 
+  QL 	  QL 	  QL 	  Кач. 
+, Dam 	, Dano 	, Schaden 	, Урон 
+Health: 	Vida: 	Gesundheit: 	Здоровье: 
+Water: 	Água: 	Wasser: 	Вода: 
+Food: 	Comida: 	Nahrung: 	Еда: 
+Water usage: 	Consumo de água: 	Wasserverbrauch: 	Расход воды: 
+Food usage: 	Consumo de comida: 	Nahrungsverbrauch: 	Расход еды: 
+% from Carbs 	% por carboidratos 	% durch Kohlenhydrate 	% от углеводов 
+% from Proteins 	% por proteínas 	% durch Proteine 	% от белков 
+Stamina regeneration modifier: x	Modificador de recuperação de vigor: x	Ausdauerregenerationsfaktor: x	Множитель восстановления выносливости: x
+Server formula: hydration cubed	Fórmula do servidor: hidratação ao cubo	Serverformel: Flüssigkeitsstand hoch drei	Формула сервера: уровень воды в кубе
+Heavy work: 	Trabalho pesado: 	Schwere Arbeit: 	Тяжёлая работа: 
+available	disponível	verfügbar	доступна
+blocked	bloqueado	gesperrt	недоступна
+Nutrition: 	Nutrição: 	Nährwert: 	Питательность: 
+Skill-gain bonus: +	Bônus de ganho de habilidade: +	Bonus auf Fertigkeitszuwachs: +	Бонус роста навыков: +
+Natural healing: bonus active	Cura natural: bônus ativo	Natürliche Heilung: Bonus aktiv	Естественное лечение: бонус активен
+Natural healing: bonus starts above 60%	Cura natural: bônus acima de 60%	Natürliche Heilung: Bonus über 60%	Естественное лечение: бонус выше 60%
+Sleep bonus: 	Bônus de sono: 	Schlafbonus: 	Бонус сна: 
+Active (ON)	Ativo (ON)	Aktiv (AN)	Активен (ВКЛ)
+Inactive (OFF)	Inativo (OFF)	Inaktiv (AUS)	Неактивен (ВЫКЛ)
+Skill gain: 	Ganho de habilidade: 	Fertigkeitszuwachs: 	Рост навыков: 
+x1 (bonus OFF)	x1 (bônus OFF)	x1 (Bonus AUS)	x1 (бонус ВЫКЛ)
+Stamina regeneration: 	Recuperação de vigor: 	Ausdauerregeneration: 	Восстановление выносливости: 
+Sleep consumption: 	Consumo de sono: 	Schlafbonusverbrauch: 	Расход бонуса сна: 
+% from Fats 	% por gorduras 	% durch Fette 	% от жиров 
+Sleep consumption: 100%	Consumo de sono: 100%	Schlafbonusverbrauch: 100%	Расход бонуса сна: 100%
+Sleep consumption: paused	Consumo de sono: pausado	Schlafbonusverbrauch: pausiert	Расход бонуса сна: приостановлен
+Next activation: 	Próxima ativação: 	Nächste Aktivierung: 	Следующее включение: 
+Activate unavailable: no stored sleep bonus	Não é possível ativar: sem bônus de sono acumulado	Aktivierung gesperrt: kein angesparter Schlafbonus	Включение недоступно: бонус сна не накоплен
+Activate unavailable until cooldown expires	Ativação indisponível até o fim da espera	Aktivierung erst nach Ablauf der Wartezeit	Включение недоступно до конца перезарядки
+Left-click {0} to toggle (/fsleep)	Clique em {0} para alternar (/fsleep)	Zum Umschalten auf {0} klicken (/fsleep)	Нажмите «{0}» для переключения (/fsleep)
+Favor: 	Favor: 	Gunst: 	Благодать: 
+Faith: 	Fé: 	Glaube: 	Вера: 
+Favor regeneration from Fats: 	Recuperação de favor por gorduras: 	Gunstregeneration durch Fette: 	Восстановление благодати от жиров: 
+% at Fats 	% com gorduras 	% bei Fetten 	% при уровне жиров 
+Hitched creature: 	Animal atrelado: 	Zugtier: 	Упряжное животное: 
+Hitched creature health: 	Vida do animal atrelado: 	Gesundheit des Zugtiers: 	Здоровье упряжного животного: 
+Mount health: 	Vida da montaria: 	Gesundheit des Reittiers: 	Здоровье ездового животного: 
+Frames per second: 	Quadros por segundo: 	Bilder pro Sekunde: 	Кадров в секунду: 
+Speed: 	Velocidade: 	Geschwindigkeit: 	Скорость: 
+Sorcery title: 	Título de feitiçaria: 	Zaubereititel: 	Титул колдовства: 
+Meditation title: 	Título de meditação: 	Meditationstitel: 	Титул медитации: 
+ (usage -	 (consumo -	 (Verbrauch -	 (расход -
+% from Carbs)	% por carboidratos)	% durch Kohlenhydrate)	% от углеводов)
+% from Proteins), Nutrition: 	% por proteínas), nutrição: 	% durch Proteine), Nährwert: 	% от белков), питательность: 
+, Nutrition: 	, nutrição: 	, Nährwert: 	, питательность: 
+Calories: 	Calorias: 	Kalorien: 	Калории: 
+, Carbs: 	, carboidratos: 	, Kohlenhydrate: 	, углеводы: 
+Fats: 	Gorduras: 	Fette: 	Жиры: 
+, Proteins: 	, proteínas: 	, Proteine: 	, белки: 
+ ON	 ON	 AN	 ВКЛ
+ OFF	 OFF	 AUS	 ВЫКЛ
+ (consumption -	 (consumo -	 (Verbrauch -	 (расход -
+% from Fats)	% por gorduras)	% durch Fette)	% от жиров)
+, Faith: 	, fé: 	, Glaube: 	, вера: 
+ (regeneration +	 (recuperação +	 (Regeneration +	 (восстановление +
+Stamina: 	Vigor: 	Ausdauer: 	Выносливость: 
+Stamina drain: -	Consumo de vigor: -	Ausdauerverbrauch: -	Расход выносливости: -
+% (Calories)	% (calorias)	% (Kalorien)	% (калории)
+% of base (Water -	% da base (água -	% des Basiswerts (Wasser -	% от базового (вода -
+%, Food -	%, comida -	%, Nahrung -	%, еда -
+, Sleep x3	, sono x3	, Schlafbonus x3	, сон x3
+Effect: reduces stamina drain	Efeito: reduz o consumo de vigor	Effekt: senkt den Ausdauerverbrauch	Эффект: снижает расход выносливости
+Current modifier: x	Modificador atual: x	Aktueller Faktor: x	Текущий множитель: x
+Effect: reduces water usage	Efeito: reduz o consumo de água	Effekt: senkt den Wasserverbrauch	Эффект: снижает расход воды
+Favor regeneration: x	Recuperação de favor: x	Gunstregeneration: x	Восстановление благодати: x
+Sleep consumption: x	Consumo de sono: x	Schlafbonusverbrauch: x	Расход бонуса сна: x
+Effect: reduces food usage	Efeito: reduz o consumo de comida	Effekt: senkt den Nahrungsverbrauch	Эффект: снижает расход еды
+Nothing	Nada	Nichts	Ничего
+selected	selecionado	ausgewählt	не выбрано
+Distance:	Distância:	Entfernung:	Расстояние:
+Distance: 	Distância: 	Entfernung: 	Расстояние: 
+ m	 m	 m	 м
+High res select bar	Barra de seleção	Auswahlleiste	Панель выбора
+Hide action hotkeys	Ocultar atalhos de ações	Aktionskürzel ausblenden	Скрыть клавиши действий
+Show action hotkeys	Mostrar atalhos de ações	Aktionskürzel einblenden	Показать клавиши действий
+Distance: ON	Distância: ON	Entfernung: AN	Расстояние: ВКЛ
+Distance: OFF	Distância: OFF	Entfernung: AUS	Расстояние: ВЫКЛ
+Resume portrait motion	Retomar movimento do retrato	Porträtbewegung fortsetzen	Продолжить движение портрета
+Pin: ON — Select Bar stays open	Fixar: ON — a barra fica aberta	Anheften: AN — Auswahlleiste bleibt offen	Закреплено — панель остаётся открытой
+Pin: OFF — closes 5 seconds after pointer leaves	Fixar: OFF — fecha 5 segundos após sair com o cursor	Anheften: AUS — schließt 5 Sekunden nach Verlassen	Не закреплено — закрывается через 5 секунд без курсора
+Deselect and close	Desmarcar e fechar	Abwählen und schließen	Снять выделение и закрыть
+Remove Waypointer mark for selected object	Remover marca do Waypointer do objeto	Waypointer-Markierung des Objekts entfernen	Удалить метку Waypointer у объекта
+Add 15-minute Waypointer mark for selected object	Marcar objeto no Waypointer por 15 minutos	Objekt für 15 Minuten in Waypointer markieren	Отметить объект в Waypointer на 15 минут
+Inspect selected object	Examinar objeto selecionado	Ausgewähltes Objekt untersuchen	Осмотреть выбранный объект
+Selected portrait: drag to rotate, wheel to zoom	Retrato: arraste para girar, use a roda para ampliar	Porträt: ziehen zum Drehen, Mausrad zum Zoomen	Портрет: перетаскивание — поворот, колесо — масштаб
+Right-click for the native object menu	Clique direito para o menu do objeto	Rechtsklick für das Objektmenü	Правая кнопка — меню объекта
+More Select actions: click or use the mouse wheel	Mais ações: clique ou use a roda do mouse	Weitere Aktionen: klicken oder Mausrad verwenden	Другие действия: нажмите или прокрутите колесо
+Hotkey: 	Atalho: 	Tastenkürzel: 	Клавиша: 
+Distance unavailable	Distância indisponível	Entfernung nicht verfügbar	Расстояние недоступно
+Nothing selected	Nada selecionado	Nichts ausgewählt	Ничего не выбрано
+Action {0}	Ação {0}	Aktion {0}	Действие {0}
+QL {0} · Dam {1}	QL {0} · Dano {1}	QL {0} · Schaden {1}	Кч {0} · Пвр {1}
+Butchered	Esquartejado	Zerlegt	Разделан
+Whole	Inteiro	Ganz	Не разделан
+Extremely loyal	Extremamente leal	Sehr treu	Очень предан
+Trusting	Confiante	Zutraulich	Доверчив
+Loyal	Leal	Treu	Предан
+Tame	Manso	Zahm	Приручён
+Calm	Calmo	Ruhig	Спокоен
+Submissive	Submisso	Unterwürfig	Покорен
+Nervous	Nervoso	Nervös	Нервничает
+Upset	Agitado	Aufgebracht	Расстроен
+Unlit	Apagado	Unentzündet	Не горит
+Smoking	Soltando fumaça	Rauchend	Дымится
+Embers	Brasas	Glutreste	Тлеет
+Glowing coals	Carvões incandescentes	Glühende Kohlen	Тлеющие угли
+Hot coals	Carvões quentes	Heiße Kohlen	Горячие угли
+Dying flames	Chamas baixas	Erlöschende Flammen	Пламя угасает
+Fading	Enfraquecendo	Abklingend	Угасает
+Wild flames	Chamas intensas	Lodernde Flammen	Сильное пламя
+Long burn	Queima duradoura	Lange Brenndauer	Долго горит
+Glowing	Incandescente	Glühend	Раскалён
+Searing	Escaldante	Sengend heiß	Очень горячий
+Boiling	Fervendo	Kochend	Кипит
+Hot	Quente	Heiß	Горячий
+Warm	Morno	Warm	Тёплый
+Frozen	Congelado	Gefroren	Замёрз
+Unlocked	Destrancado	Unverschlossen	Не заперт
+Locked	Trancado	Verschlossen	Заперт
+Sealed	Lacrado	Versiegelt	Опечатан
+Pregnant ~{0}d	Prenhe ~{0}d	Trächtig ~{0}T	Беременна ~{0}д
+Ungroomed	Sem escovação	Ungepflegt	Не ухожен
+Care 	Cuidador: 	Pflege: 	Уход: 
+Brand 	Marca: 	Brandzeichen: 	Клеймо: 
+Owner 	Dono: 	Besitzer: 	Владелец: 
+Rune: 	Runa: 	Rune: 	Руна: 
+Secured	Fixado	Befestigt	Закреплён
+No combat target	Sem alvo de combate	Kein Kampfziel	Нет боевой цели
+Focus 	Foco 	Fokus 	Фокус 
+TARGET ANALYSIS	ANÁLISE DO ALVO	ZIELANALYSE	АНАЛИЗ ЦЕЛИ
+Select a creature to build its model	Selecione uma criatura para analisá-la	Kreatur zur Analyse auswählen	Выберите существо для анализа
+KNOWLEDGE 	CONHECIMENTO 	KENNTNIS 	ИЗУЧЕНО 
+%  ·  KILLS 	%  ·  ABATES 	%  ·  SIEGE 	%  ·  УБИЙСТВА 
+  ·  SAMPLES 	  ·  AMOSTRAS 	  ·  PROBEN 	  ·  ВЫБОРКА 
+Hit 	Acerto 	Treffer 	Попадание 
+  Parry 	  Aparar 	  Parade 	  Парирование 
+Glance 	Raspão 	Streiftreffer 	Скользящий удар 
+  Dmg index avg/max 	  Dano méd/máx 	  Schaden Ø/max 	  Урон ср/макс 
+BEST — no attack available	MELHOR — ataque indisponível	BESTE — kein Angriff verfügbar	ЛУЧШЕЕ — нет доступных атак
+BEST 	MELHOR 	BESTE 	ЛУЧШЕЕ 
+Enemy stance 	Postura inimiga 	Gegnerhaltung 	Стойка врага 
+  ·  incoming 	  ·  recebido 	  ·  eingehend 	  ·  входящий 
+Shield 	Escudo 	Schild 	Щит 
+Shield not equipped	Sem escudo equipado	Kein Schild ausgerüstet	Щит не экипирован
+ATTACK ZONE	ZONA DE ATAQUE	ANGRIFFSZONE	ЗОНА АТАКИ
+MODE	MODO	MODUS	РЕЖИМ
+POSITION	POSIÇÃO	POSITION	ПОЗИЦИЯ
+SPECIAL MOVES	GOLPES ESPECIAIS	SPEZIALANGRIFFE	ОСОБЫЕ ПРИЁМЫ
+Distance	Distância	Abstand	Дист.
+Footing	Equilíbrio	Stand	Опора
+Combat controls unavailable	Controles de combate indisponíveis	Kampfsteuerung nicht verfügbar	Управление боем недоступно
+Shield bash: shield attack; server controls readiness.	Golpe de escudo: o servidor controla a disponibilidade.	Schildstoß: Verfügbarkeit wird vom Server bestimmt.	Удар щитом: готовность определяется сервером.
+Weapon special move: unlocked by the server during combat.	Golpe especial de arma: liberado pelo servidor em combate.	Waffenspezialangriff: im Kampf vom Server freigegeben.	Особый приём оружия: открывается сервером в бою.
+Ready	Pronto	Bereit	Готово
+Unavailable: shield missing, cooldown, or combat state.	Indisponível: sem escudo, em espera ou pelo estado do combate.	Nicht verfügbar: kein Schild, Abklingzeit oder Kampfzustand.	Недоступно: нет щита, перезарядка или состояние боя.
+Unavailable until the server grants this move.	Indisponível até o servidor liberar o golpe.	Nicht verfügbar, bis der Server den Angriff freigibt.	Недоступно, пока сервер не откроет приём.
+Position indicator: relative weapon range, not an action.	Indicador de posição: alcance relativo da arma.	Positionsanzeige: relative Waffenreichweite.	Индикатор позиции: относительная дальность оружия.
+Position indicator: terrain and balance advantage, not an action.	Indicador de posição: vantagem de terreno e equilíbrio.	Positionsanzeige: Gelände- und Gleichgewichtsvorteil.	Индикатор позиции: преимущество рельефа и равновесия.
+Clear the current combat target	Limpar alvo de combate	Aktuelles Kampfziel abwählen	Снять текущую боевую цель
+Combat focus level 	Nível de foco de combate 	Kampffokus-Stufe 	Уровень боевого фокуса 
+~ marks estimated initial engagement; the server decides whether the attempt succeeds.	~ indica uma estimativa de engajamento; o servidor decide se a tentativa funciona.	~ markiert die geschätzte Kampfbereitschaft; der Server entscheidet über den Erfolg.	~ отмечает оценку вовлечённости; успех попытки определяет сервер.
+Manual combat controls required. Focusing temporarily stops weapon attacks.	É necessário combate manual. O foco interrompe temporariamente os ataques.	Manuelle Kampfsteuerung erforderlich. Fokussieren unterbricht Waffenangriffe kurzzeitig.	Нужно ручное управление боем. Фокус временно останавливает атаки оружием.
+Target portrait: drag to rotate, wheel to zoom	Retrato do alvo: arraste para girar, roda para ampliar	Zielporträt: ziehen zum Drehen, Mausrad zum Zoomen	Портрет цели: перетаскивание — поворот, колесо — масштаб
+Double-click to clear target	Clique duplo para limpar o alvo	Doppelklick zum Abwählen des Ziels	Двойной щелчок — снять цель
+Right-click for the native target menu	Clique direito para o menu do alvo	Rechtsklick für das Zielmenü	Правая кнопка — меню цели
+Statistics are learned per server, character, and creature type	As estatísticas são aprendidas por servidor, personagem e tipo de criatura	Statistiken werden je Server, Charakter und Kreaturentyp erlernt	Статистика собирается отдельно для сервера, персонажа и типа существа
+Ranges are 95% confidence intervals	As faixas são intervalos de confiança de 95%	Bereiche sind 95%-Konfidenzintervalle	Диапазоны — 95%-е доверительные интервалы
+Damage index is inferred from combat text	O índice de dano é estimado pelo texto de combate	Schadensindex wird aus Kampftexten geschätzt	Индекс урона оценивается по сообщениям боя
+highres-Fighting HUD	HUD de combate	Kampf-HUD	Боевая панель
+weapon unknown	arma desconhecida	Waffe unbekannt	оружие неизвестно
+HIGH LEFT	ALTO ESQ.	OBEN LINKS	СЛЕВА ВВЕРХУ
+HIGH	ALTO	OBEN	ВВЕРХУ
+HIGH RIGHT	ALTO DIR.	OBEN RECHTS	СПРАВА ВВЕРХУ
+LEFT	ESQUERDA	LINKS	СЛЕВА
+CENTER	CENTRO	MITTE	ЦЕНТР
+RIGHT	DIREITA	RECHTS	СПРАВА
+LOW LEFT	BAIXO ESQ.	UNTEN LINKS	СЛЕВА ВНИЗУ
+LOW	BAIXO	UNTEN	ВНИЗУ
+LOW RIGHT	BAIXO DIR.	UNTEN RECHTS	СПРАВА ВНИЗУ
+Not in combat	Fora de combate	Nicht im Kampf	Вне боя
+Stunned	Atordoado	Betäubt	Оглушён
+On the ground	No chão	Am Boden	На земле
+Imbalanced	Sem equilíbrio	Aus dem Gleichgewicht	Потеря равновесия
+Maximum focus	Foco máximo	Maximaler Fokus	Максимальный фокус
+Focusing...	Concentrando...	Fokussieren...	Фокусирование...
+Request sent	Pedido enviado	Anfrage gesendet	Запрос отправлен
+Unavailable	Indisponível	Nicht verfügbar	Недоступно
+Ready to try	Pronto para tentar	Versuch bereit	Можно пробовать
+Ready to try ~	Pronto para tentar ~	Versuch bereit ~	Можно пробовать ~
+Engaging ~{0}/3	Engajando ~{0}/3	Einstieg ~{0}/3	Вовлечение ~{0}/3
+Friendly	Amigável	Freundlich	Дружелюбный
+Neutral	Neutro	Neutral	Нейтральный
+Hostile	Hostil	Feindlich	Враждебный
+unknown	desconhecido	unbekannt	неизвестно
+BITE	MORDIDA	BISS	УКУС
+SLASH	CORTE	SCHNITT	РЕЖУЩИЙ
+PIERCE	PERFURAÇÃO	STICH	КОЛЮЩИЙ
+CRUSH	ESMAGAMENTO	WUCHT	ДРОБЯЩИЙ
+BURN	QUEIMADURA	BRAND	ОЖОГ
+COLD	FRIO	KÄLTE	ХОЛОД
+ACID	ÁCIDO	SÄURE	КИСЛОТА
+POISON	VENENO	GIFT	ЯД
+INTERNAL	INTERNO	INTERN	ВНУТРЕННИЙ
+UNKNOWN	DESCONHECIDO	UNBEKANNT	НЕИЗВЕСТНО
+
+Ally	Aliado	Verbündet	Союзник
+Evil	Maligno	Böse	Злой
+Good	Bom	Gut	Добрый
+Developer	Desenvolvedor	Entwickler	Разработчик
+Friend	Amigo	Freund	Друг
+Remaining fatigue: waiting for server	Fadiga restante: aguardando servidor	Verbleibende Ausdauerzeit: warte auf Server	Осталось времени активности: ожидание сервера
+Remaining fatigue: 	Fadiga restante: 	Verbleibende Ausdauerzeit: 	Осталось времени активности: 
+ rarity 	 raridade 	 Seltenheit 	 редк. 
+ effects 	 efeitos 	 Effekte 	 эфф. 
+ QL 	 QL 	 QL 	 кач. 
+bite	mordida	biss	укус
+slash	corte	schnitt	режущий
+pierce	perfuração	stich	колющий
+crush	esmagamento	wucht	дробящий
+burn	queimadura	brand	ожог
+cold	frio	kälte	холод
+acid	ácido	säure	кислота
+poison	veneno	gift	яд
+internal	interno	intern	внутренний
+Hit {0} · Parry {1} · Glance {2}	Acerto {0} · Aparo {1} · Raspão {2}	Treffer {0} · Parade {1} · Streifer {2}	Попад. {0} · Парир. {1} · Скольз. {2}
+Study {0}% · Kills {1} · Samples {2}/{3}	Estudo {0}% · Abates {1} · Amostras {2}/{3}	Kenntnis {0}% · Siege {1} · Proben {2}/{3}	Изучено {0}% · Убийств {1} · Выборок {2}/{3}
+Damage {0}/{1} · {2}	Dano {0}/{1} · {2}	Schaden {0}/{1} · {2}	Урон {0}/{1} · {2}
+Inventory	Inventário	Inventar	Инвентарь
+Chat	Chat	Chat	Чат
+Events	Eventos	Ereignisse	События
+Event	Evento	Ereignis	События
+Local	Local	Lokal	Локальный
+Global	Global	Global	Общий
+Trade	Comércio	Handel	Торговля
+Recruit	Recrutamento	Rekrutierung	Набор
+Info	Info	Info	Инфо
+Infos	Infos	Infos	Инфо
+Friends	Amigos	Freunde	Друзья
+Status	Status	Status	Статус
+backpack	mochila	Rucksack	Рюкзак
+quiver	aljava	Köcher	Колчан
+vehicle hold	porão do veículo	Fahrzeugladeraum	Грузовой отсек
+Activated: {0}	Ativado: {0}	Aktiviert: {0}	Активирован: {0}
+None	Nenhum	Keiner	Нет
+Change detalization level	Alterar nível de detalhe	Detailstufe ändern	Изменить детализацию
+Skill detail level	Detalhes das habilidades	Fertigkeitsdetails	Детализация навыков
+Minimum skill tick	Aumento mínimo de habilidade	Minimale Fertigkeitsänderung	Минимальное изменение навыка
+All	Todos	Alle	Все
+Apply	Aplicar	Anwenden	Применить
+Cancel	Cancelar	Abbrechen	Отмена
+Alliance	Aliança	Allianz	Альянс
+Village	Vila	Dorf	Поселение
+Kingdom	Reino	Königreich	Королевство
+Skills	Habilidades	Fertigkeiten	Навыки
+Combat	Combate	Kampf	Бой
+Name	Nome	Name	Название
+Weight	Peso	Gewicht	Вес
+Volume	Volume	Volumen	Объём
+Price	Preço	Preis	Цена
+QL	QL	QL	Кч
+DMG	Dano	Schaden	Пвр
+Item quality	Qualidade do item	Gegenstandsqualität	Качество предмета
+Item damage	Dano do item	Gegenstandsschaden	Повреждения предмета
+Item weight	Peso do item	Gegenstandsgewicht	Вес предмета
+Item volume	Volume do item	Gegenstandsvolumen	Объём предмета
+Item price	Preço do item	Gegenstandspreis	Цена предмета
+Item name	Nome do item	Gegenstandsname	Название предмета
+Character name	Nome do personagem	Charaktername	Имя персонажа
+Player online status	Status de conexão do jogador	Onlinestatus des Spielers	Статус игрока в сети
+Tool or material for the next item improvement	Ferramenta ou material para a próxima melhoria do item	Werkzeug oder Material für die nächste Gegenstandsverbesserung	Инструмент или материал для следующего улучшения предмета
+Local chat	Chat local	Lokaler Chat	Локальный чат
+Global chat	Chat global	Globaler Chat	Глобальный чат
+Trade chat	Chat de comércio	Handelschat	Торговый чат
+Village chat	Chat da vila	Dorfchat	Чат поселения
+Alliance chat	Chat da aliança	Allianzchat	Чат альянса
+Kingdom chat	Chat do reino	Königreichschat	Чат королевства
+Community assistant help chat	Chat de ajuda dos assistentes da comunidade	Hilfechat der Community-Assistenten	Чат помощи общественных помощников (CA)
+Game master help chat	Chat de ajuda dos mestres do jogo	Hilfechat der Spielleiter	Чат помощи игровых мастеров (GM)
+Recruitment chat	Chat de recrutamento	Rekrutierungschat	Чат набора игроков
+Information channel	Canal de informações	Informationskanal	Информационный канал
+Event log	Registro de eventos	Ereignisprotokoll	Журнал событий
+Combat log	Registro de combate	Kampfprotokoll	Журнал боя
+Skill changes	Alterações de habilidades	Fertigkeitsänderungen	Изменения навыков
+Friends list	Lista de amigos	Freundesliste	Список друзей
+Item quality: {0}	Qualidade do item: {0}	Gegenstandsqualität: {0}	Качество предмета: {0}
+Item damage: {0}	Dano do item: {0}	Gegenstandsschaden: {0}	Повреждения предмета: {0}
+Selected creature health	Saúde da criatura selecionada	Gesundheit der ausgewählten Kreatur	Здоровье выбранного существа
+Combat target health	Saúde do alvo de combate	Gesundheit des Kampfziels	Здоровье боевой цели
+Creature attitude: {0}	Atitude da criatura: {0}	Haltung der Kreatur: {0}	Отношение существа: {0}
+Selected object status	Estado do objeto selecionado	Status des ausgewählten Objekts	Состояние выбранного объекта
+Action progress: {0}%	Progresso da ação: {0}%	Aktionsfortschritt: {0}%	Выполнение действия: {0}%
+Distance to combat target: {0} m	Distância até o alvo de combate: {0} m	Entfernung zum Kampfziel: {0} m	Расстояние до боевой цели: {0} м
+Attack zone: choose where to strike the target	Zona de ataque: escolha onde atingir o alvo	Angriffszone: Zielbereich für den Angriff wählen	Зона атаки: выбор места удара по цели
+Combat mode: aggressive, normal, defensive or ranged	Modo de combate: agressivo, normal, defensivo ou à distância	Kampfmodus: aggressiv, normal, defensiv oder Fernkampf	Режим боя: агрессивный, обычный, защитный или дальний
+Attack zone: {0}	Zona de ataque: {0}	Angriffszone: {0}	Зона атаки: {0}
+Aggressive combat mode	Modo de combate agressivo	Aggressiver Kampfmodus	Агрессивный режим боя
+Normal combat mode	Modo de combate normal	Normaler Kampfmodus	Обычный режим боя
+Defensive combat mode	Modo de combate defensivo	Defensiver Kampfmodus	Защитный режим боя
+Ranged combat mode	Modo de combate à distância	Fernkampfmodus	Режим дальнего боя
+BEST: recommended available attack zone; n is the number of observed attacks	BEST: zona de ataque disponível recomendada; n é o número de ataques observados	BEST: empfohlene verfügbare Angriffszone; n ist die Anzahl beobachteter Angriffe	BEST — рекомендуемая доступная зона атаки; n — число наблюдавшихся атак
+Damage index: average and maximum observed damage estimate	Índice de dano: estimativa média e máxima do dano observado	Schadensindex: durchschnittliche und maximale Schätzung des beobachteten Schadens	Индекс урона: средняя и максимальная оценка наблюдавшегося урона
+ — Weapon quality: 	 — Qualidade da arma: 	 — Waffenqualität: 	 — Качество оружия: 
+Game master	Mestre do jogo	Spielleiter	Игровой мастер
+Choose the minimum skill change shown in the Skills log	Escolha a alteração mínima de habilidade exibida no registro	Minimale angezeigte Fertigkeitsänderung im Protokoll wählen	Минимальное изменение навыка, отображаемое в журнале навыков
+Save the selected skill detail level	Salvar o nível de detalhe selecionado	Ausgewählte Fertigkeitsdetailstufe speichern	Сохранить выбранную детализацию навыков
+Close without saving the skill detail level	Fechar sem salvar o nível de detalhe	Ohne Speichern der Fertigkeitsdetailstufe schließen	Закрыть без сохранения детализации навыков
+Damage index, average/maximum: 	Índice de dano, médio/máximo: 	Schadensindex, Durchschnitt/Maximum: 	Индекс урона, средний/максимальный: 
+Resize window: drag this corner	Redimensionar a janela: arraste este canto	Fenstergröße ändern: diese Ecke ziehen	Изменить размер окна: потяните за этот угол
+Scroll the contents vertically	Rolar o conteúdo na vertical	Inhalt vertikal scrollen	Прокрутка содержимого по вертикали
+Scroll the contents horizontally	Rolar o conteúdo na horizontal	Inhalt horizontal scrollen	Прокрутка содержимого по горизонтали

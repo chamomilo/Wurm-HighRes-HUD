@@ -70,12 +70,12 @@ public final class CombatHudInteractionProbe {
         field(fighter,"specialButtons",new ArrayList<StaticComponent>());
         field(fighter,"combatHints",new ArrayList<HighResCombatHint>());
         HighResHudActionButton clear=new HighResHudActionButton(fighter,NO_TARGET_WIDTH,NO_TARGET_HEIGHT,
-                new HudCaptionGroup(NO_TARGET_WIDTH,NO_TARGET_HEIGHT,HudSkin.COMPACT,"No target"),"No target",()->{
+                new HudCaptionGroup(NO_TARGET_WIDTH,NO_TARGET_HEIGHT,HudSkin.COMPACT,14,"No target"),"No target",()->{
                     try { java.lang.reflect.Method m=HighResFightingHud.class.getDeclaredMethod("clearCombatTarget");
                         m.setAccessible(true);m.invoke(fighter); }catch(Exception e){throw new AssertionError(e);}
                 });
         HighResHudActionButton focus=new HighResHudActionButton(fighter,FOCUS_BUTTON_WIDTH,FOCUS_BUTTON_HEIGHT,
-                new HudCaptionGroup(FOCUS_BUTTON_WIDTH,FOCUS_BUTTON_HEIGHT,HudSkin.COMPACT,"Combat focus"),"Combat focus",()->{
+                new HudCaptionGroup(FOCUS_BUTTON_WIDTH,FOCUS_BUTTON_HEIGHT,HudSkin.COMPACT,14,"Combat focus"),"Combat focus",()->{
                     try { java.lang.reflect.Method m=HighResFightingHud.class.getDeclaredMethod("attemptFocus");
                         m.setAccessible(true);m.invoke(fighter); }catch(Exception e){throw new AssertionError(e);}
                 });

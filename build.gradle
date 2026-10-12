@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.highreshud'
-version = '0.2.3'
+version = '0.6.3'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -68,6 +68,7 @@ test {
 
 jar {
     archiveFileName = "highres-hud-${project.version}.jar"
+    from('LICENSE') { into 'META-INF'; rename { 'LICENSE.txt' } }
 }
 
 task resourcePack(type: Jar) {
@@ -99,7 +100,24 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 'org/chamomilo/wurm/ui/v1/fonts/OFL.txt',
                 'org/highreshud/client/ui/HudSkin.class',
                 'org/highreshud/client/ui/HudCaptionGroup.class',
+                'org/highreshud/client/i18n/HudMessages.class',
+                'org/highreshud/client/i18n/HudHoverText.class',
+                'org/highreshud/client/HudPackagedResources.class',
+                'org/highreshud/client/i18n/HudLanguagePreferences.class',
+                'org/highreshud/client/i18n/messages.tsv',
                 'com/wurmonline/client/renderer/gui/HighResHudActionButton.class',
+                'com/wurmonline/client/renderer/gui/HighResWindowIntegration.class',
+                'com/wurmonline/client/renderer/gui/HighResInventoryWindow.class',
+                'com/wurmonline/client/renderer/gui/HighResContainerWindow.class',
+                'com/wurmonline/client/renderer/gui/HighResCharacterWindow.class',
+                'com/wurmonline/client/renderer/gui/HighResCharacterArtwork.class',
+                'com/wurmonline/client/renderer/gui/HighResInventoryDrag.class',
+                'com/wurmonline/client/renderer/gui/HighResInventoryFilter.class',
+                'org/chamomilo/wurm/ui/v1/UiButtonPreset.class',
+                'org/chamomilo/wurm/ui/v1/UiCompactLayout.class',
+                'com/wurmonline/client/renderer/gui/ChamomiloUiV1CompactButton.class',
+                'com/wurmonline/client/renderer/gui/HighResEventsWindow.class',
+                'com/wurmonline/client/renderer/gui/HighResChatWindow.class',
                 'org/highreshealthbar/client/HighResHealthBarMod.class',
                 'org/highreshealthbar/client/SleepBonusToggleTracker.class',
                 'org/highresfocusbar/client/HighResFocusBarMod.class',
@@ -112,6 +130,8 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 throw new GradleException('Unified mod artifact is missing ' + required)
             }
         }
+        if (!modContents.matching { include 'com/wurmonline/client/renderer/gui/HudLanguageMenu*.class' }.files.empty)
+            throw new GradleException('Retired in-mod language selector is still packaged')
 
         def modProperties = new Properties()
         file('mods/highres-hud.properties').withInputStream {
@@ -147,11 +167,23 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 'mappings.txt',
                 'gui/highres-healthbar-frame.png',
                 'gui/highres-select-bar-frame.png',
-                'gui/highres-fighting-hud-frame.png'
+                'gui/highres-fighting-hud-frame.png',
+                'gui/highres-character-slots.png',
+                'gui/highres-character-anatomy.png',
+                'gui/highres-character-weight.png',
+                'gui/highres-character-body.png',
+                'gui/highres-character-hand.png'
         ].each { required ->
             if (packContents.matching { include required }.files.empty) {
                 throw new GradleException('Unified resource pack is missing ' + required)
             }
+        }
+        ['slots':[704,88], 'anatomy':[256,371], 'weight':[34,38],
+         'body':[35,60], 'hand':[38,44]].each { name, dimensions ->
+            def asset = packContents.matching { include "gui/highres-character-${name}.png" }.singleFile
+            def image = javax.imageio.ImageIO.read(asset)
+            if (image == null || image.width != dimensions[0] || image.height != dimensions[1])
+                throw new GradleException('Character artwork exceeds its destination pixel budget: ' + name)
         }
     }
 }
@@ -165,24 +197,74 @@ task verifyHudUi(type: JavaExec, dependsOn: testClasses) {
 }
 check.dependsOn verifyHudUi
 
-task dist(type: Zip, dependsOn: [test, verifyArtifacts, verifyHudUi]) {
+task verifyHudWindows(type: JavaExec, dependsOn: testClasses) {
+    classpath = sourceSets.test.runtimeClasspath
+    def javaFx = findProperty('wurmJavaFxJar') ?: System.getenv('WURM_JAVAFX_JAR') ?: System.getenv('WURM_JFX')
+    if (javaFx) classpath += files(javaFx)
+    main = 'org.highreshud.client.HudUiProbe'
+    args '--windows', file("${buildDir}/hud-windows-preview.png").absolutePath
+}
+check.dependsOn verifyHudWindows
+
+task verifyHudWindowsOlderSdk(type: JavaExec, dependsOn: testClasses) {
+    classpath = sourceSets.test.runtimeClasspath
+    def javaFx = findProperty('wurmJavaFxJar') ?: System.getenv('WURM_JAVAFX_JAR') ?: System.getenv('WURM_JFX')
+    if (javaFx) classpath += files(javaFx)
+    main = 'org.highreshud.client.HudUiProbe'
+    systemProperty 'olderSharedUiJar', file(findProperty('olderSharedUiJar') ?: 'C:/projects/updater/dependencies/chamomilo-ui-0.4.8.jar').absolutePath
+    args '--windows', file("${buildDir}/hud-windows-older-sdk-preview.png").absolutePath
+}
+check.dependsOn verifyHudWindowsOlderSdk
+
+task prepareHudLoaderFixture(type: Copy, dependsOn: [jar, testClasses]) {
+    from jar
+    into "${buildDir}/loader-fixture/mods/highres-hud"
+    doLast { copy { from 'mods/highres-hud.properties'; into "${buildDir}/loader-fixture/mods" } }
+}
+test {
+    dependsOn prepareHudLoaderFixture
+    workingDir file("${buildDir}/loader-fixture")
+}
+
+task verifyHudLoader(type: JavaExec, dependsOn: prepareHudLoaderFixture) {
+    // Deliberately exclude main classes/resources and the mod JAR from Java's
+    // parent classpath. Only Javassist's ClassPool can see the installable JAR.
+    classpath = sourceSets.test.output + configurations.testRuntimeClasspath.filter {
+        it.name != 'chamomilo-updater.jar'
+    }
+    def javaFx = findProperty('wurmJavaFxJar') ?: System.getenv('WURM_JAVAFX_JAR') ?: System.getenv('WURM_JFX')
+    if (javaFx) classpath += files(javaFx)
+    main = 'org.highreshud.client.HudLoaderProbe'
+    workingDir file("${buildDir}/loader-fixture")
+    systemProperty 'user.home', file("${buildDir}/loader-fixture/profile").absolutePath
+    args jar.archivePath.absolutePath
+}
+check.dependsOn verifyHudLoader
+
+task dist(type: Zip, dependsOn: [test, verifyArtifacts, verifyHudUi, verifyHudWindows, verifyHudWindowsOlderSdk, verifyHudLoader]) {
     archiveFileName = "highres-hud-${project.version}.zip"
     destinationDirectory = file("${buildDir}/distributions")
     into('mods/highres-hud') {
         from jar
         from resourcePack
-        from 'README.md'
-        from 'CHANGELOG.md'
-        from 'ARCHITECTURE.md'
-        from 'LICENSE'
-        from 'chamomilo-updater.lock.properties'
-        from 'docs/UI-MIGRATION.md'
-        from 'docs/button-groups.json'
         from('src/main/resources/org/highreshud/client/portrait/portrait-profiles.properties') {
             rename { 'portrait-profiles.bundled.properties' }
         }
     }
     into('mods') { from 'mods/highres-hud.properties' }
+    from 'README.txt'
+    doLast {
+        def archive = new java.util.zip.ZipFile(archiveFile.get().asFile)
+        try {
+            def actual = java.util.Collections.list(archive.entries()).findAll { !it.directory }*.name
+            def expected = ['README.txt', 'mods/highres-hud.properties',
+                    "mods/highres-hud/highres-hud-${project.version}.jar".toString(),
+                    "mods/highres-hud/highres-hud-resources-${project.version}.jar".toString(),
+                    'mods/highres-hud/portrait-profiles.bundled.properties']
+            if (actual.size() != expected.size() || actual.toSet() != expected.toSet())
+                throw new GradleException('Distribution contains unexpected or missing files: ' + actual)
+        } finally { archive.close() }
+    }
 }
 
 build.dependsOn verifyArtifacts

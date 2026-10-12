@@ -8,6 +8,7 @@ import com.wurmonline.client.renderer.gui.SelectBar;
 import com.wurmonline.client.renderer.gui.StaticComponent;
 import com.wurmonline.client.renderer.gui.TargetWindow;
 import com.wurmonline.client.renderer.gui.WurmComponent;
+import com.wurmonline.client.renderer.PickData;
 import com.wurmonline.client.settings.SavePosManager;
 import org.gotti.wurmunlimited.modloader.ReflectionUtil;
 import org.highresfightinghud.client.portrait.FocusPortraitController;
@@ -55,6 +56,11 @@ public final class HighResFightingHudMod {
             LOG.log(Level.SEVERE,
                     "Unable to attach high-res Fighting HUD", error);
         }
+    }
+
+    public static boolean pickNativeControl(WurmComponent component, PickData pick) {
+        HighResFightingHudMod mod = instance;
+        return mod != null && mod.panel != null && mod.panel.pickNativeControl(component, pick);
     }
 
     private synchronized void attach(HeadsUpDisplay newHud) throws Exception {

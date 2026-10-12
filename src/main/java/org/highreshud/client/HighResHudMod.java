@@ -12,6 +12,8 @@ import org.highresfightinghud.client.HighResFightingHudMod;
 import org.highresfocusbar.client.HighResFocusBarMod;
 import org.highreshealthbar.client.HighResHealthBarMod;
 import org.highreshud.client.state.ActionProgressState;
+import org.highreshud.client.i18n.HudMessages;
+import org.highreshud.client.i18n.HudLanguagePreferences;
 
 import java.util.Map;
 import java.util.Properties;
@@ -21,18 +23,34 @@ import java.util.logging.Logger;
 /** Single mod-loader entry point for all High-res HUD components. */
 public final class HighResHudMod implements WurmClientMod, Configurable,
         PreInitable, Initable, ModListener {
-    public static final String VERSION = "0.2.3";
+    public static final String VERSION = "0.6.3";
     private static final String DEFAULT_PACK =
             "mods/highres-hud/highres-hud-resources-" + VERSION + ".jar";
     private static final String DEFAULT_PROFILES =
             "mods/highres-hud/portrait-profiles.properties";
     private static final Logger LOG = Logger.getLogger("HighResHud");
     private final ActionProgressState actionProgress = new ActionProgressState();
+    private HudLanguagePreferences languagePreferences;
     private final HighResHealthBarMod healthbar = new HighResHealthBarMod();
     private final HighResFocusBarMod selectbar =
             new HighResFocusBarMod(actionProgress);
     private final HighResFightingHudMod fightingHud =
             new HighResFightingHudMod(actionProgress);
+
+    public String getLanguage() { return HudMessages.language(); }
+    public String[] getSupportedLanguages() { return HudMessages.languageCodes(); }
+    /** Updater capability: existing panels and controls use this language on their next frame. */
+    public void setLanguage(String code) {
+        ensureLanguagePreferences();
+        try { languagePreferences.save(code); }
+        catch (java.io.IOException failure) { throw new IllegalStateException("Cannot save HUD language", failure); }
+        HudMessages.useLanguage(languagePreferences.language());
+    }
+
+    private void ensureLanguagePreferences() {
+        if (languagePreferences == null) languagePreferences = new HudLanguagePreferences(
+                java.nio.file.Paths.get(System.getProperty("user.home"), ".chamomilo", "highres-hud.properties"));
+    }
 
     @Override
     public String getVersion() {
@@ -41,7 +59,11 @@ public final class HighResHudMod implements WurmClientMod, Configurable,
 
     @Override
     public void configure(Properties properties) {
+        ensureLanguagePreferences();
+        HudMessages.useLanguage(languagePreferences.language());
         Properties source = properties == null ? new Properties() : properties;
+        HighResWindowsSettings.configure(source);
+        SkillDetailSettings.load(java.nio.file.Paths.get(System.getProperty("user.home"), ".chamomilo", "highres-hud-skills.properties"));
         healthbar.configure(scoped(source, "healthbar.", false));
         selectbar.configure(scoped(source, "selectbar.", true));
         fightingHud.configure(scoped(source, "fightingHud.", true));

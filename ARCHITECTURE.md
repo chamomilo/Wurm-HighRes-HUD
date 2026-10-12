@@ -11,6 +11,38 @@ The Healthbar, Select bar, and Fighting HUD packages are internal component
 adapters. They do not implement mod-loader interfaces and do not install hooks;
 only `HighResHudMod` and `UnifiedHookInstaller` own those responsibilities.
 
+`HighResWindowIntegration` attaches Inventory, Events and Chat presentation
+adapters after native HUD initialization. It retains original registered window
+instances rather than redirecting incoming game data to a second model. Their
+native save keys, handlers, chat input and manager topology stay intact. Hooks
+are scoped by component identity/ancestry to those windows and their Inventory
+header. Native `ItemListWindow` server containers attach after `addInventoryWindow`;
+player backpacks/quivers use `InventoryContainerWindow` and attach after the
+HUD's native add/toggle methods. Readiness and frame scans cover both maps. Removal and
+reconnect release all associated adapter, heading and scrollbar identities.
+They retain the native close notification, listener destruction and saved
+geometry. Other client windows keep their native presentation. A new HUD clears
+adapter, header and scrollbar identity maps; repeated readiness is idempotent.
+
+Window hooks target still-unloaded HUD/renderer call sites. Native GUI base
+classes may already be defined by Avatar2 or Keybinder; they are never rewritten.
+A FlexComponent drawing host supplies native scissor push/pop, while heading
+and input decorators keep the original children and their listeners. Native HUD
+release routing validates shaped tabs and prepares sort direction before the
+original completed click. HUD press/move routing exposes the native SouthBar
+resize corner; native drag/release retains saved window geometry. Channel strips
+wrap ordered tabs into as many shared-typography rows as needed and move the body
+below the last row. Compact uses distinct canonical SDK entry points to
+remain usable when another mod has already loaded an older shared v1 SDK.
+
+HighResDataTypography applies the shared Alegreya Sans data family only inside
+migrated windows. Native table changeText updates row and hit-test metrics;
+history wrapping recomputes advances without replacing source message identities,
+colors or case, preserving selection and scroll anchors. HudTextFonts adapts
+the shared baseline fonts to native lower-edge coordinates and reuses atlas caches.
+The original editor keeps its caret/clipboard metrics and global settings remain
+owned by the client.
+
 ## Shared core API
 
 `HighResHudApi.core()` exposes versioned, Wurm-independent coordination

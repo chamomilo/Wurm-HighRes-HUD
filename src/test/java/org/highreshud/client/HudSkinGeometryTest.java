@@ -6,8 +6,36 @@ import org.chamomilo.wurm.ui.v1.*;
 import org.highreshud.client.ui.HudSkin;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.highresfightinghud.client.FightingHudLayout.*;
 
 public class HudSkinGeometryTest {
+    @Test public void compactFightFramesAndControlsStayWithinHalfAreaWithoutOverlap() {
+        assertEquals(520,PANEL_WIDTH); assertEquals(186,PANEL_HEIGHT);
+        assertTrue((double)PANEL_WIDTH*PANEL_HEIGHT/(676*282) < .51);
+        for (boolean progress : new boolean[]{false,true}) {
+            RecordingCanvas canvas = new RecordingCanvas(PANEL_WIDTH,PANEL_HEIGHT);
+            HudSkin.fightingBack(canvas,0,0); HudSkin.targetFront(canvas,0,0,progress);
+            UiRect previous = null;
+            for (int row=0;row<(progress?4:3);row++) {
+                UiRect cell=HudSkin.targetCell(0,0,progress,row);
+                assertTrue(cell.x>=INFO_X && cell.x+cell.width<=INFO_X+INFO_WIDTH);
+                assertTrue(cell.height>=16 && cell.y+cell.height<=FOCUS_Y-2);
+                if (previous!=null) assertTrue(previous.y+previous.height+2<=cell.y);
+                previous=cell;
+            }
+        }
+        List<java.awt.Rectangle> controls=new ArrayList<>();
+        controls.add(new java.awt.Rectangle(NO_TARGET_X,NO_TARGET_Y,NO_TARGET_WIDTH,NO_TARGET_HEIGHT));
+        controls.add(new java.awt.Rectangle(FOCUS_BUTTON_X,FOCUS_BUTTON_Y,FOCUS_BUTTON_WIDTH,FOCUS_BUTTON_HEIGHT));
+        for(int i=0;i<9;i++) controls.add(new java.awt.Rectangle(stanceCellX(i,STANCE_BUTTON_SIZE),stanceCellY(i,STANCE_BUTTON_SIZE),STANCE_BUTTON_SIZE,STANCE_BUTTON_SIZE));
+        for(int i=0;i<4;i++) controls.add(new java.awt.Rectangle(modeCellX(),modeCellY(i),MODE_BUTTON_SIZE,MODE_BUTTON_SIZE));
+        for(int i=0;i<6;i++) controls.add(new java.awt.Rectangle(specialCellX(i),specialCellY(),SPECIAL_BUTTON_SIZE,SPECIAL_BUTTON_SIZE));
+        for(int i=0;i<controls.size();i++) {
+            java.awt.Rectangle control=controls.get(i);
+            assertTrue(new java.awt.Rectangle(3,3,PANEL_WIDTH-6,PANEL_HEIGHT-6).contains(control));
+            for(int j=0;j<i;j++) assertFalse("Distinct native click targets",control.intersects(controls.get(j)));
+        }
+    }
     @Test
     public void valuesFillTheirFrameCellsWithoutLegacyInsets() {
         rect(HudSkin.selectHealth(0,0),107,27,328,16);

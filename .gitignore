@@ -1,6 +1,7 @@
 .gradle/
 .gradle-user/
 build/
+dist/
 out/
 libs/
 .idea/

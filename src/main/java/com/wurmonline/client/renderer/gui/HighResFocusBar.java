@@ -37,6 +37,8 @@ import org.highreshud.client.HiddenExamineCoordinator;
 import org.highreshud.client.HighResHudRuntime;
 import org.highreshud.client.ui.HudCaptionGroup;
 import org.highreshud.client.ui.HudSkin;
+import static org.highreshud.client.i18n.HudMessages.tr;
+import org.highreshud.client.i18n.HudMessages;
 import com.wurmonline.client.renderer.gui.text.ChamomiloUiV1Fonts;
 import org.chamomilo.wurm.ui.v1.*;
 
@@ -273,10 +275,10 @@ public final class HighResFocusBar extends StaticComponent
                     0f, 0f, 1f, 1f);
         } else {
             if (selected && subject == null) {
-                paintCentered(small, queue, "Nothing",
+                paintCentered(small, queue, tr("Nothing"),
                         px, py + 46, PORTRAIT_WIDTH,
                         0.77f, 0.64f, 0.42f);
-                paintCentered(small, queue, "selected",
+                paintCentered(small, queue, tr("selected"),
                         px, py + 59, PORTRAIT_WIDTH,
                         0.77f, 0.64f, 0.42f);
             } else {
@@ -352,8 +354,8 @@ public final class HighResFocusBar extends StaticComponent
     private void renderDistanceFooter(Queue queue, PickableUnit subject) {
         if (!showDistance) return;
         int metres = distance(subject);
-        String label = "Distance:";
-        String value = metres < 0 ? "—" : metres + " m";
+        String label = tr("Distance:");
+        String value = metres < 0 ? "—" : metres + tr(" m");
         int footerTop = y + PANEL_HEIGHT;
         int baseline = footerTop
                 + (DISTANCE_FOOTER_HEIGHT + regular.getHeight()) / 2;
@@ -453,7 +455,7 @@ public final class HighResFocusBar extends StaticComponent
                     smoothedHealth, 0.055f, 0.61f, 0.18f);
         }
         String label = healthSubject == null ? ""
-                : "Health: " + percent(smoothedHealth);
+                : tr("Health: ") + percent(smoothedHealth);
         if (!label.isEmpty()) {
             paintCentered(small, queue, fit(small, label, gw - 8),
                     gx, centeredLowerEdge(gy, well.height,
@@ -839,18 +841,18 @@ public final class HighResFocusBar extends StaticComponent
             return;
         }
         final WurmPopup popup = new WurmPopup(
-                "highResSelectBarMenu", "High res select bar", mouseX, mouseY);
+                "highResSelectBarMenu", tr("High res select bar"), mouseX, mouseY);
         popup.addSeparator();
         dragger.addContextMenuEntry(popup);
         popup.addButton(popup.new WPopupLiveButton(
-                showHotkeys ? "Hide action hotkeys" : "Show action hotkeys") {
+                showHotkeys ? tr("Hide action hotkeys") : tr("Show action hotkeys")) {
             @Override
             protected void handleLeftClick() {
                 showHotkeys = !showHotkeys;
             }
         });
         popup.addButton(popup.new WPopupLiveButton(
-                showDistance ? "Distance: ON" : "Distance: OFF") {
+                showDistance ? tr("Distance: ON") : tr("Distance: OFF")) {
             @Override
             protected void handleLeftClick() {
                 showDistance = !showDistance;
@@ -859,7 +861,7 @@ public final class HighResFocusBar extends StaticComponent
         });
         if (selectedPortrait != null) {
             popup.addButton(popup.new WPopupLiveButton(
-                    "Resume portrait motion") {
+                    tr("Resume portrait motion")) {
                 @Override
                 protected void handleLeftClick() {
                     selectedPortrait.resumeMotion();
@@ -883,12 +885,12 @@ public final class HighResFocusBar extends StaticComponent
         autoClose.pointerPresent();
         if (pinButtonAt(mouseX, mouseY)) {
             pickData.addText(autoClose.isPinned()
-                    ? "Pin: ON — Select Bar stays open"
-                    : "Pin: OFF — closes 5 seconds after pointer leaves");
+                    ? tr("Pin: ON — Select Bar stays open")
+                    : tr("Pin: OFF — closes 5 seconds after pointer leaves"));
             return;
         }
         if (closeButtonAt(mouseX, mouseY)) {
-            pickData.addText("Deselect and close");
+            pickData.addText(tr("Deselect and close"));
             return;
         }
         int waypointButton = waypointButtonAt(mouseX, mouseY);
@@ -896,18 +898,18 @@ public final class HighResFocusBar extends StaticComponent
             PickableUnit markedSubject = selectedSubject();
             boolean marked = markedSubject != null
                     && WaypointerBridge.isMarked(markedSubject.getId());
-            pickData.addText((marked ? "Remove" : "Add 15-minute")
-                    + " Waypointer mark for selected object");
+            pickData.addText(tr(marked ? "Remove Waypointer mark for selected object"
+                    : "Add 15-minute Waypointer mark for selected object"));
             return;
         }
         if (inspectButtonAt(mouseX, mouseY)) {
-            pickData.addText("Inspect selected object");
+            pickData.addText(tr("Inspect selected object"));
             return;
         }
         if (inside(mouseX, mouseY, x + PORTRAIT_X, y + PORTRAIT_Y,
                 PORTRAIT_WIDTH, PORTRAIT_HEIGHT)) {
-            pickData.addText("Selected portrait: drag to rotate, wheel to zoom");
-            pickData.addText("Right-click for the native object menu");
+            pickData.addText(tr("Selected portrait: drag to rotate, wheel to zoom"));
+            pickData.addText(tr("Right-click for the native object menu"));
             return;
         }
         PickableUnit subject = selectedSubject();
@@ -918,7 +920,7 @@ public final class HighResFocusBar extends StaticComponent
             return;
         }
         if (actionPagerAt(mouseX, mouseY)) {
-            pickData.addText("More Select actions: click or use the mouse wheel");
+            pickData.addText(tr("More Select actions: click or use the mouse wheel"));
             return;
         }
         int actionIndex = actionIndexAt(mouseX, mouseY);
@@ -931,7 +933,31 @@ public final class HighResFocusBar extends StaticComponent
                     property == null ? null : property.getName(),
                     action.getName(), action.getId()));
             String key = binding(actionIndex);
-            if (!key.isEmpty()) pickData.addText("Hotkey: " + key);
+            if (!key.isEmpty()) pickData.addText(tr("Hotkey: ") + key);
+            return;
+        }
+        UiRect health = HudSkin.selectHealth(x, y);
+        if (inside(mouseX, mouseY, health.x, health.y, health.width, health.height)) {
+            CreatureCellRenderable selected = creature(subject);
+            pickData.addText(selected == null ? tr("Selected creature health")
+                    : tr("Health: ") + percent(clamp(selected.getPercentHealth() / 100f)));
+            return;
+        }
+        if (inside(mouseX, mouseY, x + INFO_X, y + FOCUS_STATUS_Y, INFO_WIDTH, FOCUS_STATUS_HEIGHT)) {
+            List<String> details = SelectedStatusText.hoverDetails(subject == null ? null : selectedExamine.get(subject.getId()),
+                    FocusMath.corpseStatus(subjectName(subject), FocusPortraitController.mapping(subject)));
+            for (String detail : details) pickData.addText(detail);
+            CreatureCellRenderable selected = creature(subject);
+            if (selected != null) pickData.addText(tr("Creature attitude: {0}",
+                    HudMessages.detail(CreatureRelationState.label(selected))));
+            if (details.isEmpty() && selected == null) pickData.addText(tr("Selected object status"));
+            return;
+        }
+        UiRect progress = HudSkin.selectProgress(x, y);
+        if (inside(mouseX, mouseY, progress.x, progress.y, progress.width, progress.height)) {
+            FocusBarState.Progress action = state.progress();
+            if (!action.title.isEmpty()) pickData.addText(tr(action.title));
+            pickData.addText(tr("Action progress: {0}%", Math.round(clamp(action.value) * 100f)));
             return;
         }
         if (showDistance && inside(mouseX, mouseY,
@@ -939,10 +965,10 @@ public final class HighResFocusBar extends StaticComponent
                 DISTANCE_FOOTER_HEIGHT)) {
             int metres = distance(subject);
             pickData.addText(metres < 0
-                    ? "Distance unavailable" : "Distance: " + metres + " m");
+                    ? tr("Distance unavailable") : tr("Distance: ") + metres + tr(" m"));
             return;
         }
-        pickData.addText(subject == null ? "Nothing selected" : subjectName(subject));
+        pickData.addText(subject == null ? tr("Nothing selected") : subjectName(subject));
     }
 
     @Override

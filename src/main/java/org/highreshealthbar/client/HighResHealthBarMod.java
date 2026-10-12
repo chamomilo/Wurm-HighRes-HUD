@@ -212,7 +212,7 @@ public final class HighResHealthBarMod {
 
     public String fatigueHoverText() {
         FatigueTracker tracker = fatigue;
-        return tracker == null ? "Remaining fatigue: waiting for server"
+        return tracker == null ? org.highreshud.client.i18n.HudMessages.tr("Remaining fatigue: waiting for server")
                 : tracker.hoverText();
     }
 
