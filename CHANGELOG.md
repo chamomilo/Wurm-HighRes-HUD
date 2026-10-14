@@ -1,5 +1,112 @@
 # Changelog
 
+## 0.8.7 — 2026-10-15
+
+- Rebuild with the complete canonical Chamomilo updater 1.5.0 and verify its
+  integrated Settings editor and embedded UI 0.4.11.
+- Rewrite the illustrated guide and installation README for the current Build,
+  recipe browser, world reservations, opacity and minimized channel strips.
+- Remove artwork prompts and development exports from the project. Keep the
+  installable archive limited to four runtime files and README.txt.
+
+## 0.8.6 — 2026-10-15
+
+- Reserve world tools and unfinished objects through the native Add to crafting
+  window callbacks. Show unfinished targets in Material store, select their
+  recipe by full name, and keep native ground IDs for Build/Continue.
+- Retain tool alternatives from Auto-pick; a row click selects the exact tool
+  used by the next native action. Recheck the final selection before dispatch.
+- Remove local reservations on double-click; right-click opens the normal
+  server item context menu. Refresh world QL, damage, mass and availability.
+- Clear the entire Build state when the unfinished target finishes or is removed.
+- Include material-loss coefficients in starting mass and regenerate the bundled
+  snapshot offline. Shaft now requires 2 kg of log instead of its 1 kg result mass.
+- Recognize starting tools in server-only recipes such as Palisade. Support Tile
+  Border/world location targets without applying inventory mass or QL checks.
+
+## 0.8.5 — 2026-10-15
+
+- Highlight the selected recipe search mode with the same green surface,
+  caption and marker as ON/OFF actions, preserving hover and press behavior.
+
+## 0.8.4 — 2026-10-15
+
+- Correct the Build preview's inverted offscreen texture and fit the whole
+  model, including depth, with a margin throughout its rotation.
+- Resolve actual tool-part geometry instead of falling back to the complete
+  tool; use the crate rack's empty model state.
+- Pass the native item material color into the model mask renderer. Installed
+  Material Colors palettes/reflection markers apply to previews; different
+  materials keep distinct render keys.
+- Offer all client metals for assembly recipes represented by an iron head.
+  Require the selected metal on starting parts and show it in requirements;
+  wrong-metal heads remain invalid. Match electrum's generic component family.
+- Add a localized last-wood-component requirement for the selected final wood
+  and remove it when Any material is selected.
+- Restore category groups and nested component recipes in the recipe browser.
+  Single-click expands/selects; double-click opens that exact recipe in Build
+  and closes the browser, including a component such as knarr's stern.
+- Add Search in name/material/both selectors, initially names only. Name and
+  material modes match partial names; Both retains the existing combined search.
+
+## 0.8.3 — 2026-10-14
+
+- Restore direct access to the recipe browser from the high-res Build screen:
+  add Choose recipe under the title at the upper left, with native release/drag cancellation and restore
+  of a collapsed recipe window. Keep `toggle creationlist` console access.
+- Move material selection below the result model.
+- Reduce opacity zones by two pixels in both dimensions across all high-res
+  windows, including Chat and Events. Title controls now use a 22 px square.
+- Add Compact minimize/restore beside Chat and Events opacity. Collapse to the
+  channel strip at the screen's lower edge; selecting a tab restores the window.
+  Retain history, entered text and previous expanded bounds.
+
+## 0.8.2 — 2026-10-14
+
+- Embed the complete 2702-recipe Sklotopolis Novus snapshot captured on
+  2026-10-14. Resolve template IDs, starting masses and requirement flags offline.
+- Open the recipe browser from ready cached descriptors. Ignore the incoming
+  server catalogue; automatic comparison and refresh are disabled.
+- Keep unfinished-item requirements and action responses authoritative from
+  the live server. Catalogue updates are an explicit export/import/rebuild step.
+
+## 0.8.1 — 2026-10-14
+
+- Fix the login hang caused by the hidden recipe browser resolving the full
+  server catalogue on the game thread. Hidden windows defer recipe processing.
+- Index packaged template names and creation entries once; preserve icon,
+  material and first-entry selection rules without scanning every template.
+- Cache recipe metadata and search text. Filtering/repainting reuses the cache;
+  first opening resolves at most 16 recipes per refresh so frames can continue.
+- Add a 2200-recipe native regression covering hidden login, bounded loading,
+  repeated filters and late server additions, plus complete lookup parity checks.
+
+## 0.8.0 — 2026-10-14
+
+- Added high-res recipe browser with recipe/component filtering and opacity.
+- Added rotating result preview, material selection, separate material/tool stores,
+  inventory auto-pick, grouped drag order and click-to-select next-step items.
+- Display mass, QL and heat; explain inadequate next-step materials on hover.
+- Protect the last wooden component when a final wood species is selected;
+  Any material clears that restriction. Refresh unfinished requirements from server.
+- Collapse metal variants into one recipe with mandatory starting metal selection;
+  the unfinished item keeps the metal fixed by its starting lump.
+- Added recipe Wiki button, hammer/anvil artwork and starting tool icons.
+- Extended independent whole-window opacity sliders to Chat and Events.
+- Move opacity into a fourth frameless 24 px title-control square in all high-res
+  windows with title buttons, including Character and Skills. Keep it visible
+  while collapsed; Chat and Events retain their tab-strip sliders.
+- Removed the character screen's permanent wound counter/rotation caption;
+  the doll now explains rotation on hover.
+- Distinguish server percentages, conditional rarity and QL upper bounds.
+- Reuse Keybinder's Improve skill/rarity estimators for Continue, adapting recipe
+  difficulty, component transfers and the conditional audible-drumroll odds.
+- Model material rarity inheritance using the full recipe component count,
+  simple-part assembly rules and the initial fishing-pole exception. Highlight
+  eligible rare stock and the selected next-step rarity contribution in gold.
+- Present material/tool stores as inventory tables with Name, QL, DMG, Weight,
+  inline filters, typed sorting, resizable columns and collapsible groups.
+
 ## 0.7.5 — 2026-10-13
 
 - Widen the inventory opacity field by 30%, including its mouse interaction

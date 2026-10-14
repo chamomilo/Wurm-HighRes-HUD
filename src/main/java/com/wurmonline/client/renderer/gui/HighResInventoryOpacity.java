@@ -9,6 +9,7 @@ import org.highreshud.client.i18n.HudMessages;
 
 /** Per-window opacity with a recoverable, always-visible header slider. */
 final class HighResInventoryOpacity extends FlexComponent {
+    static final int TITLE_SIZE = 22, TAB_WIDTH = 58;
     private static final int THUMB = 3, INSET = 2;
     private final HighResNativeWindow skin;
     private final ChamomiloUiV1Canvas canvas = new ChamomiloUiV1Canvas(this);
@@ -20,7 +21,6 @@ final class HighResInventoryOpacity extends FlexComponent {
         this.skin = skin;
     }
     int value() { return skin.opacityPercent(); }
-    static int widthFor(int filterWidth) { return Math.round((filterWidth / 3) * 1.3f); }
     private int travel() { return Math.max(1, width - 2 * INSET - THUMB); }
     int thumbX() { return x + INSET + Math.round((value() - 10) * travel() / 90f); }
     private void dragTo(int px) {
@@ -35,7 +35,7 @@ final class HighResInventoryOpacity extends FlexComponent {
     }
     @Override protected void mouseDragged(int px, int py) { if (dragging) dragTo(px); }
     @Override protected void leftReleased(int px, int py) { if (dragging) dragTo(px); dragging = false; }
-    @Override public void pick(PickData pick, int px, int py) { pick.addText(HudMessages.tr("Inventory window opacity: {0}%", value())); }
+    @Override public void pick(PickData pick, int px, int py) { pick.addText(HudMessages.tr(skin.itemTable()==null ? "Window opacity: {0}%" : "Inventory window opacity: {0}%", value())); }
     @Override protected void renderComponent(Queue queue, float ignoredAlpha) {
         canvas.begin(queue);
         canvas.fill(UiColor.rgb(0x241d14), 1f, x, y, width, height);

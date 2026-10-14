@@ -13,12 +13,10 @@ final class HighResInventoryFilter {
     final WurmTreeList<?> table;
     final WButton name;
     final FilterField field;
-    final HighResInventoryOpacity opacity;
     private String query="";
-    HighResInventoryFilter(WurmTreeList<?> table,WButton name,HighResNativeWindow skin) {
+    HighResInventoryFilter(WurmTreeList<?> table,WButton name) {
         this.table=table;this.name=name;
         field=new FilterField();
-        opacity=new HighResInventoryOpacity(skin);
     }
     private void changed(String value) {
         HighResWindowIntegration.inventoryDragCleared();
@@ -34,11 +32,9 @@ final class HighResInventoryFilter {
     void layout() {
         int left=name.x+HighResWindowTypography.heading().getWidth(HudMessages.tr("Name"))+6+captionGap();
         field.place(left,name.y+(name.height-FIELD_HEIGHT)/2);
-        opacity.setLocation(field.x+field.width+6,field.y,HighResInventoryOpacity.widthFor(field.width),FIELD_HEIGHT);
     }
     void paint(Queue queue) {layout();field.render(queue,1f);}
-    FlexComponent at(int x,int y) {layout();return opacity.contains(x,y)?opacity:field.contains(x,y)?field.getComponentAt(x,y):null;}
-    void paintOpacity(Queue queue) {layout();opacity.render(queue,1f);}
+    FlexComponent at(int x,int y) {layout();return field.contains(x,y)?field.getComponentAt(x,y):null;}
     void refresh() {
         layout();
         if(query.isEmpty() || HighResWindowIntegration.inventoryGap(table))return;

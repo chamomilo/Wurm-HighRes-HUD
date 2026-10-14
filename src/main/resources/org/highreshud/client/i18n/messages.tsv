@@ -1,4 +1,80 @@
 # English	pt-BR	de	ru
+Build	Criar	Bauen	Создать
+Stop	Parar	Stoppen	Остановить
+Choose metal (required)	Escolher metal (obrigatório)	Metall wählen (erforderlich)	Выберите металл (обязательно)
+Choose a metal before building	Escolha um metal antes de criar	Vor dem Bauen ein Metall wählen	Перед созданием выберите металл
+Starting lump must use {0}	O bloco inicial deve ser de {0}	Der anfängliche Klumpen muss aus {0} sein	Стартовая кучка Lump должна быть из {0}
+Starting metal component must use {0}	O componente metálico inicial deve ser de {0}	Die anfängliche Metallkomponente muss aus {0} sein	Стартовый металлический компонент должен быть из {0}
+Last wooden item should be of {0} material	O último componente de madeira deve ser de {0}	Das letzte Holzteil muss aus {0} sein	Последний деревянный компонент должен быть из {0}
+Wiki	Wiki	Wiki	Wiki
+Could not open Wiki	Não foi possível abrir a Wiki	Wiki konnte nicht geöffnet werden	Не удалось открыть Wiki
+Fixed metal: {0}	Metal definido: {0}	Festes Metall: {0}	Закреплённый металл: {0}
+Metal is fixed when the unfinished item is created	O metal é definido ao criar o item inacabado	Das Metall wird beim Erstellen des unfertigen Gegenstands festgelegt	Тип металла закрепляется при создании недостроенного предмета
+Window opacity: {0}%	Opacidade da janela: {0}%	Fensterdeckkraft: {0}%	Непрозрачность окна: {0}%
+Recipe browser	Navegador de receitas	Rezeptbrowser	Браузер рецептов
+Choose recipe	Escolher receita	Rezept wählen	Выбрать рецепт
+Open recipe browser	Abrir navegador de receitas	Rezeptbrowser öffnen	Открыть браузер рецептов
+Build menu	Menu de criação	Baumenü	Меню создания
+Filter recipe or component	Filtrar receita ou componente	Rezept oder Bestandteil filtern	Фильтр по рецепту или компоненту
+Filter recipe name	Filtrar nome da receita	Rezeptnamen filtern	Фильтр по названию рецепта
+Filter component name	Filtrar nome do componente	Bestandteilnamen filtern	Фильтр по названию компонента
+Search in name	Buscar no nome	Suche im Namen	Искать в названии
+Search in material	Buscar no material	Suche im Material	Искать в материалах
+Search in both	Buscar em ambos	Suche in beiden	Искать везде
+Other recipes	Outras receitas	Andere Rezepte	Другие рецепты
+Single-click to expand; double-click to build this recipe	Clique para expandir; clique duplo para criar esta receita	Einfach klicken zum Aufklappen; doppelt klicken zum Bauen dieses Rezepts	Один щелчок раскрывает состав; двойной выбирает этот рецепт для создания
+Recipe / components	Receita / componentes	Rezept / Bestandteile	Рецепт / компоненты
+No matching recipes	Nenhuma receita correspondente	Keine passenden Rezepte	Нет подходящих рецептов
+Loading recipes…	Carregando receitas…	Rezepte werden geladen…	Загрузка рецептов…
+Start	Início	Beginn	Начало
+Continue	Continuar	Fortsetzen	Продолжить
+Remaining to finish	Restante para concluir	Zum Fertigstellen benötigt	Осталось для завершения
+Material store	Materiais reservados	Materialvorrat	Склад материалов
+Tool store	Ferramentas reservadas	Werkzeugvorrat	Склад инструментов
+Drop tools here	Solte ferramentas aqui	Werkzeuge hier ablegen	Перетащите сюда инструменты
+Drop materials here	Solte materiais aqui	Materialien hier ablegen	Перетащите сюда материалы
+Auto-pick up from inventory	Selecionar do inventário	Aus Inventar auswählen	Автоподбор из инвентаря
+Clear stores	Limpar reservas	Vorräte leeren	Очистить склады
+Any material	Qualquer material	Beliebiges Material	Любой материал
+Select a recipe or drop an unfinished item	Selecione uma receita ou solte um item inacabado	Rezept wählen oder unfertigen Gegenstand ablegen	Выберите рецепт или добавьте недостроенный предмет
+Loading result model	Carregando modelo do resultado	Ergebnismodell wird geladen	Загрузка модели результата
+This material is not required by the recipe	Este material não é necessário para a receita	Dieses Material gehört nicht zum Rezept	Этот материал не нужен для рецепта
+Insufficient mass: {0}; need {1}	Massa insuficiente: {0}; necessário {1}	Zu wenig Masse: {0}; benötigt {1}	Недостаточно массы: {0}; нужно {1}
+Must be glowing	Deve estar incandescente	Muss glühend heiß sein	Требуется glowing
+Last material step must use {0}	O último componente deve ser de {0}	Letzter Materialschritt muss {0} verwenden	Последний шаг с этим типом материала требует {0}
+Only the last component of the result's material family must match; Any material removes this restriction	Somente o último componente do tipo do resultado deve corresponder; Qualquer material remove a restrição	Nur der letzte Bestandteil der Materialfamilie muss passen; Beliebiges Material hebt die Einschränkung auf	Совпадать должен последний компонент типа дерева или металла результата; «Любой материал» снимает ограничение
+Place tools in the tool store	Coloque ferramentas na reserva de ferramentas	Werkzeuge im Werkzeugvorrat ablegen	Поместите инструмент в склад инструментов
+Place materials in the material store	Coloque materiais na reserva de materiais	Materialien im Materialvorrat ablegen	Поместите материал в склад материалов
+Waiting for action result	Aguardando resultado da ação	Warte auf Aktionsergebnis	Ожидание результата действия
+Select usable materials for one step	Selecione materiais válidos para uma etapa	Brauchbare Materialien für einen Schritt wählen	Выберите подходящие материалы хотя бы для одного шага
+Selected for next step	Selecionado para a próxima etapa	Für nächsten Schritt ausgewählt	Выбрано для следующего шага
+Click to use for the next step	Clique para usar na próxima etapa	Für nächsten Schritt anklicken	Нажмите, чтобы использовать в следующем шаге
+Drop materials and tools from inventory; click to select the next step; drag to reorder; double-click to remove; right-click for item actions	Solte materiais e ferramentas do inventário; clique para selecionar; arraste para ordenar; clique duplo para remover; botão direito para ações do item	Material und Werkzeuge ablegen; zum Auswählen klicken; zum Sortieren ziehen; Doppelklick zum Entfernen; Rechtsklick für Gegenstandsaktionen	Перетащите материалы и инструменты из инвентаря; клик — следующий шаг; перетаскивание — порядок; двойной клик — убрать; ПКМ — действия с предметом
+This item is too damaged to use	Este item está danificado demais para usar	Dieser Gegenstand ist zu stark beschädigt	Предмет слишком повреждён для использования
+This world item is no longer available here	Este item do mundo não está mais disponível aqui	Dieser Gegenstand ist hier nicht mehr verfügbar	Предмет в мире больше недоступен здесь
+Select this target with Add to crafting window in the world	Selecione este alvo no mundo com Add to crafting window	Dieses Ziel in der Welt mit Add to crafting window auswählen	Выберите эту цель в мире через Add to crafting window
+World target	Alvo no mundo	Ziel in der Welt	Цель в мире
+Selected	Selecionado	Ausgewählt	Выбрано
+Not selected	Não selecionado	Nicht ausgewählt	Не выбрано
+Stock: {0}	Reserva: {0}	Vorrat: {0}	На складе: {0}
+Stock: {0} / {1}	Reserva: {0} / {1}	Vorrat: {0} / {1}	На складе: {0} / {1}
+Not reported by server	Não informado pelo servidor	Vom Server nicht gemeldet	Сервер не сообщает
+Step success: {0}	Sucesso da etapa: {0}	Schritterfolg: {0}	Успех шага: {0}
+Estimate unavailable	Estimativa indisponível	Schätzung nicht verfügbar	Расчёт недоступен
+Rare	Raro	Selten	Редкий
+Supreme	Supremo	Überragend	Превосходный
+Fantastic	Fantástico	Fantastisch	Фантастический
+Material rarity upgrade on the next successful step: {0}% without drumroll	Aumento de raridade pelo material na próxima etapa bem-sucedida: {0}% sem drumroll	Seltenheitssteigerung durch Material beim nächsten erfolgreichen Schritt: {0}% ohne Trommelwirbel	Повышение редкости от материала на следующем успешном шаге: {0}% без drumroll
+Rare material is stored; the displayed next-step chance follows the green selection	Há material raro no depósito; a chance exibida segue a seleção verde	Seltenes Material liegt im Lager; die angezeigte Chance folgt der grünen Auswahl	В складе есть редкий материал; вероятность следующего шага учитывает зелёный выбор
+Material rarity transfer per successful step: {0}%; no drumroll required	Transferência de raridade do material por etapa bem-sucedida: {0}%; drumroll não é necessário	Seltenheitsübertragung vom Material pro erfolgreichem Schritt: {0}%; kein Trommelwirbel erforderlich	Перенос редкости материала за успешный шаг: {0}%; drumroll не требуется
+Keybinder Improve model: skill, parent skill, selected component QL/damage and Epic; hidden server modifiers may change estimates	Modelo Improve do Keybinder: habilidade, habilidade principal, QL/dano do componente e Epic; modificadores ocultos podem alterar as estimativas	Keybinder-Improve-Modell: Fertigkeit, übergeordnete Fertigkeit, QL/Schaden der Komponente und Epic; verborgene Servermodifikatoren können Schätzungen ändern	Модель Improve из Keybinder: навык, родительский навык, QL/повреждение компонента и Epic; скрытые модификаторы сервера могут менять оценку
+Rarity is at least the named tier, after an audible drumroll and successful step; ranges cover account status and include consumed rare components	Raridade mínima indicada, após drumroll audível e etapa bem-sucedida; intervalos consideram a conta e componentes raros consumidos	Mindestens die angegebene Seltenheit nach hörbarem Trommelwirbel und erfolgreichem Schritt; Bereiche berücksichtigen Kontostatus und verbrauchte seltene Komponenten	Указана вероятность получить как минимум названную редкость после слышимого drumroll и успешного шага; диапазон учитывает статус аккаунта и расходуемые редкие компоненты
+Next QL is the successful-step upper bound; actual skill power and hidden modifiers determine the gain	Próximo QL é o limite superior de uma etapa bem-sucedida; o resultado da habilidade e modificadores ocultos determinam o ganho	Nächste QL ist die Obergrenze eines erfolgreichen Schritts; Fertigkeitswurf und verborgene Modifikatoren bestimmen den Zuwachs	Next QL — верхняя граница при успешном шаге; реальный результат проверки навыка и скрытые модификаторы определяют прибавку
+Rare after drumroll: {0}	Rare após drumroll: {0}	Rare nach Trommelwirbel: {0}	Rare после drumroll: {0}
+Supreme after drumroll: {0}	Supreme após drumroll: {0}	Supreme nach Trommelwirbel: {0}	Supreme после drumroll: {0}
+{0}% of successful matching rarity rolls	{0}% das ações bem-sucedidas com a raridade correspondente	{0}% erfolgreicher Würfe passender Seltenheit	{0}% успешных бросков соответствующей редкости
+Next QL: {0}	Próxima QL: {0}	Nächste QL: {0}	Next QL: {0}
+up to {0} on success	até {0} se bem-sucedido	bei Erfolg bis {0}	до {0} при успехе
 Inventory window opacity: {0}%	Opacidade da janela de inventário: {0}%	Deckkraft des Inventarfensters: {0}%	Непрозрачность окна инвентаря: {0}%
 filter area	Área de filtro	Filterbereich	Область фильтра
 Material type	Tipo de material	Materialtyp	Тип материала

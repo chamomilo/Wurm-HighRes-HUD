@@ -14,3 +14,4 @@ img.highrescharacter.anatomy = gui/highres-character-anatomy.png
 img.highrescharacter.weight = gui/highres-character-weight.png
 img.highrescharacter.body = gui/highres-character-body.png
 img.highrescharacter.hand = gui/highres-character-hand.png
+img.highresbuild.build = gui/highres-build-button.png

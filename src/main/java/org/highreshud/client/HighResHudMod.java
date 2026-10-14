@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 /** Single mod-loader entry point for all High-res HUD components. */
 public final class HighResHudMod implements WurmClientMod, Configurable,
         PreInitable, Initable, ModListener {
-    public static final String VERSION = "0.7.5";
+    public static final String VERSION = "0.8.7";
     private static final String DEFAULT_PACK =
             "mods/highres-hud/highres-hud-resources-" + VERSION + ".jar";
     private static final String DEFAULT_PROFILES =

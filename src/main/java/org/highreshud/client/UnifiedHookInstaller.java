@@ -48,6 +48,15 @@ public final class UnifiedHookInstaller {
     }
 
     static void installWindowHooks(ClassPool pool) throws Exception {
+        CtClass creation=pool.get("com.wurmonline.client.renderer.gui.CreationWindow");
+        creation.getDeclaredMethod("itemDropped").insertBefore("{if(com.wurmonline.client.renderer.gui.HighResWindowIntegration.craftItemDropped(this,$1,$2,$3))return;}");
+        creation.getDeclaredMethod("setActionResult").insertAfter("com.wurmonline.client.renderer.gui.HighResWindowIntegration.craftActionResult(this);");
+        creation.getDeclaredMethod("addInventoryItem").insertAfter("com.wurmonline.client.renderer.gui.HighResWindowIntegration.craftInventoryAdded(this,$1);");
+        creation.getDeclaredMethod("removeInventoryItem").insertAfter("com.wurmonline.client.renderer.gui.HighResWindowIntegration.craftInventoryRemoved(this,$1);");
+        creation.getDeclaredMethod("addCreationGroundItem").insertBefore("{if(com.wurmonline.client.renderer.gui.HighResWindowIntegration.craftGroundAdded(this,$$))return;}");
+        creation.getDeclaredMethod("replaceCreationGroundItem").insertBefore("{if(com.wurmonline.client.renderer.gui.HighResWindowIntegration.craftGroundReplaced(this,$$))return;}");
+        creation.getDeclaredMethod("updateCreationGroundItem").insertAfter("com.wurmonline.client.renderer.gui.HighResWindowIntegration.craftGroundUpdated(this,$$);");
+        creation.getDeclaredMethod("removeCreationGroundItem").insertBefore("{if(com.wurmonline.client.renderer.gui.HighResWindowIntegration.craftGroundRemoved(this,$1))return;}");
         String gui = "com.wurmonline.client.renderer.gui.";
         String runtime = "org.highreshud.client.HighResHudRuntime.";
         installCharacterHooks(pool);

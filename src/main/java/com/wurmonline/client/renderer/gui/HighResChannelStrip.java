@@ -105,8 +105,12 @@ final class HighResChannelStrip extends FlexComponent {
     int rowCount() { return Math.max(1, rows.size()); }
     int channelCount() { return channels.size(); }
     @Override void componentResized() {
-        for (Channel channel : channels) if (channel.row != null) channel.setLocation(x + channel.row.geometry.tabX(channel.rowMember), y + (rows.size() - 1 - channel.rowIndex) * HEIGHT,
+        for (Channel channel : channels) if (channel.row != null) {
+            channel.sizeFlags=0;
+            channel.setLocation(x + channel.row.geometry.tabX(channel.rowMember), y + (rows.size() - 1 - channel.rowIndex) * HEIGHT,
                 channel.row.geometry.tabWidth(channel.rowMember), HEIGHT);
+            channel.sizeFlags=FIXED_WIDTH|FIXED_HEIGHT;
+        }
     }
     @Override public FlexComponent getComponentAt(int px, int py) {
         if (!contains(px, py)) return null;
@@ -172,7 +176,7 @@ final class HighResChannelStrip extends FlexComponent {
         @Override public void buttonClicked(WButton button) {
             boolean fire = armed && parent == HighResChannelStrip.this && nativeButton.isEnabled()
                     && nativeButton.tab.isOpened() && !nativeButton.tab.isHidden(); held = armed = false;
-            if (fire) nativeButton.tab.select();
+            if (fire) { HighResWindowIntegration.revealChat(window);nativeButton.tab.select(); }
         }
         @Override protected void renderComponent(Queue queue, float ignoredAlpha) {
             boolean enabled = nativeButton.isEnabled();

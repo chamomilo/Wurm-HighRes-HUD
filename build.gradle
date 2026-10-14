@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'org.highreshud'
-version = '0.7.5'
+version = '0.8.7'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -118,6 +118,16 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 'com/wurmonline/client/renderer/gui/ChamomiloUiV1CompactButton.class',
                 'com/wurmonline/client/renderer/gui/HighResEventsWindow.class',
                 'com/wurmonline/client/renderer/gui/HighResChatWindow.class',
+                'com/wurmonline/client/renderer/gui/HighResBuildWindow.class',
+                'com/wurmonline/client/renderer/gui/HighResRecipeWindow.class',
+                'com/wurmonline/client/renderer/gui/HighResBundledRecipes.class',
+                'com/wurmonline/client/renderer/gui/HighResCraftStoreHeader.class',
+                'org/highreshud/client/craft/templates.tsv',
+                'org/highreshud/client/craft/entries.tsv',
+                'org/highreshud/client/craft/sklotopolis-recipes.tsv',
+                'org/highreshud/client/craft/CraftSkillRoll.class',
+                'org/highreshud/client/craft/CraftRarityRoll.class',
+                'org/highreshud/client/craft/CraftRarityRules.class',
                 'org/highreshealthbar/client/HighResHealthBarMod.class',
                 'org/highreshealthbar/client/SleepBonusToggleTracker.class',
                 'org/highresfocusbar/client/HighResFocusBarMod.class',
@@ -173,6 +183,7 @@ task verifyArtifacts(dependsOn: [jar, resourcePack]) {
                 'gui/highres-character-weight.png',
                 'gui/highres-character-body.png',
                 'gui/highres-character-hand.png'
+                , 'gui/highres-build-button.png'
         ].each { required ->
             if (packContents.matching { include required }.files.empty) {
                 throw new GradleException('Unified resource pack is missing ' + required)

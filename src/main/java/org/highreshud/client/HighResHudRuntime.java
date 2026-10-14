@@ -74,6 +74,7 @@ public final class HighResHudRuntime {
     public static void beginFrame(final HeadsUpDisplay hud) {
         guarded("windows.frame", () -> HighResWindowIntegration.beginFrame(hud));
         SharedPortraitCoordinator.beginFrame();
+        guarded("craft.preview", () -> HighResWindowIntegration.beginCraftPortraits(hud));
         guarded("healthbar.frame.begin", new Task() {
             @Override public void run() { HighResHealthBarMod.beginPortraitFrame(hud); }
         });

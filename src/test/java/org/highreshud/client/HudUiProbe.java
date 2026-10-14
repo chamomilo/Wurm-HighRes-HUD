@@ -97,6 +97,22 @@ public final class HudUiProbe {
             }
         });
         if (args.length > 1 && args[0].equals("--windows")) {
+            pool.get("com.wurmonline.client.game.inventory.InventoryMetaItem").instrument(new javassist.expr.ExprEditor(){
+                @Override public void edit(javassist.expr.MethodCall call)throws CannotCompileException{
+                    if(call.getClassName().equals("com.wurmonline.client.options.BooleanOption")&&call.getMethodName().equals("value"))call.replace("{$_=false;}");
+                }
+            });
+            pool.get(gui+"HeadsUpDisplay").getDeclaredMethod("popupRequested",new CtClass[]{CtClass.intType,CtClass.intType,pool.get("java.lang.String"),CtClass.longType,pool.get("long[]")})
+                    .setBody("{"+gui+"HighResCraftWorldProbe.popupCount++;"+gui+"HighResCraftWorldProbe.popupTarget=$4;}");
+            pool.get(gui+"MindLogicCalculator").getDeclaredMethod("init").setBody("{return this;}");
+            pool.get(gui+"CreationWindow").getDeclaredMethod("load").setBody("{}");
+            pool.get(gui+"CreationWindow").getDeclaredMethod("requestCreationList").setBody("{"+gui+"HighResCraftProbe.requests++;}");
+            pool.get(gui+"TextureButton").getDeclaredMethod("loadTexture").setBody("{}");
+            pool.get("com.wurmonline.client.comm.SimpleServerConnectionClass").getDeclaredMethod("sendSingleAction",new CtClass[]{CtClass.longType,CtClass.longType,pool.get("com.wurmonline.shared.constants.PlayerAction")}).setBody("{"+gui+"HighResCraftProbe.sentActions++;"+gui+"HighResCraftProbe.sentSource=$1;"+gui+"HighResCraftProbe.sentTarget=$2;}");
+            pool.get(gui+"text.TextFont").getDeclaredMethod("getStaticSizeText").setBody("{return new "+gui+"HudButtonProbe.ProbeFont(14,false);}");
+            pool.get("com.wurmonline.client.resources.textures.IconLoader").getDeclaredMethod("getIcon").setBody("{return null;}");
+            pool.get("com.wurmonline.client.renderer.model.ModelResourceLoader").getClassInitializer().setBody("{}");
+            pool.get("com.wurmonline.client.renderer.model.ModelResourceLoader").getDeclaredMethod("getModel").setBody("{return null;}");
             pool.get(gui+"HighResCharacterArtwork").getDeclaredMethod("draw")
                     .setBody("{"+gui+"HudButtonProbe.characterArtwork($$);}");
             pool.get("com.wurmonline.client.game.World").getDeclaredMethod("getServerConnection")
@@ -165,7 +181,13 @@ public final class HudUiProbe {
             });
             // Isolate GPU skins and unrelated HUD menu/keyboard callbacks in the window fixture.
             pool.get(gui + "WurmComponent").getDeclaredMethod("drawTexture").setBody("{}");
-            renderer.getDeclaredMethod("texturedQuadAlphaBlend").setBody("{}");
+            renderer.getDeclaredMethod("texturedQuadAlphaBlend").setBody("{"+gui+"HighResCraftProbe.capturePreview($7,$8,$9,$10,$11,$12,$13,$14);}");
+            CtClass clientBase=pool.get("com.wurmonline.client.WurmClientBase");
+            if(clientBase.getClassInitializer()!=null)clientBase.getClassInitializer().setBody("{}");
+            clientBase.getDeclaredMethod("getResourceManager").setBody("{return null;}");
+            pool.get("com.wurmonline.client.renderer.ItemColorsXml").getDeclaredMethod("loadItemColors").setBody("{itemColors=new java.util.HashMap();}");
+            pool.get("com.wurmonline.client.renderer.cell.Volume").getClassInitializer().setBody("{}");
+            pool.get("com.wurmonline.client.renderer.model.collada.AbstractColladaModelData").getClassInitializer().setBody("{}");
             pool.get(gui + "WurmComponent").getDeclaredMethod("setInitialSize", new CtClass[]{CtClass.intType, CtClass.intType,
                     CtClass.booleanType, CtClass.booleanType, CtClass.floatType, CtClass.floatType}).instrument(new javassist.expr.ExprEditor() {
                 @Override public void edit(javassist.expr.MethodCall call) throws CannotCompileException {

@@ -3,6 +3,7 @@
 *.gradle text eol=lf
 *.properties text eol=lf
 *.md text eol=lf
+*.tsv text eol=lf
 src/main/resources/org/highreshud/client/i18n/messages.tsv text eol=lf whitespace=-blank-at-eol
 *.png binary
 *.jar binary

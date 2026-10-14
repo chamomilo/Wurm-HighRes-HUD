@@ -44,6 +44,7 @@ public final class HighResWindowIntegration {
         WurmTabbedWindow friends = (WurmTabbedWindow) HighResWindowAccess.get(hud, "friendWindow");
         if (HighResWindowsSettings.events && friends != null) attach(new HighResChatWindow("highres.friends", "Friends", friends, hud));
         HighResSkillDetailDialog.restoreNativeMessages();
+        attachCraftWindows(hud);
         attachContainers(hud);
         // The same instances retain native show/hide commands and saved-position keys.
         ensureHudRegistration(hud, "Event window", (WurmComponent) HighResWindowAccess.get(hud, "eventWindow"));
@@ -58,6 +59,43 @@ public final class HighResWindowIntegration {
         WINDOWS.put(skin.window, skin); skin.install();
         if(skin.itemTable()!=null)resized(skin.window);
     }
+    private static void attachCraftWindows(HeadsUpDisplay hud) {
+        if(!HighResWindowsSettings.build)return;
+        CreationListWindow recipes=hud.getCreationListWindow();
+        CreationWindow build=hud.getCreationWindow();
+        if(recipes!=null&&!WINDOWS.containsKey(recipes))attach(new HighResRecipeWindow(recipes,hud));
+        if(build!=null&&!WINDOWS.containsKey(build))attach(new HighResBuildWindow(build,hud));
+    }
+    static HighResBuildWindow buildSkin(){return currentHud==null?null:(HighResBuildWindow)WINDOWS.get(currentHud.getCreationWindow());}
+    static HighResCraftRecipe recipeFor(String name) {
+        if(currentHud==null)return null;HighResNativeWindow skin=WINDOWS.get(currentHud.getCreationListWindow());
+        if(!(skin instanceof HighResRecipeWindow))return null;
+        String key=org.highreshud.client.craft.CraftCatalog.clean(name);HighResRecipeWindow browser=(HighResRecipeWindow)skin;
+        for(CreationListItem item:browser.items())if(org.highreshud.client.craft.CraftCatalog.clean(item.getName()).equals(key))return browser.browser.resolve(item);
+        return null;
+    }
+    static void selectRecipe(HighResCraftRecipe recipe){currentHud.openCreationWindowVisible();attachCraftWindows(currentHud);HighResBuildWindow skin=buildSkin();if(skin!=null){if(skin.window.minimized)skin.collapse();skin.select(recipe);}}
+    public static void beginCraftPortraits(HeadsUpDisplay hud){HighResBuildWindow skin=buildSkin();if(hud==currentHud&&skin!=null&&!skin.window.minimized&&hud.getComponents().contains(skin.window))skin.preview.beginFrame();}
+    public static boolean craftItemDropped(CreationWindow window,int x,int y,Object dragged){HighResNativeWindow skin=WINDOWS.get(window);return skin instanceof HighResBuildWindow&&dragged instanceof DraggableComponent&&((HighResBuildWindow)skin).drop(x,y,(DraggableComponent)dragged);}
+    public static void craftActionResult(CreationWindow window){HighResNativeWindow skin=WINDOWS.get(window);if(skin instanceof HighResBuildWindow)((HighResBuildWindow)skin).actionResult();}
+    public static void craftInventoryAdded(CreationWindow window,com.wurmonline.client.game.inventory.InventoryMetaItem item){HighResNativeWindow skin=WINDOWS.get(window);if(skin instanceof HighResBuildWindow)((HighResBuildWindow)skin).inventoryAdded(item);}
+    public static void craftInventoryRemoved(CreationWindow window,com.wurmonline.client.game.inventory.InventoryMetaItem item){HighResNativeWindow skin=WINDOWS.get(window);if(skin instanceof HighResBuildWindow)((HighResBuildWindow)skin).inventoryRemoved(item);}
+    private static HighResBuildWindow craftSkin(CreationWindow window){
+        if(currentHud==null||!HighResWindowsSettings.build||currentHud.getCreationWindow()!=window)return null;
+        attachCraftWindows(currentHud);return (HighResBuildWindow)WINDOWS.get(window);
+    }
+    public static boolean craftGroundAdded(CreationWindow window,String name,long id,float quality,float damage,float weight,short icon,CreationFrame.ItemType type){
+        HighResBuildWindow skin=craftSkin(window);if(skin==null)return false;
+        skin.owner.openCreationWindowVisible();if(window.minimized)skin.collapse();skin.worldAdded(name,id,quality,damage,weight,icon,type);return true;
+    }
+    public static boolean craftGroundReplaced(CreationWindow window,long oldId,String name,long id,float quality,float damage,float weight,short icon,CreationFrame.ItemType type){
+        HighResBuildWindow skin=craftSkin(window);if(skin==null)return false;
+        if(oldId==-10)return craftGroundAdded(window,name,id,quality,damage,weight,icon,type);
+        if(!skin.worldStock.containsKey(oldId))return false;
+        skin.worldReplaced(oldId,name,id,quality,damage,weight,icon,type);return true;
+    }
+    public static void craftGroundUpdated(CreationWindow window,long id,float quality,float damage,float weight){HighResBuildWindow skin=craftSkin(window);if(skin!=null)skin.worldUpdated(id,quality,damage,weight);}
+    public static boolean craftGroundRemoved(CreationWindow window,long id){HighResBuildWindow skin=craftSkin(window);if(skin==null||!skin.worldStock.containsKey(id))return false;if(id==skin.unfinishedId)skin.completed();else skin.removeReservation(id);skin.tick();return true;}
     static void attachDialog(WWindow dialog, HeadsUpDisplay hud) {
         attach(new HighResNativeWindow("highres.skills.detail", "Skill detail level", dialog, hud) { });
     }
@@ -116,7 +154,9 @@ public final class HighResWindowIntegration {
         if (hud != currentHud) return;
         // Also catch windows created/reparented by another mod after the native open hook.
         attachContainers(hud);
+        attachCraftWindows(hud);
         for (HighResNativeWindow skin : WINDOWS.values()) skin.tick();
+        HighResCatalogExport.tick(hud);
         INVENTORY_DRAG.arrivals(WINDOWS.values());
         for (HighResInventoryFilter filter : FILTERS.values()) filter.refresh();
         for (WButton button : HEADING_HINTS.keySet()) refreshHeadingHint(button);
@@ -152,6 +192,9 @@ public final class HighResWindowIntegration {
         HighResNativeWindow skin = WINDOWS.get(component);
         if (skin == null || !component.contains(x, y)) return null;
         if (skin.window.minimized) return skin.header.getComponentAt(x, y);
+        FlexComponent control=skin.headerControlAt(x,y);if(control!=null)return control;
+        if(skin instanceof HighResBuildWindow&&skin.window.getComponent().contains(x,y))return ((HighResBuildWindow)skin).panel.getComponentAt(x,y);
+        if(skin instanceof HighResRecipeWindow&&skin.window.getComponent().contains(x,y))return ((HighResRecipeWindow)skin).browser.getComponentAt(x,y);
         if (skin instanceof HighResCharacterWindow) return ((HighResCharacterWindow) skin).componentAt(x, y);
         HighResInventoryFilter filter=FILTERS.get(skin.itemTable());
         if(filter!=null) {FlexComponent input=filter.at(x,y);if(input!=null)return input;}
@@ -163,12 +206,14 @@ public final class HighResWindowIntegration {
     }
     static Collection<HighResNativeWindow> skins() {return WINDOWS.values();}
     static void paintInventoryDrag(HighResNativeWindow skin,Queue queue) {INVENTORY_DRAG.paint(skin,queue);}
-    static void paintInventoryOpacity(HighResNativeWindow skin,Queue queue) {
-        HighResInventoryFilter filter=FILTERS.get(skin.itemTable());
-        if(filter!=null)filter.paintOpacity(queue);
-    }
     public static void inventoryDragFrame(HeadsUpDisplay hud,int x,int y) {if(hud==currentHud)INVENTORY_DRAG.update(hud,WINDOWS.values(),x,y);}
-    public static boolean inventoryDrop(HeadsUpDisplay hud,int x,int y,int button) {return hud==currentHud&&INVENTORY_DRAG.drop(hud,x,y,button);}
+    public static boolean inventoryDrop(HeadsUpDisplay hud,int x,int y,int button) {
+        if(hud!=currentHud)return false;
+        HighResBuildWindow build=buildSkin();
+        Object dragged=HighResWindowAccess.get(hud,"draggedItem");
+        if(button==0&&build!=null&&!build.window.minimized&&hud.getComponents().contains(build.window)&&build.window.contains(x,y)&&dragged instanceof DraggableComponent&&build.drop(x,y,(DraggableComponent)dragged))return true;
+        return INVENTORY_DRAG.drop(hud,x,y,button);
+    }
     public static void inventoryDragCleared() {INVENTORY_DRAG.clear();}
     static boolean inventoryGap(WurmTreeList<?> table) {return INVENTORY_DRAG.hasGap(table);}
     static void refreshInventoryFilter(WurmTreeList<?> table) {
@@ -203,16 +248,22 @@ public final class HighResWindowIntegration {
     public static void collapsedChanged(WurmComponent component) {
         HighResNativeWindow skin = WINDOWS.get(component); if (skin != null) skin.collapsedChanged();
     }
+    static void revealChat(WurmTabbedWindow window) {
+        HighResNativeWindow skin=WINDOWS.get(window);
+        if(skin instanceof HighResChatWindow&&window.minimized)skin.collapse();
+    }
     public static int minimumWidth(WurmComponent component, int proposed) {
         HighResNativeWindow skin = WINDOWS.get(component);
         if(skin instanceof HighResCharacterWindow)return Math.max(HighResCharacterWindow.WIDTH,proposed);
+        if(skin instanceof HighResBuildWindow)return Math.max(940,proposed);
+        if(skin instanceof HighResRecipeWindow)return Math.max(660,proposed);
         int nameWidth=0;
         if(skin!=null && skin.itemTable()!=null) {
             for(String language:HudMessages.languageCodes())
                 nameWidth=Math.max(nameWidth,HighResWindowTypography.heading().getWidth(HudMessages.translate(language,"Name")));
             TextFont editor=com.wurmonline.client.renderer.gui.text.HudTextFonts.body(14,false);
             int filterWidth=Math.max(editor.getWidth("WWWWW"),editor.getWidth("ШШШШШ"))+12;
-            nameWidth+=filterWidth+HighResInventoryOpacity.widthFor(filterWidth)+6+24+32+HighResInventoryFilter.captionGap();
+            nameWidth+=filterWidth+24+32+HighResInventoryFilter.captionGap();
         }
         int minimum = skin != null && skin.itemTable() != null
                 ? Math.max(240, skin.itemTable().commonWidth + nameWidth
@@ -221,7 +272,10 @@ public final class HighResWindowIntegration {
     }
     public static int minimumHeight(WurmComponent component, int proposed) {
         HighResNativeWindow skin = WINDOWS.get(component);
+        if(skin instanceof HighResChatWindow&&skin.window.minimized)return skin.channelHeight();
         if(skin instanceof HighResCharacterWindow && !skin.window.minimized)return Math.max(HighResCharacterWindow.HEIGHT,proposed);
+        if(skin instanceof HighResBuildWindow&&!skin.window.minimized)return Math.max(740,proposed);
+        if(skin instanceof HighResRecipeWindow&&!skin.window.minimized)return Math.max(420,proposed);
         return skin == null ? proposed : skin.window.minimized ? HighResNativeWindow.TITLE_HEIGHT + HighResNativeWindow.FRAME
                 : Math.max(skin.hasTitle() ? 140 : Math.max(140, skin.header.height + 80), proposed);
     }
@@ -302,7 +356,7 @@ public final class HighResWindowIntegration {
         WButton name=null;
         for(FlexComponent child:(FlexComponent[])HighResWindowAccess.get(band,"components"))
             if(child instanceof WButton && "Name".equals(((WButton)child).getLabel()))name=(WButton)child;
-        if(items && name!=null)FILTERS.put(table,new HighResInventoryFilter(table,name,itemSkin));
+        if(items && name!=null)FILTERS.put(table,new HighResInventoryFilter(table,name));
         BANDS.add(band); HEADINGS.put(band, table);
         band.sizeFlags = 0; band.setSize(band.width, height); band.sizeFlags = FlexComponent.FIXED_HEIGHT;
         HEADINGS.put(row, table);
@@ -357,9 +411,6 @@ public final class HighResWindowIntegration {
         for(HighResInventoryFilter filter:FILTERS.values())if(descendant(component,filter.field)) {
             pick.addText(HudMessages.tr("filter area"));return true;
         }
-        for(HighResInventoryFilter filter:FILTERS.values())if(descendant(component,filter.opacity)) {
-            pick.addText(HudMessages.tr("Inventory window opacity: {0}%",filter.opacity.value()));return true;
-        }
         for (HighResNativeWindow skin : WINDOWS.values()) {
             WWindow window = skin.window;
             if (window.resizable && !window.minimized && component == HighResWindowAccess.get(window, "southBar")
@@ -398,7 +449,7 @@ public final class HighResWindowIntegration {
     public static void windowShown(HeadsUpDisplay hud, WurmComponent component) {
         if (hud != currentHud) return;
         HighResNativeWindow skin = WINDOWS.get(component);
-        if (skin != null) { if(skin.itemTable()!=null)skin.resetOpacity(); skin.tick(); sortContent(skin.window.getComponent()); }
+        if (skin != null) { if(skin.usesOpacity())skin.resetOpacity(); skin.tick(); sortContent(skin.window.getComponent()); }
     }
     public static void beforeSort(Object nativeTable, int column) {
         WurmTreeList<?> table = (WurmTreeList<?>) nativeTable;
@@ -437,7 +488,7 @@ public final class HighResWindowIntegration {
         HeadingBand(FlexComponent band) {
             super("highres.headings", band); pack(); sizeFlags = FIXED_HEIGHT;
             filter=FILTERS.get(HEADINGS.get(band));
-            if(filter!=null) {filter.field.parent=this;filter.opacity.parent=this;}
+            if(filter!=null) filter.field.parent=this;
         }
         @Override public FlexComponent getComponentAt(int x,int y) {
             FlexComponent input=filter==null?null:filter.at(x,y);

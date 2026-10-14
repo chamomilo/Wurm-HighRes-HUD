@@ -203,6 +203,7 @@ final class HighResCharacterWindow extends HighResNativeWindow {
     }
     @Override void render(Queue queue) {
         tick();
+        int firstPrimitive=queue==null?0:queue.getQueueCount();
         UiPainter.background(canvas.begin(queue),UiBackground.LEATHER,UiScale.BASE,1f,character.x,character.y,character.width,character.height);
         if(!character.minimized) {
             UiPainter.background(canvas,UiBackground.SOLID,UiScale.BASE,1f,px(59),py(100),SCALE.pixels(205),SCALE.pixels(297));
@@ -213,16 +214,15 @@ final class HighResCharacterWindow extends HighResNativeWindow {
             renderCorner(queue,"workingHandItem");
             model.render(queue,1f);zones.render(queue,1f);
             canvas.fill(UiColor.rgb(0xb4a578),1f,(modelView()?model:zones).x+8,model.y+25,109,2);
-            int count=0; for(PaperDollSlot slot:slots().values())count+=wounds(slot).size();
-            text(queue,HudMessages.tr("Wounds: {0}",count),px(59),py(474),UiColor.TEXT,14);
             if(!modelView()) {
                 for(int i=0;i<5;i++)canvas.fill(zoneColor(i==0?0:i==1?1:(i-1)*20),1f,px(59)+i*52,py(479),42,4);
                 text(queue,HudMessages.tr("Healthy → Critical"),px(59),py(498),UiColor.MUTED,14);
                 renderWoundList(queue);
-            } else text(queue,HudMessages.tr("Drag to rotate"),px(59),py(495),UiColor.MUTED,14);
+            }
             unequip.render(queue,1f);
         }
         header.render(queue,1f);UiPainter.frame(canvas,FRAME,1f,character.x,character.y,character.width,character.height);
+        finishOpacity(queue,firstPrimitive);
     }
     private void renderModel(Queue queue) {
         PlayerBodyRenderable body=(PlayerBodyRenderable)HighResWindowAccess.get(character,"playerBody");
@@ -322,6 +322,7 @@ final class HighResCharacterWindow extends HighResNativeWindow {
         TextFont font=HudTextFonts.body(HighResDataTypography.bodyPixels(pixels),false);font.moveTo(x,y);font.paint(queue,value,color.red,color.green,color.blue,1f);
     }
     boolean pick(PickData pick,int x,int y) {
+        if(modelView()&&playerHit(x,y)){pick.addText(HudMessages.tr("Drag to rotate"));return true;}
         if(woundAt(x,y)!=null)return false;
         byte id=hit(x,y,true);Part part=part(id);
         if(part==null)return false;

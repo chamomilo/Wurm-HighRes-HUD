@@ -197,7 +197,9 @@ public final class HighResWindowsProbe {
                 && inventorySkin.header.collapse.preset() == UiButtonPreset.COMPACT, "Item window actions use the explicit Compact preset");
         HighResNativeWindow eventsSkin = skins.get(events);
         check(!skin.hasTitle() && !eventsSkin.hasTitle() && skin.header.close == null && eventsSkin.header.close == null,
-                "Chat/Events have channel buttons only, without title or three window controls");
+                "Chat/Events keep the channel strip without a title or close/maximize controls");
+        check(skin.minimize.preset()==UiButtonPreset.COMPACT&&((HighResChatWindow)eventsSkin).minimize.preset()==UiButtonPreset.COMPACT,
+                "Chat/Events minimize uses the same Compact icon preset as title controls");
         check(eventsSkin.header.height == HighResChannelStrip.HEIGHT && events.getComponent().y == events.y + HighResChannelStrip.HEIGHT,
                 "Fitting Events tabs sit immediately above native messages without an empty title/scrollbar band");
         check(skin.channels().rowCount() > 1 && skin.header.height == skin.channels().rowCount() * HighResChannelStrip.HEIGHT,
@@ -324,10 +326,19 @@ public final class HighResWindowsProbe {
         verifyAmphoraRoundTrip(hud, inventorySkin, items, containers, skins);
         verifyFontTransferIntegration(hud, inventorySkin, items, containers, skins);
         verifyInventoryOpacity(hud,inventorySkin,skins.get(previews.get(0)),output);
+        verifyChatOpacity(hud,skin,(HighResChatWindow)eventsSkin);
+        verifyChatMinimize(hud,skin,(HighResChatWindow)eventsSkin,output);
+        HighResCraftProbe.verify(hud,(InventoryWindow)inventorySkin.window,output);
         if(System.getProperty("olderSharedUiJar")==null)renderSettingsPreview(hud,output);
         verifyTimedInventoryDrag(hud,containers,skins);
         verifyCharacter(hud,view,skins,output);
         input.setTextMoveToEnd("/say Chat input"); input.setKbFocus(true);
+        // Compare transition alpha after the new minimize buttons' release pulse has settled.
+        HudButtonProbe.previewGraphics(new BufferedImage(1180,900,BufferedImage.TYPE_INT_ARGB));
+        for(HighResChatWindow chatSkin:new HighResChatWindow[]{skin,(HighResChatWindow)eventsSkin}) {
+            chatSkin.minimize.mouseExited();chatSkin.minimize.isCloseHovered=false;chatSkin.minimize.render(null,1f);
+        }
+        HudButtonProbe.finishPreview();Thread.sleep(UiButtonMotion.RELEASE_NANOS/1_000_000+30);
         BufferedImage reference = null;
         for (float alpha : new float[]{0, .2f, .65f, 1}) {
             BufferedImage image = new BufferedImage(1180, 900, BufferedImage.TYPE_INT_ARGB);
@@ -335,8 +346,11 @@ public final class HighResWindowsProbe {
             HighResWindowIntegration.renderWindow(inventory,null); HighResWindowIntegration.renderWindow(chat,null); HighResWindowIntegration.renderWindow(events,null);
             for (WWindow container : previews) HighResWindowIntegration.renderWindow(container,null);
             HudButtonProbe.finishPreview();
-            if (reference != null) check(Arrays.equals(reference.getRGB(0, 0, 1180, 900, null, 0, 1180), image.getRGB(0, 0, 1180, 900, null, 0, 1180)),
-                    "All window pixels ignore incoming HUD alpha");
+            if (reference != null && !Arrays.equals(reference.getRGB(0, 0, 1180, 900, null, 0, 1180), image.getRGB(0, 0, 1180, 900, null, 0, 1180))) {
+                ImageIO.write(reference,"png",new File(output.getParentFile(),"hud-alpha-reference.png"));
+                ImageIO.write(image,"png",new File(output.getParentFile(),"hud-alpha-difference.png"));
+                throw new AssertionError("All window pixels ignore incoming HUD alpha");
+            }
             reference = image;
         }
         HudButtonProbe.previewGraphics(reference);
@@ -445,7 +459,7 @@ public final class HighResWindowsProbe {
             check(hud.pick(materialButton.x+8,materialButton.y+8,materialHint)
                     && materialHint.getText().contains(HudMessages.tr("Item material type")),
                     "The compact material heading retains its full localized hover description");
-            check(filter.opacity.x+filter.opacity.width<=filter.name.x+filter.name.width-18,
+            check(filter.field.x+filter.field.width<=filter.name.x+filter.name.width-18,
                     "Filter reserves the native Name sort indicator at narrow widths: "+language+" name="+filter.name.width+" field="+filter.field.width
                     +" window="+skin.window.width+" table="+filter.table.width+" common="+filter.table.commonWidth+" row="+((WurmComponent)HighResWindowAccess.get(filter.table,"buttonRow")).width+" band="+filter.name.parent.width);
         }
@@ -595,6 +609,83 @@ public final class HighResWindowsProbe {
         inventory.itemList.recalcLines(); inventorySkin.tick(); window.closePressed();
         System.out.println("AMPHORA_ROUND_TRIP_OK: player to wagon, native listener updates, wagon to blank player inventory beside expanded backpack");
     }
+    private static void verifyChatOpacity(HeadsUpDisplay hud,HighResChatWindow chat,HighResChatWindow events) throws Exception {
+        BufferedImage image=new BufferedImage(1180,900,BufferedImage.TYPE_INT_ARGB);HudButtonProbe.previewGraphics(image);
+        com.wurmonline.client.renderer.backend.Queue queue=InventoryOpacityPreview.begin();
+        for(HighResChatWindow skin:new HighResChatWindow[]{chat,events}) {
+            skin.opacityPercent(50);int first=queue.getQueueCount();skin.render(queue);int end=queue.getQueueCount();
+            check(end-first>3,"Chat/Events render their body before the recovery slider");
+            for(int p=first;p<end-3;p++)check(queue.getQueue()[p].a<=.5001f,"Chat/Events tabs, text and body respect their opacity");
+            for(int p=end-3;p<end;p++)check(queue.getQueue()[p].a==1f,"Chat/Events opacity slider remains readable");
+            check(skin.opacity.x>=skin.channels().x+skin.channels().width,"Chat/Events reserve space beside tabs for the opacity slider");
+            check(skin.opacity.width==58&&skin.opacity.height==HighResChannelStrip.HEIGHT-4,"Chat/Events opacity zones shrink by two pixels in each dimension");
+        }
+        InventoryOpacityPreview.finish();HudButtonProbe.finishPreview();
+        int y=chat.opacity.y+chat.opacity.height/2;
+        check(hud.getComponentAt(chat.opacity.thumbX()+1,y)==chat.opacity,"Chat opacity uses native HUD hit testing");
+        hud.mousePressed(chat.opacity.thumbX()+1,y,0,0);hud.mouseDragged(chat.opacity.x-100,y);hud.mouseReleased(chat.opacity.x-100,y,0);
+        check(chat.opacityPercent()==10&&events.opacityPercent()==50,"Chat opacity changes independently of Events");
+        chat.opacityPercent(100);events.opacityPercent(100);
+    }
+    @SuppressWarnings("unchecked")
+    private static void verifyChatMinimize(HeadsUpDisplay hud,HighResChatWindow chat,HighResChatWindow events,File output) throws Exception {
+        HighResChatWindow[] windows={chat,events};int[][] previous=new int[2][4],expanded=new int[2][4];
+        AbstractTab[] selected=new AbstractTab[2];
+        WurmInputField editor=(WurmInputField)HighResWindowAccess.get(hud,"chatInput");String input=editor.getText();
+        for(int n=0;n<windows.length;n++) {
+            HighResChatWindow skin=windows[n];WWindow window=skin.window;
+            previous[n]=new int[]{window.x,window.y,window.width,window.height};
+            window.setLocation(20+n*580,100+n*200,560,260);skin.tick();
+            expanded[n]=new int[]{window.x,window.y,window.width,window.height};
+            selected[n]=((WurmTabbedWindow)window).getSelectedTab();FlexComponent content=window.getComponent();
+            int x=skin.minimize.x+skin.minimize.width/2,y=skin.minimize.y+skin.minimize.height/2;
+            check(skin.opacity.x+skin.opacity.width+3==skin.minimize.x&&hud.getComponentAt(x,y)==skin.minimize,
+                    "Minimize is beside opacity and receives native HUD hit testing");
+            hud.mousePressed(x,y,0,0);hud.mouseDragged(x,y-70);hud.mouseReleased(x,y-70,0);
+            check(!window.minimized,"Dragging out of Minimize cancels collapsing");
+            hud.mousePressed(x,y,0,0);hud.mouseReleased(x,y,0);
+            check(window.minimized&&window.y+window.height==hud.getHeight()&&window.height==skin.channels().height
+                            &&skin.header.height==window.height&&window.x==expanded[n][0]&&window.width==expanded[n][2],
+                    "Completed Minimize docks only the wrapped channel strip at the screen bottom");
+            check(window.getComponent()==content&&((WurmTabbedWindow)window).getSelectedTab()==selected[n]
+                            &&editor.getText().equals(input),"Collapse preserves selected channel, native history/body and entered command");
+            HighResWindowAccess.set(hud,"height",900);skin.tick();check(window.y+window.height==900,"Collapsed strip follows a screen height change");
+            HighResWindowAccess.set(hud,"height",1080);window.setSize(300,window.height);skin.tick();
+            check(window.height==skin.channels().height&&window.y+window.height==1080
+                            &&HighResWindowIntegration.minimumHeight(window,140)==window.height,"Collapsed narrow reflow preserves every tab without a message area");
+            window.setSize(560,window.height);skin.tick();
+            for(String language:HudMessages.languageCodes()) {
+                HudMessages.useLanguage(language);skin.tick();
+                check(skin.minimize.getHoverString().equals(UiLabels.forLanguage(language).restore),"Collapsed restore hint follows the current language");
+            }
+            HudMessages.useLanguage("en");skin.tick();
+            x=skin.minimize.x+skin.minimize.width/2;y=skin.minimize.y+skin.minimize.height/2;
+            check(hud.getComponentAt(x,y)==skin.minimize,"Collapsed Restore remains reachable through the native HUD");
+            hud.mousePressed(x,y,0,0);hud.mouseReleased(x,y,0);
+            check(!window.minimized&&window.x==expanded[n][0]&&window.y==expanded[n][1]
+                            &&window.width==expanded[n][2]&&window.height==expanded[n][3],"Restore returns exact expanded bounds");
+            skin.collapse();
+        }
+        BufferedImage image=new BufferedImage(1180,160,BufferedImage.TYPE_INT_ARGB);HudButtonProbe.previewGraphics(image);
+        HudButtonProbe.graphics.setColor(new java.awt.Color(0x37392d));HudButtonProbe.graphics.fillRect(0,0,image.getWidth(),image.getHeight());
+        HudButtonProbe.graphics.translate(0,image.getHeight()-hud.getHeight());
+        com.wurmonline.client.renderer.backend.Queue queue=InventoryOpacityPreview.begin();
+        for(HighResChatWindow skin:windows)skin.render(queue);
+        InventoryOpacityPreview.finish();HudButtonProbe.finishPreview();ImageIO.write(image,"png",new File(output.getParentFile(),"hud-chat-minimized-preview.png"));
+        for(int n=0;n<windows.length;n++) {
+            HighResChatWindow skin=windows[n];
+            List<HighResChannelStrip.Channel> tabs=(List<HighResChannelStrip.Channel>)HighResWindowAccess.get(skin.channels(),"channels");
+            HighResChannelStrip.Channel tab=tabs.get(0);int x=tab.x+tab.width/2,y=tab.y+tab.height/2;
+            check(hud.getComponentAt(x,y)==tab,"Collapsed channel remains a real native HUD click target");
+            hud.mousePressed(x,y,0,0);hud.mouseReleased(x,y,0);skin.tick();
+            check(!skin.window.minimized&&((WurmTabbedWindow)skin.window).getSelectedTab()==tab.nativeButton.tab
+                            &&skin.window.y==expanded[n][1]&&skin.window.height==expanded[n][3],"A completed tab click restores the window and selects its native channel");
+            if(n==0)check(events.window.minimized,"Restoring Chat leaves Events collapsed");
+            selected[n].select();skin.window.setLocation(previous[n][0],previous[n][1],previous[n][2],previous[n][3]);skin.tick();
+        }
+        check(editor.getText().equals(input),"Minimize/restore never submits or clears the entered chat command");
+        System.out.println("CHAT_MINIMIZE_OK: native release/drag cancellation, bottom-docked tabs only, narrow reflow/screen resize, four-language Restore, exact bounds/history/input retention, tab restore, independent Chat/Events");
+    }
     @SuppressWarnings("unchecked")
     private static void verifyInventoryOpacity(HeadsUpDisplay hud,HighResNativeWindow skin,HighResNativeWindow other,File output) throws Exception {
         com.wurmonline.client.renderer.backend.Queue batch=InventoryOpacityPreview.begin();
@@ -614,9 +705,8 @@ public final class HighResWindowsProbe {
         InventoryOpacityPreview.finish();
         Map<WurmTreeList<?>,HighResInventoryFilter> filters=(Map<WurmTreeList<?>,HighResInventoryFilter>)staticField(HighResWindowIntegration.class,"FILTERS");
         HighResInventoryFilter filter=filters.get(skin.itemTable());filter.layout();
-        HighResInventoryOpacity slider=filter.opacity;
-        check(slider.height==filter.field.height&&Math.abs(slider.width-filter.field.width/3*1.3f)<=.5f&&slider.x==filter.field.x+filter.field.width+6,
-                "Opacity field is 30 percent wider than its previous one-third width, immediately right of Filter");
+        HighResInventoryOpacity slider=skin.header.opacity;
+        for(HighResNativeWindow candidate:HighResWindowIntegration.skins())if(candidate.hasTitle())verifyTitleOpacity(candidate);
         int y=slider.y+slider.height/2;
         check(hud.getComponentAt(slider.thumbX()+1,y)==slider,"Opacity thumb receives native HUD hit testing");
         int otherValue=other.opacityPercent();
@@ -625,6 +715,11 @@ public final class HighResWindowsProbe {
         check(HighResWindowAccess.get(hud,"draggedItem")==null,"Opacity gesture does not start an item drag");
         hud.mousePressed(slider.thumbX()+1,y,0,0);hud.mouseDragged(slider.x+slider.width+100,y);hud.mouseReleased(slider.x+slider.width+100,y,0);
         check(skin.opacityPercent()==100,"Right drag reaches full opacity");
+        skin.collapse();verifyTitleOpacity(skin);
+        check(hud.getComponentAt(slider.x+5,slider.y+5)==slider,"Collapsed window retains the fourth opacity control");
+        slider.leftPressed(slider.thumbX()+1,y,1);slider.mouseDragged(slider.x-100,y);slider.leftReleased(slider.x-100,y);
+        check(skin.window.minimized&&skin.opacityPercent()==10,"Collapsed opacity drag does not expand or move the window");
+        skin.collapse();skin.opacityPercent(100);
         int oldDefault=org.highreshud.client.HighResWindowsSettings.defaultInventoryOpacity;
         org.highreshud.client.HighResWindowsSettings.defaultInventoryOpacity=35;
         check(skin.opacityPercent()==100,"Changing the default keeps already-open windows independent");
@@ -651,7 +746,7 @@ public final class HighResWindowsProbe {
         for(int n=0;n<3;n++) {
             skin.window.setLocation(20+n*535,35,515,320);skin.opacityPercent(new int[]{10,50,100}[n]);
             int first=queue.getQueueCount();HighResWindowIntegration.renderWindow(skin.window,queue);
-            int end=queue.getQueueCount(),sliderPrimitives=3;
+            int end=queue.getQueueCount();slider.render(queue,1f);int sliderPrimitives=queue.getQueueCount()-end;
             for(int p=first;p<end-sliderPrimitives;p++)check(queue.getQueue()[p].a<=skin.opacityPercent()/100f+.0001f,
                     "Window frames, fields, glyphs and text respect intentional per-window alpha");
             for(int p=end-sliderPrimitives;p<end;p++)check(queue.getQueue()[p].a==1f,"Recovery slider remains fully visible");
@@ -659,7 +754,15 @@ public final class HighResWindowsProbe {
         InventoryOpacityPreview.finish();HudButtonProbe.finishPreview();
         ImageIO.write(image,"png",new File(output.getParentFile(),"hud-inventory-opacity-preview.png"));
         skin.window.setLocation(ox,oy,ow,oh);skin.opacityPercent(100);HudMessages.useLanguage("en");
-        System.out.println("INVENTORY_OPACITY_OK: 30 percent wider field, 10-100 native mouse drag, per-window isolation, reopen default, four languages, whole-window native queue alpha, visible recovery slider");
+        System.out.println("INVENTORY_OPACITY_OK: fourth 22px header square, collapsed recovery control, 10-100 native mouse drag, per-window isolation, reopen default, four languages, whole-window native queue alpha");
+    }
+    static void verifyTitleOpacity(HighResNativeWindow skin) {
+        skin.header.componentResized();HighResInventoryOpacity slider=skin.header.opacity;
+        check(slider!=null&&skin.usesOpacity()&&slider.width==22&&slider.height==22
+                &&slider.width==skin.header.collapse.width-2&&slider.height==skin.header.collapse.height-2
+                &&slider.x+slider.width+3==skin.header.collapse.x&&slider.y==skin.header.collapse.y+1
+                &&slider.parent==skin.header,"Opacity is a 22px square centered in the fourth title-control slot: "+skin.id);
+        check(skin.header.getComponentAt(slider.x+5,slider.y+5)==slider,"Fourth title square reaches opacity input: "+skin.id);
     }
     @SuppressWarnings("unchecked") private static void renderSettingsPreview(HeadsUpDisplay hud,File output) throws Exception {
         java.lang.reflect.Method method=Class.forName("org.highreshud.client.ModSettingsSchema").getDeclaredMethod("specs");method.setAccessible(true);
@@ -909,6 +1012,7 @@ public final class HighResWindowsProbe {
         HighResWindowAccess.set(character,"inventoryItem",item(700,-1,"Inventory",0));
         character.setPosition(1220,20);hud.getComponents().add(character);
         HighResCharacterWindow skin=new HighResCharacterWindow(character,hud);skins.put(character,skin);skin.install();
+        verifyTitleOpacity(skin);
         check(skin.modelView(),"Character model is the default view");
         InventoryMetaItem originalTool=(InventoryMetaItem)HighResWindowAccess.get(hud,"activeToolItem");
         check(character.getCommandTargetsFrom(skin.px(14),skin.py(430))[0]==600L,"Body corner retains native Manage/body command targets");
@@ -928,7 +1032,11 @@ public final class HighResWindowsProbe {
         check(hud.mousePressed(cx,cy,0,0),"Model drag reaches native character input");hud.mouseDragged(cx+30,cy);hud.mouseReleased(cx+30,cy,0);
         check(((Number)HighResWindowAccess.get(character,"rotation")).floatValue()==30f,"Dragging rotates the native model");
         BufferedImage image=new BufferedImage(1680,690,BufferedImage.TYPE_INT_ARGB);HudButtonProbe.previewGraphics(image);
-        HighResWindowIntegration.renderWindow(character,null);HudButtonProbe.finishPreview();
+        com.wurmonline.client.renderer.backend.Queue opacityQueue=InventoryOpacityPreview.begin();skin.opacityPercent(50);skin.render(opacityQueue);
+        int end=opacityQueue.getQueueCount();skin.header.opacity.render(opacityQueue,1f);int controlPrimitives=opacityQueue.getQueueCount()-end;
+        for(int p=0;p<end-controlPrimitives;p++)check(opacityQueue.getQueue()[p].a<=.5001f,"Character custom rendering respects its opacity");
+        for(int p=end-controlPrimitives;p<end;p++)check(opacityQueue.getQueue()[p].a==1f,"Character recovery square remains fully visible");
+        InventoryOpacityPreview.finish();skin.opacityPercent(100);HudButtonProbe.finishPreview();
         check(modelWidth==512&&modelHeight==742,"Model offscreen target has twice the destination pixel density");
         PortraitPoseController pose=(PortraitPoseController)HighResWindowAccess.get(skin,"pose");
         long poseStart=System.nanoTime()-PortraitPoseController.TURN_DURATION;
@@ -1179,7 +1287,7 @@ public final class HighResWindowsProbe {
                 chat.window.setSize(targetWidth, height); chat.tick();
                 HighResChannelStrip strip = chat.channels();
                 List<HighResChannelStrip.Channel> actual = (List<HighResChannelStrip.Channel>) HighResWindowAccess.get(strip, "channels");
-                check(strip.width == chat.header.width && chat.header.height == strip.rowCount() * HighResChannelStrip.HEIGHT,
+                check(strip.width == chat.header.width-chat.tabControlsWidth() && chat.header.height == strip.rowCount() * HighResChannelStrip.HEIGHT,
                         "Width change immediately updates row geometry and header height: " + language);
                 check(chat.window.getComponent().y == chat.header.y + chat.header.height, "Message body starts below the last tab row");
                 int lastRow = strip.rowCount(), baseline = -1;

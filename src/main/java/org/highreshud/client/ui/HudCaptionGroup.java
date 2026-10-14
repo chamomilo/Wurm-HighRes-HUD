@@ -17,6 +17,7 @@ public final class HudCaptionGroup {
     private final Map<String, String> captions = new LinkedHashMap<>();
     private final int width, height, ceiling;
     private final String[] variants;
+    private final int[] memberWidths;
     private long languageRevision = -1;
 
     public HudCaptionGroup(int width, int height, UiScale scale, String... variants) {
@@ -28,7 +29,12 @@ public final class HudCaptionGroup {
         this.scale = scale;
         this.width = width; this.height = height; this.ceiling = ceiling;
         this.variants = variants.clone();
+        memberWidths=new int[variants.length];java.util.Arrays.fill(memberWidths,width);
         refreshLanguage();
+    }
+    public HudCaptionGroup(int[] widths,int height,UiScale scale,int ceiling,String... variants) {
+        if(widths.length!=variants.length||variants.length==0)throw new IllegalArgumentException("Invalid group widths");
+        this.scale=scale;this.width=widths[0];this.height=height;this.ceiling=ceiling;this.variants=variants.clone();memberWidths=widths.clone();refreshLanguage();
     }
 
     public void refreshLanguage() {
@@ -36,8 +42,9 @@ public final class HudCaptionGroup {
         captions.clear();
         int limit = ceiling;
         // Use the SDK's density, outer-edge and readable-floor policy first.
-        for (String value : variants) {
-            UiButtonLayout fit = UiButtonLayout.fit(new String[]{HudMessages.tr(value)}, width, height, density, scale, true);
+        for (int member=0;member<variants.length;member++) {
+            String value=variants[member];
+            UiButtonLayout fit = UiButtonLayout.fit(new String[]{HudMessages.tr(value)}, memberWidths[member], height, density, scale, true);
             limit = Math.min(limit, fit.fontPixels);
             captions.put(value, fit.rows()[0]);
         }
@@ -50,10 +57,11 @@ public final class HudCaptionGroup {
             if (size > limit) continue;
             int t = 0, b = 0;
             boolean fits = true;
-            for (String value : captions.values()) for (boolean bold : new boolean[]{false, true}) {
+            for (int member=0;member<variants.length;member++) for (boolean bold : new boolean[]{false, true}) {
+                String value=captions.get(variants[member]);
                 Rectangle ink = UiTypography.ink(value, size, bold, density);
                 t = Math.min(t, ink.y); b = Math.max(b, ink.y + ink.height);
-                fits &= extent(value, size, bold) <= width - 2 * insetX;
+                fits &= extent(value, size, bold) <= memberWidths[member] - 2 * insetX;
             }
             if (fits && b - t <= height - 2 * insetY) {
                 chosen = size; top = t; bottom = b; break;

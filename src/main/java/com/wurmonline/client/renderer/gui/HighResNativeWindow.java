@@ -42,6 +42,11 @@ abstract class HighResNativeWindow {
     void render(Queue queue) {
         tick();
         int firstPrimitive = queue == null ? 0 : queue.getQueueCount();
+        if (window.minimized && keepsTabsWhenCollapsed()) {
+            header.render(queue, 1.0f);
+            finishOpacity(queue, firstPrimitive);
+            return;
+        }
         int bodyY = hasTitle() ? window.y : window.y + header.height;
         UiPainter.background(canvas.begin(queue), UiBackground.LEATHER, UiScale.BASE,
                 1.0f, window.x, bodyY, window.width, window.y + window.height - bodyY);
@@ -53,10 +58,7 @@ abstract class HighResNativeWindow {
         if (hasTitle()) UiPainter.frame(canvas, FRAME, 1.0f, window.x, window.y, window.width, window.height);
         if (!window.minimized && window.resizable) UiIcon.RESIZE.paint(canvas, UiColor.MUTED, 1.0f,
                 window.x + window.width - 19, window.y + window.height - 19, 12);
-        if (itemTable() != null) {
-            HighResInventoryOpacity.apply(queue, firstPrimitive, queue == null ? 0 : queue.getQueueCount(), opacityPercent);
-            if (!window.minimized) HighResWindowIntegration.paintInventoryOpacity(this, queue);
-        }
+        finishOpacity(queue, firstPrimitive);
     }
     void close() { owner.hideComponent(window); }
     void collapse() { window.toggleSize(); collapsedChanged(); }
@@ -75,27 +77,41 @@ abstract class HighResNativeWindow {
     }
     FlexComponent tabs() { return null; }
     boolean hasTitle() { return true; }
+    boolean keepsTabsWhenCollapsed() { return false; }
+    int tabControlsWidth() { return 0; }
+    void paintHeaderControls(Queue queue) { }
     int channelHeight() { return CHANNELS_HEIGHT; }
     String caption() { return HudMessages.tr(title); }
     WurmTreeList<?> itemTable() { return null; }
+    boolean usesOpacity() { return hasTitle(); }
+    final void finishOpacity(Queue queue, int firstPrimitive) {
+        if (!usesOpacity()) return;
+        HighResInventoryOpacity.apply(queue, firstPrimitive, queue == null ? 0 : queue.getQueueCount(), opacityPercent);
+        if (hasTitle() || keepsTabsWhenCollapsed() || !window.minimized) paintOpacity(queue);
+    }
+    void paintOpacity(Queue queue) { header.componentResized(); if(header.opacity!=null)header.opacity.render(queue,1f); }
+    FlexComponent opacityAt(int x,int y) { header.componentResized(); return header.opacity!=null&&header.opacity.contains(x,y)?header.opacity:null; }
+    FlexComponent headerControlAt(int x,int y) { return opacityAt(x,y); }
 
     final class Header extends FlexComponent {
         final ChamomiloUiV1Canvas ui = new ChamomiloUiV1Canvas(this);
         final ChamomiloUiV1CompactButton close, collapse, maximize;
+        final HighResInventoryOpacity opacity;
         private UiIcon collapseIcon, maximizeIcon;
         Header() {
             super(id + ".header", 0, 0, 1, TITLE_HEIGHT);
             sizeFlags = FIXED_HEIGHT;
-            if (!hasTitle()) { close = collapse = maximize = null; return; }
+            if (!hasTitle()) { close = collapse = maximize = null; opacity=null; return; }
             close = new ChamomiloUiV1CompactButton(UiIcon.CLOSE, 24, UiScale.BASE, () -> HighResNativeWindow.this.close());
             collapse = new ChamomiloUiV1CompactButton(UiIcon.MINIMIZE, 24, UiScale.BASE, () -> HighResNativeWindow.this.collapse());
             maximize = new ChamomiloUiV1CompactButton(UiIcon.MAXIMIZE, 24, UiScale.BASE, () -> HighResNativeWindow.this.maximize());
             close.setIcon(UiIcon.CLOSE);
             close.parent = this; collapse.parent = this; maximize.parent = this;
+            opacity=new HighResInventoryOpacity(HighResNativeWindow.this); opacity.parent=this;
             refresh();
         }
         void updateHeight() {
-            int desired = (hasTitle() ? TITLE_HEIGHT : 0) + (!window.minimized && tabs() != null ? channelHeight() : 0);
+            int desired = (hasTitle() ? TITLE_HEIGHT : 0) + ((!window.minimized || keepsTabsWhenCollapsed()) && tabs() != null ? channelHeight() : 0);
             if (height == desired) return;
             sizeFlags = 0; setSize(width, desired); sizeFlags = FIXED_HEIGHT;
         }
@@ -115,19 +131,21 @@ abstract class HighResNativeWindow {
                 close.setLocation(x + width - FRAME - 24, y + 2, 24, 24);
                 maximize.setLocation(close.x - 26, y + 2, 24, 24);
                 collapse.setLocation(maximize.x - 26, y + 2, 24, 24);
+                opacity.setLocation(collapse.x - 25, collapse.y + 1, HighResInventoryOpacity.TITLE_SIZE, HighResInventoryOpacity.TITLE_SIZE);
             }
             FlexComponent strip = tabs();
             int inset = hasTitle() ? FRAME : 0;
-            if (strip != null) strip.setLocation(x + inset, y + (hasTitle() ? TITLE_HEIGHT : 0), Math.max(1, width - 2 * inset), channelHeight());
+            if (strip != null) strip.setLocation(x + inset, y + (hasTitle() ? TITLE_HEIGHT : 0), Math.max(1, width - 2 * inset - tabControlsWidth()), strip instanceof HighResChannelStrip ? ((HighResChannelStrip)strip).rowCount()*HighResChannelStrip.HEIGHT : channelHeight());
         }
         @Override public FlexComponent getComponentAt(int px, int py) {
             if (!contains(px, py)) return null;
+            FlexComponent control=headerControlAt(px,py);if(control!=null)return control;
             if (close != null) {
                 if (close.contains(px, py)) return close;
                 if (collapse.contains(px, py)) return collapse;
                 if (maximize.contains(px, py)) return maximize;
             }
-            if (!window.minimized && tabs() != null && py >= y + (hasTitle() ? TITLE_HEIGHT : 0)) return tabs().getComponentAt(px, py);
+            if ((!window.minimized || keepsTabsWhenCollapsed()) && tabs() != null && py >= y + (hasTitle() ? TITLE_HEIGHT : 0)) return tabs().getComponentAt(px, py);
             return this;
         }
         @Override protected void leftPressed(int px, int py, int count) {
@@ -137,19 +155,20 @@ abstract class HighResNativeWindow {
         @Override protected void mouseDragged(int px, int py) { window.dragger.mouseDragged(px, py); }
         @Override protected void leftReleased(int px, int py) { window.dragger.leftReleased(px, py); }
         @Override public void pick(com.wurmonline.client.renderer.PickData pick, int px, int py) {
-            if (hasTitle() && contains(px, py) && px < collapse.x) pick.addText(HighResNativeWindow.this.caption());
+            if (hasTitle() && contains(px, py) && px < opacity.x) pick.addText(HighResNativeWindow.this.caption());
         }
         @Override protected void renderComponent(Queue queue, float ignoredAlpha) {
             componentResized();
             if (hasTitle()) {
                 UiPainter.background(ui.begin(queue), UiBackground.WALNUT, UiScale.BASE, 1.0f, x, y, width, TITLE_HEIGHT);
                 TextFont font = HighResWindowTypography.heading();
-                String caption = HighResWindowIntegration.ellipsis(HighResNativeWindow.this.caption(), font, Math.max(0, collapse.x - x - 18));
+                String caption = HighResWindowIntegration.ellipsis(HighResNativeWindow.this.caption(), font, Math.max(0, opacity.x - x - 18));
                 font.moveTo(x + FRAME + 6, y + 19);
                 font.paint(queue, caption, UiColor.TEXT.red, UiColor.TEXT.green, UiColor.TEXT.blue, 1.0f);
                 close.render(queue, 1.0f); collapse.render(queue, 1.0f); maximize.render(queue, 1.0f);
             }
-            if (!window.minimized && tabs() != null) tabs().render(queue, 1.0f);
+            if ((!window.minimized || keepsTabsWhenCollapsed()) && tabs() != null) tabs().render(queue, 1.0f);
+            paintHeaderControls(queue);
         }
     }
 }

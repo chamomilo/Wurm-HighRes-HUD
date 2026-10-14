@@ -1,0 +1,1424 @@
+0	inventory	inventories	20	0	0	model.	9,1,112	200.0
+1	backpack	backpacks	241	2000	16	model.container.backpack.	44,23,1,97	40.0
+2	satchel	satchels	242	500	17	model.container.satchel.	44,24,1,92,147	20.0
+3	axe	small axes	1207	1500	11	model.weapon.axe.small.	108,44,37,22,15,2,147	11.0
+4	shield	metal shields	1011	3000	11	model.shield.medium.	108,44,22,3,92,147,189	20.0
+5	potion	potions	260	200	21	model.magic.potion.	6	10.0
+6	green apple	green apples	508	300	22	model.food.apple.green.	5,146,80,157,55	100.0
+7	hatchet	hatchets	1207	2500	11	model.weapon.hatchet.	44,37,108,22,15,2,97	11.0
+8	carving knife	carving knives	1201	400	11	model.weapon.knife.carving.	108,44,38,22,17,13,11,97,119	10.0
+9	log	logs	606	24000	0	model.resource.log.	133,21,84,113,129,146,175	200.0
+10	leg	legs	5	0	1	model.	28,8,1,48	200.0
+11	arm	arms	3	0	1	model.	28,8,1,48	200.0
+12	head	heads	2	0	1	model.	28,8,1,48	200.0
+13	torso	torsos	1	0	1	model.	28,8,1,48	200.0
+14	hand	hands	4	0	1	model.	28,8,1,48,210	200.0
+15	foot	feet	6	0	1	model.	28,8,1,48	200.0
+16	body	bodies	0	0	1	model.	28,8,1	200.0
+17	face	faces	2	0	1	model.	28,8,1,48	200.0
+18	eye	eyes	2	0	1	model.	28,8,48	200.0
+19	legs	legs	5	0	1	model.	28,8,1	200.0
+20	pickaxe	pickaxes	743	2000	11	model.tool.pickaxe.	108,44,38,22,10,2,97,247	20.0
+21	longsword	longswords	1224	3000	11	model.weapon.swordlong.	108,44,37,22,16,2,147,189,97	30.0
+22	plank	planks	626	2000	14	model.resource.plank.	133,146,21,18,144,37,84,129,158	3.0
+23	shaft	shafts	646	1000	14	model.resource.shaft.	133,146,21,14,144,37,84,129,158,165	3.0
+24	saw	saws	747	1200	11	model.tool.saw.	108,44,38,22,18,11,37,84,97	20.0
+25	shovel	shovels	746	2000	11	model.tool.shovel.	133,108,44,38,22,19,37,2,97,247	20.0
+26	dirt	pile of dirt	590	20000	15	model.resource.dirt.	25,146,112,113,129,141,175	200.0
+27	rake	rakes	745	1200	11	model.tool.rake.	133,108,44,38,22,7,2,37,97	10.0
+28	barley	barley	480	300	5	model.resource.barley.	146,103,20,5,55,129	200.0
+29	wheat	wheat	481	300	6	model.resource.wheat.	146,102,20,5,55,129	200.0
+30	rye	rye	480	300	3	model.resource.rye.	20,146,5,55,129	200.0
+31	oat	oat	480	300	4	model.resource.oat.	20,146,5,55,129	200.0
+32	corn	corn	502	100	22	model.resource.corn.	146,102,20,5,55,129,217,29,212,223	2.0
+33	pumpkin	pumpkin	501	1000	22	model.food.pumpkin.	146,102,5,55,129,212,29,223	2.0
+34	pumpkin seed	pumpkin seeds	480	100	22	model.resource.pumpkinseed.	20,146,5,55,129	200.0
+35	potato	potatoes	500	500	22	model.food.potato.	5,146,20,55,129,212,29,223	2.0
+36	kindling	kindling	686	1500	14	model.resource.kindling.	21,146,46,113,129,165	1.0
+37	campfire	campfires	291	1500	14	model.fireplace.campfire.	52,21,1,31,59,65,147,165,49,209	1.0
+38	ore	iron ore	613	20000	11	model.resource.ore.	148,146,46,113,129,141,48,157	200.0
+39	ore	gold ore	611	20000	7	model.resource.ore.	148,146,46,113,129,141,48,157	200.0
+40	ore	silver ore	612	20000	8	model.resource.ore.	148,146,46,113,129,141,48,157	200.0
+41	ore	lead ore	614	20000	12	model.resource.ore.	148,146,46,113,129,141,48,157	200.0
+42	ore	zinc ore	615	20000	13	model.resource.ore.	148,146,46,113,129,141,48,157	200.0
+43	ore	copper ore	616	20000	10	model.resource.ore.	148,146,46,113,129,141,48,157	200.0
+44	lump	gold lumps	631	100	7	model.resource.lump.	22,146,46,113,141,157	1.0
+45	lump	silver lumps	632	100	8	model.resource.lump.	22,146,46,113,141,157	1.0
+46	lump	iron lumps	633	1000	11	model.resource.lump.	22,146,46,113,141,157	1.0
+47	lump	copper lumps	636	1000	10	model.resource.lump.	22,146,46,113,141,164,157	1.0
+48	lump	zinc lumps	635	1000	13	model.resource.lump.	22,146,46,113,141,157	1.0
+49	lump	lead lumps	634	1000	12	model.resource.lump.	22,146,46,113,141,157	1.0
+50	coin	copper coins	572	10	10	model.coin.	22,50,40	200.0
+51	coin	iron coins	573	10	11	model.coin.	22,50,40	200.0
+52	coin	silver coins	571	10	8	model.coin.	22,50,40	200.0
+53	coin	gold coins	570	10	7	model.coin.	22,50,40	200.0
+54	five coin	copper-five coins	572	20	10	model.coin.	22,50,40	200.0
+55	five coin	iron-five coins	573	20	11	model.coin.	22,50,40	200.0
+56	five coin	silver-five coins	571	20	8	model.coin.	22,50,40	200.0
+57	five coin	gold-five coins	570	20	7	model.coin.	22,50,40	200.0
+58	twenty coin	copper-twenty coins	572	30	10	model.coin.	22,50,40	200.0
+59	twenty coin	iron-twenty coins	573	30	11	model.coin.	22,50,40	200.0
+60	twenty coin	silver-twenty coins	571	30	8	model.coin.	22,50,40	200.0
+61	twenty coin	gold-twenty coins	570	30	7	model.coin.	22,50,40	200.0
+62	hammer	hammers	742	1400	11	model.tool.hammer.	108,44,38,22,14,147,247	10.0
+63	mallet	mallets	741	1200	14	model.tool.hammer.	108,44,38,21,14,119,147,165,247	1.0
+64	anvil	anvils	791	2000	11	model.tool.anvil.small.	108,38,22,44,157,51	5.0
+65	cheese drill	cheese drills	266	3000	14	model.tool.cheesedrill.	108,44,144,38,21,92,147,51,210	30.0
+66	cheese	cheeses	561	500	28	model.food.cheese.	27,5,88,146,192,212,220,224,74	5.0
+67	goat cheese	goat cheeses	561	500	28	model.food.cheese.goat.	27,5,88,146,192,157,212,220,224,74	15.0
+68	feta cheese	feta cheeses	561	500	28	model.food.cheese.feta.	27,5,88,146,192,212,220,224,74	15.0
+69	buffalo cheese	buffalo cheeses	561	500	28	model.food.cheese.buffalo.	27,5,88,146,192,212,220,224,74	25.0
+70	honey	honey	587	1000	29	model.liquid.honey.	26,5,55,88	200.0
+71	hide	hides	602	3000	0	model.resource.hide.	23,62,129,46,146	1.0
+72	leather	leather	602	3000	16	model.resource.leather.	23,146	1.0
+73	lye	lye	540	1000	27	model.liquid.lye.	26,211	3.0
+74	pile	charcoal piles	60	2500000	27	model.fireplace.charcoalpile.	52,31,1,21,51,49,48,59,63,109	15.0
+75	frying pan	frying pans	784	2500	11	model.tool.fryingpan.	108,147,44,38,22,18,77,1	10.0
+76	pottery jar	pottery jars	510	300	19	model.container.jar.	108,30,1,33,92,215,48,211,77	1.0
+77	pottery bowl	pottery bowls	511	500	19	model.container.bowl.	108,30,1,77,92,97,33	5.0
+78	pottery flask	pottery flasks	512	100	19	model.container.flask.	108,30,1,33,92,147,215,48	15.0
+79	water skin	water skins	240	250	16	model.tool.waterskin.	108,44,23,1,33,147,215,48	20.0
+80	short sword	short swords	1204	2000	11	model.weapon.swordshort.	108,44,22,13,37,16,97,147	10.0
+81	two handed sword	two handed swords	1244	4000	11	model.weapon.swordtwo.	108,44,22,2,37,16,84,147,189	40.0
+82	shield	wooden shields	970	1000	14	model.shield.small.	108,97,21,3,92,147,44	10.0
+83	metal shield	metal shields	1010	1500	11	model.shield.small.	108,44,22,3,92,147	10.0
+84	shield	wooden shields	971	2000	14	model.shield.medium.	108,44,21,3,92,97,147,189	20.0
+85	shield	wooden shields	972	3000	14	model.shield.large.	108,44,21,3,92,147	25.0
+86	shield	metal shields	1012	4500	11	model.shield.large.	108,44,22,3,92,147	30.0
+87	axe	huge axes	1227	2500	11	model.weapon.axe.large.	108,44,22,2,15,37,84,147,189	35.0
+88	axe head	axe heads	1226	1500	11	model.weapon.axe.large.blade.	44,22	20.0
+89	axe head	axe heads	1206	500	11	model.weapon.axe.small.blade.	44,22	10.0
+90	axe	medium axes	1207	2000	11	model.weapon.axe.medium.	108,44,22,2,15,37,147,189	15.0
+91	axe head	axe heads	1206	1000	11	model.weapon.axe.medium.blade.	44,22	15.0
+92	meat	meat	503	300	2	model.food.meat.	28,5,62,74,219,129,146,212,223	1.0
+93	butchering knife	butchering knives	755	1200	11	model.weapon.knife.butchering.	108,44,38,22,17,210,13,147	1.0
+94	old fine fishing rod	old fine fishing rods	786	1110	14	model.tool.fish.rod.ironhook.	157,108,44,21	1.0
+95	old fine fishing hook	old fine fishing hooks	785	10	11	model.tool.fish.hook.	157,22	3.0
+96	old fishing hook	old wooden fishing hooks	805	5	14	model.tool.fish.hook.	157,21	4.0
+97	stone chisel	stone chisels	1201	400	11	model.tool.chisel.	108,44,38,22,13,147	7.0
+98	scabbard	scabbards	762	200	16	model.clothing.scabbard.	108,44,23,92,157	10.0
+99	handle	wooden handles	666	100	14	model.part.handle.	21,146,113,211	5.0
+100	strip of leather	strips of leather	622	30	16	model.resource.strip.	23,146	1.0
+101	leather wound handle	leather wound handles	765	130	14	model.part.leatherwoundhandle.	21	5.0
+102	leather belt	leather belts	861	300	16	model.clothing.belt.	108,44,23,92,147	5.0
+103	leather glove	leather gloves	984	200	16	model.armour.hand.	108,44,23,4,92,147,189,97	10.0
+104	leather jacket	leather jackets	980	600	16	model.armour.torso.	108,44,23,4,92,147,189,97	30.0
+105	leather boot	leather boots	985	400	16	model.armour.foot.	108,44,23,4,92,147,189,97	15.0
+106	leather sleeve	leather sleeves	982	300	16	model.armour.sleeve.	108,44,23,4,92,147,189,97	25.0
+107	leather cap	leather caps	983	300	16	model.armour.head.	108,44,23,4,92,147,189,97	10.0
+108	leather pants	leather pants	981	500	16	model.armour.leg.	108,44,23,4,92,147,189,97	10.0
+109	cloth glove	cloth gloves	964	100	17	model.armour.hand.	108,44,24,4,92,147	5.0
+110	cloth shirt	cloth shirts	960	300	17	model.clothing.torso.shirt.	108,44,24,4,92,147	15.0
+111	red striped cloth sleeve	red striped cloth sleeves	962	200	17	model.armour.sleeve.red.	108,44,24,4,92,147	10.0
+112	red cloth jacket	red cloth jackets	960	500	17	model.armour.torso.red.	108,44,24,4,92,147	30.0
+113	cloth pants	cloth pants	961	300	17	model.armour.leg.	108,44,24,4,92,147	10.0
+114	cloth shoe	cloth shoes	965	200	17	model.armour.foot.	108,44,24,4,92,147	15.0
+115	studded leather sleeve	studded leather sleeves	1002	400	16	model.armour.sleeve.studded.	108,44,23,4,92,147	15.0
+116	studded leather boot	studded leather boots	1005	500	16	model.armour.foot.studded.	108,44,23,4,92,147	20.0
+117	studded leather cap	studded leather caps	1003	400	16	model.armour.head.studded.	108,44,23,4,92,147	15.0
+118	studded leather pants	studded leather pants	1001	1200	16	model.armour.leg.studded.	108,44,23,4,92,147	20.0
+119	studded leather glove	studded leather gloves	1004	300	16	model.armour.hand.studded.	108,44,23,4,92,147	20.0
+120	studded leather jacket	studded leather jackets	1000	900	16	model.armour.torso.studded.	108,44,23,4,92,147	45.0
+121	shovel blade	shovel blades	726	1000	11	model.tool.shovel.blade.	22,92,44	10.0
+122	shovel blade	wooden shovel blades	726	600	14	model.tool.shovel.blade.	21	5.0
+123	pickaxe head	pickaxe heads	723	1000	11	model.tool.pickaxe.blade.	22,44	15.0
+124	rake blade	rake blades	725	400	11	model.tool.blade.rake.	22,44	10.0
+125	butchering knife blade	butchering knife blades	735	1100	11	model.weapon.blade.knife.butchering.	44,22	10.0
+126	carving knife blade	carving knife blades	1200	300	11	model.weapon.blade.knife.carving.	44,22,119	10.0
+127	hammer head	hammer heads	722	400	11	model.tool.blade.hammer.	22,44	4.0
+128	water	water	540	1000	26	model.liquid.	26,88,90,113,212	1.0
+129	cooked meat	cooked meat	523	900	2	model.food.cooked.	28,146,5,212,74,219,157	1.0
+130	clay	clay	591	2000	18	model.resource.clay.	25,146,46,112,113,141,174	1.0
+131	rivets	rivets	770	200	11	model.part.studs.	22,46,146,158	1.0
+132	stone brick	stone bricks	670	15000	15	model.resource.brick.	25,146,113,129,158,242,243	1.0
+133	candle	candles	821	50	32	model.light.candle.	27,32,59,115,52,210	1.0
+134	hazelnuts	hazelnuts	507	200	22	model.food.hazelnut.	5,21,146,80,217,74,212	1.0
+135	lantern	lanterns	822	800	11	model.light.lantern.	108,101,44,22,92,116,59,52,147	30.0
+136	oil lamp	oil lamps	823	300	30	model.light.oillamp.	52,108,44,22,32,92,59,115,101,147	40.0
+138	torch	torches	820	1000	14	model.light.torch.	21,146,32,52,59,147	1.0
+139	spindle	wooden spindles	787	600	14	model.tool.spindle.	108,44,38,21,147	10.0
+140	fat	fat	498	1000	32	model.resource.tallow.	146,46,211	1.0
+141	ash	ash	641	100	27	model.resource.ash.	146,25,46,113,129	1.0
+142	milk	milk	541	1000	28	model.liquid.	26,88,90,113,191,212	1.0
+143	steel and flint	flints and steel	783	400	9	model.tool.small.flintandsteel.	44,38,22,97	10.0
+144	cotton	cotton	600	1000	17	model.resource.cotton.	24,146,46,113	1.0
+145	cotton seed	cotton seed	480	100	22	model.resource.cottonseed.	20,146,113,211,217	1.0
+146	rock shards	rock shards	610	20000	15	model.resource.	25,146,46,112,113,129,48,175,242,243	1.0
+147	short sword blade	short sword blades	1203	1900	11	model.weapon.blade.swordshort.	44,22	1.0
+148	long sword blade	long sword blades	1223	2900	11	model.weapon.blade.swordlong.	44,22	1.0
+149	sword blade	sword blades	1243	3900	11	model.weapon.blade.swordtwo.	44,22	2.0
+150	old fine fishing line	old fine fishing lines	785	110	11	model.tool.fish.hookstring.	157,21	1.0
+151	old fishing line	old fishing lines	785	105	14	model.tool.fish.hookstring.	157,21	1.0
+152	old fishing rod	old fishing rods	786	1105	14	model.tool.fish.rod.	157,108,44,21	3.0
+153	tar	tar	585	1000	58	model.resource.tar.	46,34,146	200.0
+154	chisel blade	chisel blades	720	300	11	model.tool.blade.chisel.	44,22	3.0
+156	mallet head	mallet heads	721	200	14	model.tool.blade.hammer.	21,147,165	1.0
+157	pike	pikes	504	6000	2	model.fish.pike.	108,5,36,146,212,75,219,223	45.0
+158	smallmouth bass	smallmouth bass	504	4000	2	model.fish.bass.	108,5,36,146,212,75,219,223	47.0
+159	herring	herrings	504	300	2	model.fish.herring.	108,5,36,146,212,75,219,223	10.0
+160	catfish	catfishes	504	25000	2	model.fish.catfish.	108,5,36,146,212,75,219,223	35.0
+161	snook	snooks	504	20000	2	model.fish.snook.	108,5,36,146,212,75,219,223	70.0
+162	roach	roaches	504	200	2	model.fish.roach.	108,5,36,146,212,254,75,219,223	3.0
+163	perch	perches	504	500	2	model.fish.perch.	108,5,36,146,212,254,75,219,223	7.0
+164	carp	carp	504	16000	2	model.fish.carp.	108,5,36,146,212,75,219,223	55.0
+165	brook trout	brook trouts	504	3000	2	model.fish.trout.	108,5,36,146,212,75,219,223	25.0
+166	writ of ownership	writs of ownership	322	0	33	model.writ.	40,41,42,53,54,83,114	1.0
+167	door lock	door locks	790	600	11	model.lock.door.	108,40,147,39,114	10.0
+168	key	keys	789	50	11	model.key.	40,41,114	5.0
+169	wood scrap	wood scrap	686	1500	14	model.resource.scrap.	21,146,46,113,129,157,174,211	1.0
+170	scrap	iron scrap	653	800	11	model.resource.scrap.	22,146,46,113,129,157,174	1.0
+171	rags	rags	600	200	17	model.resource.scrap.	24,146,46,92,113,129,174,157	1.0
+172	leather pieces	leather pieces	623	400	16	model.resource.scrap.	23,146,46,113,129,174,157,211	1.0
+173	pig food	pig food	624	800	22	model.food.scrap.	5,146,46,55,113,129,157,174	1.0
+174	wand of teleportation	wands of teleportation	400	20	14	model.magic.wand.teleport.	108,40,21,48,53	50.0
+175	gift	gifts	243	23	33	model.container.presentchristmas.	53,42	10.0
+176	ebony wand	ebony wands	946	5	0	model.magic.wand.deity.	108,40,42,48,53,64,19,10,125	10.0
+177	pile of items	piles of items	60	1000	0	model.pile.	1,45	200.0
+178	oven	stone ovens	289	70000	15	model.fireplace.oven.	108,135,1,31,25,51,86,52,59,44,147,176,199,180,209,259	10.0
+179	unfinished item	unfinished items	60	0	0	model.	48,135,246	10.0
+180	forge	forges	288	70000	15	model.fireplace.forge.	108,135,1,31,25,51,86,52,59,44,147,176,180,209,199,259	12.0
+181	clay jar	clay jars	490	300	18	model.container.jar.	108,196,44,147,1,63	1.0
+182	clay bowl	clay bowls	491	500	18	model.container.bowl.	108,196,44,147,1,63	5.0
+183	clay flask	clay flasks	492	100	18	model.container.flask.	108,196,44,147,1,63	15.0
+184	chest	chests	244	20000	14	model.container.chest.large.	108,135,1,31,21,47,51,52,147,44,92,176	10.0
+185	anvil	anvils	791	10000	11	model.tool.anvil.large.	108,52,38,22,44,86,67,157,51,199,1,256,139	20.0
+186	cart	carts	60	60000	14	model.structure.small.cart.	108,135,1,31,21,51,56,52,44,92,176,160,193,117,134,47,54	10.0
+187	wheel	wheels	247	5000	14	model.part.small.wheel.	21,44	10.0
+188	ribbon	iron ribbons	709	3000	11	model.resource.ribbon.	22,146	5.0
+189	barrel	barrels	245	2000	14	model.container.barrel.small.	108,135,51,1,21,33,86,52,157,44,92,236,259	5.0
+190	barrel	barrels	245	5000	14	model.container.barrel.large.	108,135,144,1,21,86,33,51,52,44,92,157,176,199,259	5.0
+191	wheel axle	wheel axles	267	11000	14	model.part.small.wheelaxle.	21,51,44	5.0
+192	chest	chests	244	5000	14	model.container.chest.small.	108,135,1,21,47,51,52,147,44,92	10.0
+193	small padlock	small padlocks	790	200	11	model.lock.small.padlock.	108,40,39,114	15.0
+194	large padlock	large padlocks	790	400	11	model.lock.large.padlock.	108,40,39,114	15.0
+195	scrap	copper scrap	656	800	10	model.resource.scrap.	22,146,46,113,129,157,164,174	1.0
+196	scrap	gold scrap	651	50	7	model.resource.scrap.	22,146,46,113,129,157,174	1.0
+197	scrap	silver scrap	652	50	8	model.resource.scrap.	22,146,46,113,129,157,174	1.0
+198	scrap	zinc scrap	655	800	13	model.resource.scrap.	22,146,46,113,129,157,174	1.0
+199	scrap	lead scrap	654	800	12	model.resource.scrap.	22,146,46,113,129,157	1.0
+200	dough	dough	525	600	0	model.resource.dough.	5,146,74	3.0
+201	flour	flour	642	300	0	model.resource.flour.	5,146,74	1.0
+202	grindstone	grindstones	800	3000	15	model.tool.grinder.	25,210,44	10.0
+203	bread	loaves of bread	505	600	22	model.bread.	82,74,212,222,233,146	10.0
+204	charcoal	charcoal	592	500	27	model.resource.coal.	46,141,146	10.0
+205	lump	steel lumps	672	400	9	model.resource.lump.	22,146,46,113,141,157	4.0
+206	scrap	steel scrap	692	100	9	model.resource.scrap.	22,146,46,113,129,157,174	1.0
+207	ore	tin ore	617	20000	34	model.resource.ore.	148,22,146,46,113,129,141,48,157	200.0
+208	pointing sign	pointing signs	292	3000	14	model.sign.pointing.	108,147,21,142,48,51,52,44,18,86,92,200	10.0
+209	sign	signs	272	5000	14	model.sign.large.	108,147,21,142,48,51,52,44,18,86,92,200	15.0
+210	sign	signs	252	3000	14	model.sign.small.	108,147,21,142,48,51,52,44,18,86,92,200	10.0
+211	size ten village deed	village deeds	340	0	33	model.writ.deed.	83,40,42,48,53,54,57,114	100.0
+212	bale	cotton bales	600	1000	17	model.resource.bale.	24,146,46,113,157	200.0
+213	square piece of cloth	square pieces of cloth	640	300	17	model.resource.yard.	24,146,46	5.0
+214	string of cloth	strings of cloth	620	200	17	model.resource.string.	24,146,46,158	1.0
+215	needle	iron needles	788	5	11	model.tool.needle.	38,22,44,147,174	1.0
+216	needle	copper needles	788	5	10	model.tool.needle.	38,22,44,157,174	1.0
+217	nails	nails	781	300	11	model.tool.nails.large.	38,146,22,158,174	1.0
+218	nails	nails	781	200	11	model.tool.nails.small.	38,146,22,158,174	1.0
+219	pliers	pliers	780	300	11	model.tool.pliers.	108,44,38,22,147	20.0
+220	lump	tin lumps	637	500	34	model.resource.lump.	22,146,46,113,141,157	1.0
+221	lump	brass lumps	673	100	30	model.resource.lump.	22,146,46,113,141,157	10.0
+222	scrap	tin scrap	657	400	34	model.resource.scrap.	22,146,46,113,129,157,174	1.0
+223	lump	bronze lumps	671	100	31	model.resource.lump.	22,146,46,113,141,157	10.0
+224	scrap	bronze scrap	691	100	31	model.resource.scrap.	22,146,46,113,129,157,174	1.0
+225	scrap	brass scrap	693	100	30	model.resource.scrap.	22,146,46,113,129,157,174	1.0
+226	floor loom	floor looms	60	150000	14	model.tool.loom.	108,21,31,86,139,51,52,44,176,67,199	10.0
+227	statuette	statuettes	282	1000	0	model.decoration.statuette.	108,52,22,44,87,92,157	20.0
+228	candelabra	candelabras	251	2500	0	model.decoration.candelabra.	108,147,52,22,44,87,32,51,199	20.0
+229	chain	chains	520	100	0	model.decoration.chain.	108,147,22,44,87	35.0
+230	necklace	necklaces	268	100	0	model.decoration.necklace.	108,147,22,44,87,153	40.0
+231	bracelet	bracelets	250	300	0	model.decoration.armring.	108,147,22,44,87,153,258	10.0
+232	ball	balls	813	300	0	model.decoration.ball.	22,147,44,87	30.0
+233	pendulum	pendulums	801	400	0	model.decoration.pendulum.	108,52,147,22,44,87	10.0
+234	size five homestead deed	size five homestead deeds	340	0	33	model.writ.deed.	83,40,42,48,53,54,58,114	100.0
+236	settlement token	settlement tokens	60	0	15	model.board.village.	83,60,52,40,31,123,48,53,54,49	200000.0
+237	size five village deed	village deeds	340	0	33	model.writ.deed.	83,40,42,48,53,54,57,114	100.0
+238	size fifteen village deed	village deeds	340	0	33	model.writ.deed.	83,40,42,48,53,54,57,114	100.0
+239	size twenty village deed	village deeds	340	0	33	model.writ.deed.	83,40,42,48,53,54,57,114	100.0
+242	size fifty village deed	village deeds	340	0	33	model.writ.deed.	83,40,42,48,53,54,57,114	100.0
+244	size hundred village deed	village deeds	340	0	33	model.writ.deed.	83,40,42,48,53,54,57,114	100.0
+245	size twohundred village deed	village deeds	340	0	33	model.writ.deed.	83,40,42,48,53,54,57,114	100.0
+246	green mushroom	green mushrooms	506	400	22	model.food.mushroom.green.	105,147,5,146,55,212,226	200.0
+247	black mushroom	black mushrooms	586	400	22	model.food.mushroom.black.	106,147,5,146,55,212,226	200.0
+248	brown mushroom	brown mushrooms	546	600	22	model.food.mushroom.brown.	103,147,5,146,55,212,226	200.0
+249	yellow mushroom	yellow mushrooms	526	200	22	model.food.mushroom.yellow.	104,147,5,146,55,212,226	200.0
+250	blue mushroom	blue mushrooms	566	800	22	model.food.mushroom.blue.	104,147,5,146,55,212,226	200.0
+251	red mushroom	red mushrooms	486	100	22	model.food.mushroom.red.	5,146,147,79,55,212,226	200.0
+252	gate lock	gate locks	790	800	11	model.lock.gate.	108,40,39,114	10.0
+253	size ten homestead deed	size ten homestead deeds	340	0	33	model.writ.deed.	83,40,42,48,53,54,58,114	100.0
+254	size twenty homestead deed	size twenty homestead deeds	340	0	33	model.writ.deed.	83,40,42,48,53,54,58,114	100.0
+257	spoon	spoons	768	30	0	model.tool.food.spoon.	108,22,147,44,210,87	10.0
+258	knife	knives	940	30	0	model.tool.food.knife.	108,22,147,44,210,87	10.0
+259	fork	forks	767	30	0	model.tool.food.fork.	108,22,147,44,210,87	10.0
+260	round table	round tables	60	10000	14	model.furniture.table.round.	108,21,135,86,31,51,52,44,157,92,176,199,1,180,256	20.0
+261	stool	stools	274	4000	14	model.furniture.stool.round.	108,21,135,86,51,52,44,92,117,197,199,48	10.0
+262	square table	square tables	60	10000	14	model.furniture.table.square.small.	108,21,135,86,31,51,52,44,157,92,176,199,1,180,256	15.0
+263	chair	chairs	274	5000	14	model.furniture.chair.	108,21,135,86,51,52,44,92,117,197,199,48	20.0
+264	dining table	dining tables	60	18000	14	model.furniture.table.square.large.	108,21,135,86,31,51,52,157,199,44,92,176,1,180,256	30.0
+265	armchair	armchairs	274	7000	14	model.furniture.chair.armchair.	108,21,135,86,51,52,44,92,117,197,199,48,249	30.0
+266	sprout	sprouts	484	200	14	model.resource.sprout.	21,48,147,146	200.0
+267	sickle	sickles	752	500	11	model.weapon.sickle.	108,44,147,38,22,2,37	25.0
+268	scythe	scythes	753	1200	11	model.weapon.scythe.	108,44,147,38,22,2,37,84	22.0
+269	sickle blade	sickle blades	732	400	11	model.weapon.blade.sickle.	22,44	20.0
+270	scythe blade	scythe blades	733	600	11	model.weapon.blade.scythe.	22,44	10.0
+271	yoyo	yoyos	761	100	14	model.toy.yoyo.	108,21,147	15.0
+272	corpse	corpses	40	50000	2	model.corpse.	1,60,28,48,255,52,54,63,112,211,237	200.0
+273	steel glove	steel gloves	1084	300	9	model.armour.hand.	108,44,22,4,92	200.0
+274	chain boot	chain boots	1045	700	0	model.armour.foot.chain.	108,44,22,4,189,147,92	30.0
+275	chain pants	chain pants	1041	2200	0	model.armour.leg.chain.	108,44,22,4,189,147,92	50.0
+276	chain jacket	chain jackets	1040	2200	0	model.armour.torso.chain.	108,44,22,4,189,147,92	65.0
+277	chain sleeve	chain sleeves	1042	700	0	model.armour.sleeve.chain.	108,44,22,4,189,147,92	45.0
+278	chain gauntlet	chain gauntlet	1044	300	0	model.armour.hand.chain.	108,44,22,4,189,147,92	40.0
+279	chain coif	chain coifs	1043	400	0	model.armour.head.chain.	108,44,22,4,189,147,92	35.0
+280	plate sabaton	plate sabatons	1085	1700	0	model.armour.foot.plate.	108,44,22,4,189,147,92	35.0
+281	plate leggings	plate leggings	1081	4200	0	model.armour.leg.plate.	108,44,22,4,189,147,92	45.0
+282	breast plate	breast plates	1080	5200	0	model.armour.torso.plate.	108,44,22,4,189,147,92	50.0
+283	plate vambrace	plate vambraces	1082	2200	0	model.armour.sleeve.plate.	108,44,22,4,189,147,92	40.0
+284	plate gauntlet	plate gauntlet	1084	800	0	model.armour.hand.plate.	108,44,22,4,189,147,92	30.0
+285	basinet helm	basinet helms	967	1700	0	model.armour.head.basinet.	108,44,22,4,147,92	20.0
+286	great helm	great helms	968	1700	0	model.armour.head.greathelm.	108,44,22,4,92,147	25.0
+287	open helm	open helms	966	1100	0	model.armour.head.openhelm.	108,44,22,4,77,92,147,1,33,139	15.0
+288	armour chains	armour chains	604	500	0	model.resource.chain.	22,46,146,158	15.0
+289	raft	rafts	256	60000	14	model.structure.small.raft.	108,135,1,21,51,56,60,52,44,92	15.0
+290	maul	mauls	1233	5000	11	model.weapon.maul.large.	108,44,147,22,37,14,84,189	30.0
+291	maul	small mauls	1213	3000	11	model.weapon.maul.small.	108,44,147,22,37,14	11.0
+292	maul	mauls	1213	4000	11	model.weapon.maul.medium.	108,44,147,22,37,14,189	17.0
+293	maul head	large maul heads	1232	4000	11	model.weapon.head.large.maul.	44,22	15.0
+294	maul head	small maul heads	1212	2000	11	model.weapon.head.small.maul.	44,22	5.0
+295	maul head	maul heads	1212	3000	11	model.weapon.head.medium.maul.	44,22	10.0
+296	whetstone	whetstones	803	300	15	model.tool.whet.	25,147	5.0
+297	ring	rings	249	50	0	model.decoration.ring.	108,147,22,44,87,153	40.0
+298	heap of sand	heaps of sand	593	20000	15	model.resource.sand.	25,146,147,112,113,46,129,174	200.0
+299	trader contract	trader contracts	324	0	33	model.writ.trader.	40,42,48,53,114	100.0
+301	cornucopia	cornucopias	496	5	35	model.magic.wand.cornucopia.	108,40,42,53	10.0
+302	fur	furs	603	1000	55	model.resource.fur.	23,62,129,46,146	1.0
+303	tooth	teeth	495	10	35	model.resource.tooth.	105,62,129,46,146,211	1.0
+304	horn	horns	496	300	35	model.resource.horn.	104,23,62,129,46,146,211	1.0
+305	paw	paws	535	100	2	model.resource.paw.	103,62,129,46,146	1.0
+306	hoof	hooves	534	100	35	model.resource.hoof.	103,62,129,46,146,211	1.0
+307	tail	tails	514	100	16	model.resource.tail.	103,62,129,46,146,211	1.0
+308	eye	eyes	494	10	2	model.resource.eye.	104,28,62,5,55,129,46,146	1.0
+309	bladder	bladders	515	20	2	model.resource.bladder.	103,62,129,46,146,211	1.0
+310	gland	glands	515	10	2	model.resource.gland.	106,62,129,46,146,211	1.0
+311	twisted horn	horns	496	300	35	model.resource.horntwisted.	106,62,129,46,146,211	1.0
+312	long horn	long horns	60	300	35	model.resource.hornlong.	104,62,129,46,146,211	1.0
+313	pelt	pelts	602	200	55	model.resource.pelt.	62	1.0
+314	shod club	shod clubs	1239	15000	14	model.weapon.club.huge.	108,21,37,14,84	20.0
+315	ivory wand	ivory wands	400	5	0	model.magic.wand.gm.	108,40,42,48,53,64,10	10.0
+316	wemp plants	wemp plants	547	700	22	model.resource.wemp.	146,102,46,129	200.0
+317	wemp seed	wemp seeds	480	100	22	model.resource.wempseed.	20,146,129	200.0
+318	wemp fibre	wemp fibre	547	500	53	model.resource.wempfibre.	46,146,129	200.0
+319	rope	ropes	621	500	53	model.resource.wemprope.	46,64,147,146,189	1.0
+320	rope tool	rope tools	880	1500	14	model.tool.ropetool.small.	21,44,108,147,51	10.0
+321	practice doll	practice dolls	881	7000	14	model.decoration.practicedoll.	21,51,52,44	10.0
+322	altar	altars	60	150000	14	model.decoration.altar.	108,1,31,21,51,52,44,48,66,67,135,259	12.0
+323	altar	altars	60	200000	15	model.decoration.altar.	108,1,31,25,51,52,44,48,66,67,135,259	12.0
+324	altar	altars	60	5000	7	model.decoration.altar.gold.	108,1,44,31,22,51,52,48,66,67,135,259	62.0
+325	altar	altars	60	5000	8	model.decoration.altar.silver.	108,1,31,22,51,52,44,48,66,67,135,259	52.0
+326	bowl	bowls	764	300	0	model.decoration.bowl.	108,147,22,44,1,87	10.0
+327	Altar of Three	altars	60	2000000	0	model.decoration.altar.holy.	49,1,31,52,48,68,66,70,67,59	99.0
+328	Huge bone altar	altars	60	2000000	0	model.decoration.altar.unholy.	49,1,31,52,44,68,48,66,70,67,59,85	99.0
+329	Rod of Beguiling	rods of beguiling	1259	2500	7	model.artifact.rodbeguiling.	52,48,69,40	99.0
+330	Crown of Might	crowns of might	974	1500	7	model.artifact.crownmight.	52,48,69,40,4	99.0
+331	Charm of Fo	charms of fo	859	600	7	model.artifact.charm.	52,48,69,40	99.0
+332	Eye of Vynora	eyes of vynora	919	500	52	model.artifact.eye.	52,48,69,40	99.0
+333	Ear of Vynora	ears of vynora	879	500	52	model.artifact.ear.	52,48,69,40	99.0
+334	Mouth of Vynora	mouths of vynora	899	1000	52	model.artifact.mouth.	52,48,69,40	99.0
+335	Finger of Fo	fingers of fo	1299	400	8	model.artifact.finger.	52,48,69,40	99.0
+336	Sword of Magranon	swords of magranon	1319	5000	9	model.artifact.swordtwo.	52,48,69,37,2,40,71,84,16	99.0
+337	Hammer of Magranon	hammers of magranon	1339	7000	31	model.artifact.hammerhuge.	52,48,69,37,14,40,71	99.0
+338	Scale of Libila	scales of libila	839	1200	11	model.artifact.scale.	52,48,69,40,3	99.0
+339	Orb of Doom	orbs of doom	819	2000	20	model.artifact.orbdoom.	52,48,69,40,59	99.0
+340	Sceptre of Ascension	sceptres of ascension	1279	5000	9	model.artifact.sceptreascension.	52,48,69,37,14,40,71	99.0
+341	key copy	key copies	809	50	10	model.key.	41,114	30.0
+342	key mould	moulds	493	400	18	model.mold.clay.	48,196,72	3.0
+343	key form	forms	513	400	19	model.mold.pottery.	48,72,73	3.0
+344	marker	markers	60	0	21	model.marker.temporary.	45,59,52,92	3.0
+345	stew	stews	587	700	2	model.food.stew.	5,219,26,74,233,108,212	1.0
+346	casserole	casseroles	531	700	22	model.food.casserole.	82,76,219,222,233	1.0
+347	meal	meals	562	700	2	model.food.steak.	82,76,219,222,233	1.0
+348	gulasch	gulaschs	607	700	2	model.food.gulasch.	5,75,26,219,233,108,212	1.0
+349	salt	salt	643	1	36	model.food.salt.	5,146,55	1.0
+350	sauce pan	sauce pans	784	1500	11	model.tool.saucepan.	108,44,22,18,77,1,147,33	20.0
+351	cauldron	cauldrons	804	5500	11	model.tool.cauldron.	108,147,44,22,77,1,33	30.0
+352	soup	soups	531	700	26	model.liquid.soup.	5,219,55,26,90,233,108,212	1.0
+353	lovage	lovage	711	50	22	model.herb.lovage.	146,105,5,78,55,212,206,221	100.0
+354	sage	sage	712	50	22	model.herb.sage.	146,104,5,55,78,212,206,221	100.0
+355	onion	onions	482	250	22	model.herb.onion.	146,102,5,55,29,212,20,223	1.0
+356	garlic	garlics	483	50	22	model.herb.garlic.	146,103,5,29,20,212,55,223	1.0
+357	oregano	oregano	703	50	22	model.herb.oregano.	5,146,78,212,55,206,221	100.0
+358	parsley	parsley	704	50	22	model.herb.parsley.	146,102,5,55,78,212,206,221	100.0
+359	basil	basil	627	50	22	model.herb.basil.	5,146,55,78,212,206,221	100.0
+360	thyme	thyme	705	50	22	model.herb.thyme.	5,146,78,55,212,206,221	100.0
+361	belladonna	belladonnas	680	50	22	model.herb.belladonna.	5,146,79,78,55,212,206,221	100.0
+362	strawberries	handfuls of strawberry	489	300	22	model.fruit.strawberries.	5,146,80,46,55,212	100.0
+363	rosemary	rosemary	706	50	22	model.herb.rosemary.	146,105,5,78,55,212,206,221	100.0
+364	blueberry	blueberries	529	300	22	model.fruit.blueberry.	5,146,80,46,55,212	100.0
+365	nettles	nettles	527	50	22	model.herb.nettles.	146,104,5,78,55,212	100.0
+366	sassafras	sassafrases	710	50	22	model.herb.sassafras.	146,103,5,78,55,212	100.0
+367	lingonberry	lingonberries	509	300	22	model.fruit.lingonberry.	5,146,80,46,55,212	100.0
+368	meat fillet	meat fillets	503	300	2	model.food.meat.filet.	28,5,62,174,219,108,74,212,146,223	1.0
+369	fish fillet	fish fillets	524	300	2	model.food.fish.filet.	5,62,36,75,219,108,174,212,146,223,233	1.0
+370	Crazy diamond	crazy diamonds	542	500	54	model.decoration.gem.diamond.crazy.	52,40,93,48	99.0
+371	drake hide	drake hides	602	500	16	model.resource.leather.dragon.	23,48,62,99,46	20.0
+372	scale	scales	554	2500	16	model.resource.scales.dragon.	23,48,62,99,46	40.0
+373	porridge	porridges	608	700	26	model.liquid.porridge.	5,219,26,74,108,212	1.0
+374	emerald	emeralds	543	500	52	model.decoration.gem.emerald.	93,48,157	99.0
+375	star emerald	star emeralds	543	500	52	model.decoration.gem.emerald.star.	93,48,157	99.0
+376	ruby	rubies	544	500	52	model.decoration.gem.ruby.	93,48,157	99.0
+377	star ruby	star rubies	544	500	52	model.decoration.gem.ruby.star.	93,48,157	99.0
+378	opal	opals	563	500	52	model.decoration.gem.opal.	93,48,157	99.0
+379	black opal	black opals	563	500	52	model.decoration.gem.opal.black.	93,48,157	99.0
+380	diamond	diamonds	542	500	54	model.decoration.gem.diamond.	93,48,157	99.0
+381	star diamond	star diamond	542	500	54	model.decoration.gem.diamond.star.	93,48,157	99.0
+382	sapphire	sapphires	564	500	52	model.decoration.gem.sapphire.	93,48,157	99.0
+383	star sapphire	star sapphires	564	500	52	model.decoration.gem.sapphire.star.	93,48,157	99.0
+384	guard tower	towers	60	500000	15	model.structure.guardtower.jenn.	52,25,31,67,44,85,86,49,98,123,194,239	20.0
+385	felled tree	felled trees	606	200000	0	model.resource.log.	21,113,52,129,54,123,147,175,237	200.0
+386	unfinished item	unfinished items	60	0	0	model.	48,246	10.0
+387	illusionary item	items	60	0	0	model.	48,45,59	10.0
+388	file	files	749	400	11	model.tool.file.	108,44,147,38,22,119	7.0
+389	file blade	file blades	729	300	11	model.tool.blade.file.	44,22,119	3.0
+390	awl	awls	754	400	11	model.tool.awl.	108,44,147,38,22,13	7.0
+391	awl blade	awl blades	734	300	11	model.tool.blade.awl.	44,22	3.0
+392	leather knife	leather knives	766	400	11	model.tool.leatherknife.	108,44,147,38,22,13	7.0
+393	leather knife blade	leather knife blades	720	300	11	model.tool.blade.leatherknife.	44,22	3.0
+394	scissors	scissors	748	400	11	model.tool.scissors.	108,44,147,38,22,13	7.0
+395	scissor blade	scissor blades	728	300	11	model.tool.blade.scissors.	44,22	3.0
+396	clay shaper	wooden clay shapers	802	100	14	model.tool.clayshaper.	108,44,21,147	3.0
+397	spatula	wooden spatulas	808	100	14	model.tool.spatula.	108,44,21,147	3.0
+398	statue of nymph	statues	60	70000	15	model.decoration.statue.nymph.	108,31,135,25,51,52,44,86,199,92,176,178	15.0
+399	statue of demon	statues	60	100000	15	model.decoration.statue.demon.	108,31,25,135,51,52,44,67,86,92,176,178,199	15.0
+400	statue of dog	statues	60	70000	15	model.decoration.statue.dog.	108,31,25,135,51,52,44,67,86,92,176,178,199	5.0
+401	statue of troll	statues	60	150000	15	model.decoration.statue.troll.	108,31,25,135,86,51,52,44,67,92,176,199,178	5.0
+402	statue of boy	statues	60	60000	15	model.decoration.statue.boy.	108,31,25,135,86,51,52,44,67,92,176,178,199	10.0
+403	statue of girl	statues	60	60000	15	model.decoration.statue.girl.	108,31,25,135,86,51,52,44,67,92,176,178,199	10.0
+404	bench	benches	60	110000	15	model.furniture.bench.	108,31,135,25,86,51,52,44,67,176,178,117,197,1,180,256	5.0
+405	decorative fountain	fountains	60	50000	15	model.decoration.fountain.drink.	108,31,86,135,25,51,52,44,67,33,128,176,178	30.0
+406	slab	slabs	689	80000	15	model.resource.slab.	25,51,135,86,44,146,158,242,243	3.0
+407	coffin	coffins	254	240000	15	model.furniture.coffin.	108,31,135,86,25,51,52,44,67,1,176,178,259	20.0
+408	fountain	fountains	60	120000	15	model.decoration.fountain.	108,31,135,86,25,51,52,44,67,1,33,128,176,178	40.0
+409	cherries	red cherries	485	200	22	model.food.cherries.	5,146,80,46,157,55	100.0
+410	lemon	lemons	488	300	22	model.food.lemon.	146,103,5,80,157,55	100.0
+411	blue grapes	blue grapes	565	300	22	model.food.grapes.blue.	5,146,80,46,157,55	100.0
+412	olives	olives	548	300	22	model.food.olives.black.	5,146,46,157,55	100.0
+413	fruit press	fruit presses	246	2000	14	model.tool.fruitpress.	108,44,144,38,21,139,33,1,147,210	30.0
+414	green grapes	green grapes	545	300	22	model.food.grapes.green.	5,146,80,46,157,55	100.0
+415	maple syrup	maple syrup	587	60	26	model.liquid.syrup.maple.	26,88,90	1.0
+416	maple sap	maple sap	587	1000	26	model.liquid.sap.maple.	26,211	10.0
+417	fruit juice	fruit juices	582	100	26	model.liquid.juice.	26,88,90,216,233	10.0
+418	olive oil	olive oil	587	180	26	model.liquid.oliveoil.	108,26,88,34,158,113	10.0
+419	red wine	red wines	582	1000	26	model.liquid.wine.red.	108,26,88,89,90,213,212	13.0
+420	white wine	white wines	584	1000	26	model.liquid.wine.white.	108,26,88,89,90,213,212	11.0
+421	bucket	buckets	265	1500	14	model.container.bucket.small.	108,51,1,21,33,52,44,92,147,139	5.0
+422	camellia	camellias	707	50	22	model.herb.camellia.	146,104,211,55,78,113,157,212	100.0
+423	oleander	oleanders	708	50	22	model.herb.oleander.	5,146,78,79,55,113,157,212	100.0
+424	lavender flower	lavender flowers	661	50	22	model.flower.lavender.	146,103,113,157,212,211	100.0
+425	tea	tea	540	1000	26	model.liquid.	26,88,90,233	1.0
+426	rose flower	rose flowers	660	50	22	model.flower.rose.	146,102,113,157,211,212,233	100.0
+427	lemonade	lemonade	540	120	26	model.liquid.	26,88,90,233	1.0
+428	jam	jams	540	60	26	model.food.jam.	108,5,220,74,233	5.0
+429	support beam	support beams	300	60000	14	model.structure.joists.	21,146,44,113	15.0
+430	guard tower	towers	60	500000	15	model.structure.guardtower.hots.	52,25,31,67,44,85,86,49,98,123,194,239	20.0
+431	black dye	black dye	583	1000	26	model.liquid.dye.black.	26,91,113	40.0
+432	white dye	white dye	584	1000	26	model.liquid.dye.white.	26,91,113	20.0
+433	red dye	red dye	582	1000	26	model.liquid.dye.red.	26,91,113	30.0
+434	blue dye	blue dye	580	1000	26	model.liquid.dye.blue.	26,91,113	15.0
+435	green dye	green dye	581	1000	26	model.liquid.dye.green.	26,91,113	10.0
+436	acorn	acorns	487	200	22	model.herb.acorn.	146,103,113	100.0
+437	tannin	tannin	583	1000	26	model.liquid.tannin.	26,113	40.0
+438	dye	dye	540	1000	26	model.liquid.dye.	26,91	100.0
+439	cochineal	cochineals	647	200	2	model.goo.red.	146,79,113,164,211	100.0
+440	woad	woad	700	50	22	model.flower.woad.	146,164	100.0
+441	metal brush	metal brushes	882	1400	14	model.tool.metalbrush.	108,22,44,38,11,147	25.0
+442	delicious julbord	julbords	60	18000	14	model.furniture.table.square.large.julbord.	21,31,52,157	30.0
+443	bag of keeping	bags of keeping	240	250	16	model.tool.bagkeeping.	108,23,1,42,40,246	100.0
+444	wires	metal wires	555	400	11	model.part.wires.	44,22,46,146,147	10.0
+445	catapult	catapult	60	400000	14	model.structure.small.catapult.	108,31,21,51,56,52,44,92,86,109,176,177	30.0
+446	flint	flints	863	100	15	model.resource.flint.	25,146,113	1.0
+447	short bow	short bows	1214	1000	14	model.bow.short.	108,44,21,94,84,147	5.0
+448	bow	bows	1234	1000	14	model.bow.medium.	108,44,21,94,84,147	20.0
+449	long bow	long bows	1254	1000	14	model.bow.long.	108,44,21,94,84,147	20.0
+451	hunting arrow head	hunting arrow heads	1236	40	11	model.arrow.head.hunt.	22,146,113,158	5.0
+452	war arrow head	war arrow heads	1216	40	11	model.arrow.head.war.	22,146,113,158	20.0
+454	arrow shaft	arrow shafts	1255	100	14	model.arrow.shaft.	21,146,113,129,147	1.0
+455	hunting arrow	hunting arrows	1235	140	14	model.arrow.hunting.	108,146,44,21,147,113	10.0
+456	war arrow	war arrows	1215	140	14	model.arrow.war.	108,146,44,21,147,113	15.0
+457	bow string	bow strings	620	10	22	model.resource.string.	129,146,113	10.0
+458	archery target	archery targets	255	150000	14	model.decoration.archerytarget.	108,21,51,52,86,44,31,176,199	10.0
+459	short bow	short bows	1214	1000	14	model.bow.short.	108,44,21,95,84	5.0
+460	bow	bows	1234	1000	14	model.bow.medium.	108,44,21,95,84	20.0
+461	long bow	long bows	1254	1000	14	model.bow.long.	108,44,21,95,84	20.0
+462	quiver	quivers	760	250	16	model.container.quiver.	108,44,23,1,147	15.0
+463	lock picks	lockpicks	769	50	11	model.key.lockpicks.	108,22,147	40.0
+464	egg	eggs	521	100	28	model.food.egg.	5,48,96,113,219,212,146,74	200.0
+465	huge egg	huge eggs	522	100	28	model.food.egg.large.	112,5,48,96,59,219	200.0
+466	easter egg	easter eggs	522	100	22	model.food.egg.easter.	96,52,237	200.0
+467	peat	peat	690	10000	59	model.resource.peat.	21,146,27,112,113,141,46	200.0
+468	drake hide sleeve	drake hide sleeves	1062	300	16	model.armour.sleeve.dragon.	108,44,23,4,99,249	50.0
+469	drake hide boot	drake hide boots	1065	400	16	model.armour.foot.dragon.	108,44,23,4,99,249	55.0
+470	drake hide cap	drake hide caps	1063	300	16	model.armour.head.dragon.	108,44,23,4,99,249	60.0
+471	drake hide pants	drake hide pants	1061	500	16	model.armour.leg.dragon.	108,44,23,4,99,249	50.0
+472	drake hide glove	drake hide gloves	1064	200	16	model.armour.hand.dragon.	108,44,23,4,99,249	50.0
+473	drake hide jacket	drake hide jackets	1060	600	16	model.armour.torso.dragon.	108,44,23,4,99,249	70.0
+474	dragon scale boot	dragon scale boots	1025	500	16	model.armour.foot.dragon.scale.	108,44,23,4,99,249	40.0
+475	dragon scale pants	dragon scale pants	1021	1200	16	model.armour.leg.dragon.scale.	108,44,23,4,99,249	50.0
+476	dragon scale jacket	dragon scale jackets	1020	2200	0	model.armour.torso.dragon.scale.	108,44,23,4,99,249	65.0
+477	dragon scale sleeve	dragon scale sleeves	1022	400	16	model.armour.sleeve.dragon.scale.	108,44,23,4,99,249	35.0
+478	dragon scale glove	dragon scale gloves	1024	300	16	model.armour.hand.dragon.scale.	108,44,23,4,99,249	30.0
+479	moss	moss	549	300	22	model.resource.moss.	186,27,146,112,113,141	200.0
+480	compass	compasses	792	600	30	model.compass.	108,22,100,147,97	10.0
+481	healing cover	healing covers	341	400	22	model.healing.cover.	54,113,129,147	100.0
+482	head board	head boards	253	8000	14	model.furniture.headboard.standard.	21,51,44	10.0
+483	bed frame	bed frames	293	20000	14	model.furniture.bedframe.standard.	21,51,52,44,92	15.0
+484	bed	beds	313	40000	14	model.furniture.bed.standard.	109,108,21,51,52,44,86,92,31,67,135,48,110,111,176,178,157,249,1,180,256	20.0
+485	foot board	foot boards	273	6000	14	model.furniture.footboard.standard.	21,51,44	7.0
+486	sheet	sheets	640	1500	17	model.resource.sheet.	24,146,92	10.0
+487	flag	flags	640	2500	14	model.decoration.flag.	24,92,124,147,52,167,48,86,119,44,199,173	30.0
+488	sandwich	sandwiches	505	180	22	model.food.bread.sandwich.	82,212,75,220,222,233	10.0
+489	spyglass	spyglasses	860	2000	30	model.decoration.statuette.	22,44,87,42	200.0
+490	rowing boat	rowing boats	60	120000	14	model.structure.small.boat.rowing.	60,108,1,31,21,51,56,52,44,92,117,47,48,54,157,160,255	17.0
+491	sailing boat	sailing boats	60	140000	14	model.structure.small.boat.sailing.	60,108,1,31,21,51,56,52,44,92,117,47,48,54,157,160,249,255	30.0
+492	mortar	mortar	591	2000	18	model.resource.mortar.	25,146,46,112,113,158,174	15.0
+493	trowel	trowels	750	450	11	model.tool.trowel.	108,44,147,38,22,247	10.0
+494	trowel blade	trowel blades	730	350	11	model.tool.blade.trowel.	44,22	7.0
+495	floor boards	floor boards	293	10300	14	model.structure.floorboards.	21,146,44,113,242,243	15.0
+496	lamp	lamps	825	5000	11	model.light.lamp.street.	108,22,143,48,51,52,101,44,86,116,92,199	25.0
+497	lamp head	lamp heads	822	800	11	model.light.lantern.head.	108,44,22,92,59	40.0
+498	bouquet of yellow flowers	yellow flowers	681	50	22	model.flower.flower1.	118,146,211	100.0
+499	bouquet of orange-red flowers	orange-red flowers	681	50	22	model.flower.flower2.	118,146,211	100.0
+500	bouquet of purple flowers	purple flowers	681	50	22	model.flower.flower3.	118,146,211	100.0
+501	bouquet of white flowers	white flowers	681	50	22	model.flower.flower4.	118,146,211	100.0
+502	bouquet of blue flowers	blue flowers	681	50	22	model.flower.flower5.	118,146,211	100.0
+503	bouquet of greenish-yellow flowers	greenish-yellow flowers	681	50	22	model.flower.flower6.	118,146,211	100.0
+504	bouquet of white-dotted flowers	dotted flowers	681	50	22	model.flower.flower7.	118,146,211,157	100.0
+505	statuette of Fo	statuettes	282	1000	0	model.decoration.statuette.fo.	108,52,22,44,87,92,147	40.0
+506	statuette of Libila	statuettes	282	1000	0	model.decoration.statuette.libila.	108,52,22,44,87,92,147	40.0
+507	statuette of Magranon	statuettes	282	1000	0	model.decoration.statuette.magranon.	108,52,22,44,87,92,147	40.0
+508	statuette of Vynora	statuettes	282	1000	0	model.decoration.statuette.vynora.	108,52,22,44,87,92,147	40.0
+509	resurrection stone	resurrection stones	463	500	15	model.decoration.gem.resurrectionstone.	40,120,25,42,53,127	99.0
+510	spirit house	spirit houses	60	150000	14	model.container.spirithouse.	108,86,1,31,21,51,52,44,67,92,160	50.0
+511	spirit cottage	spirit cottages	60	240000	15	model.container.spiritcottage.	108,86,1,31,25,51,52,44,67,92,160	60.0
+512	spirit mansion	spirit mansions	60	150000	14	model.container.spiritmansion.	108,86,1,31,21,51,52,44,67,92,160	50.0
+513	spirit castle	spirit castles	60	240000	15	model.container.spiritcastle.	108,86,1,31,25,51,52,44,67,92,160	60.0
+514	whip of One	whips	1359	500	16	model.weapon.whip.one.	108,44,23,92,42,2,37,70	100.0
+515	crown of One	crowns	969	1700	0	model.armour.head.steelcrown.	42,108,44,22,4,40,70	20.0
+516	toolbelt	toolbelts	861	1000	16	model.clothing.belt.toolbelt.	108,44,23,92,147,121,97	35.0
+517	hooks	hooks	845	200	11	model.part.hooks.	44,22,46,147,146	1.0
+518	colossus	colossus	60	7500000	15	model.decoration.statue.colossus.	108,31,25,52,44,67,92,49,194,195,123,135,178,157	50.0
+519	colossus brick	colossus bricks	670	15000	15	model.resource.brick.colossus.	25,146,113,242,243	20.0
+520	firemarker	markers	60	0	21	model.marker.invis.	65,45,31,59,52,129	3.0
+521	lair	lairs	60	500000	14	model.structure.den.	52,21,31,67,86,49,98,48,178	20.0
+522	carved pumpkin	pumpkin	501	1000	22	model.food.pumpkin.halloween.	32,59,101	1.0
+523	hatchet head	hatchet heads	1206	1500	11	model.weapon.hatchet.blade.	44,22	10.0
+524	farwalker twig	farwalker twigs	759	500	14	model.resource.sprout.	40,21,42,53,48,127	99.0
+525	farwalker stone	farwalker stones	799	500	15	model.decoration.gem.teleportationstone.	40,25,42,53,48,127	99.0
+526	granite wand	granite wands	400	5	15	model.magic.wand.nature.	108,40,42,53,25	10.0
+527	farwalker amulet	amulets	779	100	8	model.magic.amulet.farwalker.	42,22,53,48,127	200.0
+528	guard tower	towers	60	500000	15	model.structure.guardtower.molr.	52,25,31,67,44,85,86,49,98,123,194,239	20.0
+529	royal sceptre	sceptres	60	3000	7	None	52,40,42,122,70	99.0
+530	royal crown	crowns	60	1500	7	None	52,40,42,122,70,4	99.0
+531	royal robes	robes	60	1500	17	model.armour.torso.dragon.scale.leather.	40,24,4,92,42,122,70	30.0
+532	staff of the office	staves	60	3000	14	None	52,40,42,122,21,70	99.0
+533	circlet	circlets	60	1500	8	None	52,40,42,22,122,70,4	99.0
+534	chancellor cape	capes	60	1500	17	model.armour.torso.dragon.scale.leather.	40,24,4,92,42,122,70	30.0
+535	black claw	claws	60	3000	2	None	52,40,42,122,28,70	99.0
+536	cage crown	crowns	60	1500	9	None	52,40,42,122,22,70,4	99.0
+537	thorn robes	robes	60	1500	17	model.armour.torso.dragon.scale.leather.	40,24,4,92,42,122,70	30.0
+538	stone of the sword	stones	800	2000000	15	model.resource.stone.swordstone.	25,52,31,70,40,122,123	10.0
+539	cart	carts	60	240000	14	model.structure.large.cart.	108,1,31,21,51,56,52,44,92,117,134,47,193,54,176,180,160	30.0
+540	cog	cogs	60	800000	14	model.structure.boat.cog.	60,108,1,31,21,51,56,52,44,92,117,47,48,54,157,160,249,255	50.0
+541	corbita	corbitas	60	1400000	14	model.structure.boat.corbita.	60,108,1,31,21,51,56,52,44,92,117,47,48,54,157,180,160,249,255	40.0
+542	knarr	knarrs	60	2000000	14	model.structure.boat.knarr.	60,108,1,31,21,51,56,52,44,92,117,47,48,54,157,180,160,249,255	60.0
+543	caravel	caravels	60	2400000	14	model.structure.boat.caravel.	60,108,1,31,21,51,56,52,44,92,117,47,48,54,157,180,160,249,255	70.0
+544	rudder	rudders	60	13000	14	model.part.rudder.	21,44	17.0
+545	seat	seat	60	20000	14	model.part.seat.	21,44	6.0
+546	hull plank	hull planks	626	8000	14	model.resource.plank.hull.	21,146,129	10.0
+547	anchor	anchors	460	20000	12	model.tool.anchor.	22,44	47.0
+548	ship helm	ship helms	60	20000	14	model.part.shipwheel.	21,44	57.0
+549	tackle	tackles	60	5000	14	model.part.tackle.small.	21,44,146	45.0
+550	tackle	tackles	60	10000	14	model.part.tackle.large.	21,44,146	35.0
+551	tenon	tenons	666	1000	14	model.part.tenon.	21,129,146	3.0
+552	tall mast	masts	646	120000	14	model.part.mast.tall.	21,44	45.0
+553	stern	sterns	60	120000	14	model.part.stern.	21,44	20.0
+554	triangular sail	sails	640	4300	17	model.part.sail.triangle.	24,44	55.0
+555	square sail	sails	640	5300	17	model.part.sail.square.	24,44	65.0
+556	oar	oars	60	5000	14	model.part.oar.	21,44,146	25.0
+557	thick rope	thick ropes	621	5500	53	model.resource.wemprope.thick.	46,147,146	20.0
+558	mooring rope	mooring ropes	621	500	53	model.resource.wemprope.mooring.	46,147,146	30.0
+559	cordage rope	cordage ropes	621	500	53	model.resource.wemprope.cordage.	46,147,146	40.0
+560	keel section	keel sections	60	60000	14	model.part.keel.part.	21,44,146	30.0
+561	peg	pegs	666	100	14	model.part.peg.	21,129,146,113	5.0
+562	keel	keels	60	365000	14	model.part.keel.	21,44	30.0
+563	triangular rig	triangular rigs	60	65000	14	model.part.rig.triangular.	21	25.0
+564	square rig	square rigs	60	86000	14	model.part.rig.square.	21	35.0
+565	mooring anchor	anchors	461	20500	12	model.tool.anchor.rope.	46,147,146,22	1.0
+566	deck board	deck boards	626	4000	14	model.resource.plank.deck.	21,146,129	27.0
+567	belaying pin	pins	646	500	14	model.tool.belaying.	21,14,147,37,146	5.0
+568	boat lock	boat locks	790	800	11	model.lock.boat.	108,40,39,114	40.0
+569	marlin	marlins	504	200000	2	model.fish.marlin.	108,5,36,146,212,75,219,223	80.0
+570	blue shark	blue sharks	504	40000	2	model.fish.blueshark.	108,5,36,146,212,75,219,223	75.0
+571	white shark	white sharks	504	200000	2	model.fish.whiteshark.	108,5,36,146,212,75,219,223	77.0
+572	octopus	octopus	504	10000	2	model.fish.octopus.black.	108,5,36,146,212,75,219,223	60.0
+573	sailfish	sailfish	504	10000	2	model.fish.sailfish.	108,5,36,146,74,212,219,223	65.0
+574	dorado	dorados	504	30000	2	model.fish.dorado.	108,5,36,146,212,75,219,223	72.0
+575	tuna	tunas	504	60000	2	model.fish.tuna.	108,5,36,146,212,76,219,223	68.0
+576	tub	tub	245	60000	14	model.container.barrel.huge.	108,135,144,1,21,86,33,51,52,44,92,176,199,259	45.0
+577	banner	banners	640	2500	14	model.decoration.banner.	24,92,147,51,52,167,48,86,119,44,199,173	40.0
+578	kingdom banner	banners	640	2500	14	model.decoration.banner.	24,92,51,52,167,48,86,119,44,173,199	50.0
+579	kingdom flag	flags	640	2500	14	model.decoration.flag.	24,92,124,52,167,48,86,119,44,173,199	40.0
+580	market stall	stalls	60	250000	14	model.structure.marketstall.	108,21,31,51,86,123,52,44,98,49,109	25.0
+581	dredge	dredges	265	4500	14	model.container.dredge.	108,1,21,33,147,52,44,92,139,125,247	15.0
+582	dredge scraping lip	dredge lips	556	1000	9	model.part.blade.dredgelip.	44,22,146	3.0
+583	crows nest	crows nests	276	40000	14	model.part.crowsnest.	108,21,51,52,44	45.0
+584	spinnaker rig	spinnaker rigs	60	66000	14	model.part.rig.spinnaker.	21	30.0
+585	large square rig	large square rigs	60	106000	14	model.part.rig.square.large.	21	45.0
+586	square yard rig	square yard rigs	60	106000	14	model.part.rig.square.yard.	21	55.0
+587	tall square rig	tall square rigs	60	166000	14	model.part.rig.square.tall.	21	65.0
+588	small mast	masts	646	60000	14	model.part.mast.small.	21,44	45.0
+589	medium mast	masts	646	80000	14	model.part.mast.medium.	21,44	45.0
+590	large mast	masts	646	100000	14	model.part.mast.large.	21,44	45.0
+591	small square sail	sails	640	4300	17	model.part.sail.square.small.	24,44	50.0
+592	mine door	plank mine doors	317	42000	14	model.structure.minedoor.wood.	21,126,44,147,146,157	5.0
+593	mine door	stone mine doors	337	120000	15	model.structure.minedoor.stone.	25,44,126,157	55.0
+594	mine door	golden mine doors	257	121000	7	model.structure.minedoor.gold.	22,44,126,157	85.0
+595	mine door	silver mine doors	277	121000	8	model.structure.minedoor.silver.	22,44,126,157	75.0
+596	mine door	steel mine doors	297	61000	9	model.structure.minedoor.steel.	22,44,126,157	90.0
+597	sheet	steel sheets	675	6000	9	model.resource.sheet.	22,146,158,157	30.0
+598	sheet	silver sheets	676	6000	8	model.resource.sheet.	22,146,158,157	30.0
+599	sheet	gold sheets	674	6000	7	model.resource.sheet.	22,146,158,157	30.0
+600	summer hat	hats	973	300	8	model.armour.summerhat.	24,4,42	99.0
+601	shaker orb	shaker orbs	60	50	21	model.magic.orb.shaker	6,53,127	10.0
+602	sculpting wand	sculpting wands	400	5	14	model.magic.wand.sculpturing.	108,40,42,53,21,130	10.0
+603	monolith portal	portals	60	2000000	15	model.structure.portal.1.	25,131,49,31,52,44,48,67	99.0
+604	ring portal	portals	60	2000000	15	model.structure.portal.2.	25,131,49,31,52,44,48,67	99.0
+605	desolate portal	portals	60	2000000	15	model.structure.portal.3.	25,131,49,31,52,44,48,67	99.0
+606	flame portal	portals	60	2000000	15	model.structure.portal.4.	25,131,49,31,52,44,48,67	99.0
+607	portal	portals	60	2000000	15	model.structure.portal.5.	25,131,49,31,52,44,48,67	99.0
+608	well	wells	60	120000	15	model.decoration.well.	108,31,25,51,52,44,67,1,33,128,86,176,199,178,259	30.0
+609	spring	springs	60	1000	9	model.part.spring.	44,22	30.0
+610	stick trap	stick traps	60	50000	14	model.trap.sticks.	132,108,147,21,44	15.0
+611	pole trap	pole traps	60	50000	14	model.trap.pole.	132,108,147,21,44	25.0
+612	corrosive trap	corrosive traps	60	10000	19	model.trap.corrosive.	132,108,147,30,44	25.0
+613	axe trap	axe traps	60	50000	14	model.trap.axe.	132,108,147,21,44	65.0
+614	knife trap	knife traps	60	40000	14	model.trap.knife.	132,108,147,21,44	55.0
+615	net trap	net traps	60	10000	17	model.trap.net.	132,108,147,24,44	45.0
+616	scythe trap	scythe traps	60	50000	15	model.trap.scythe.	132,108,147,25,44	65.0
+617	man trap	man traps	60	10000	9	model.trap.man.	132,108,147,22,44	65.0
+618	bow trap	bow traps	60	30000	14	model.trap.bow.	132,108,147,21,44	35.0
+619	rope trap	rope traps	60	3000	53	model.trap.rope.	132,108,147	25.0
+620	mixed grass	bunches of mixed grass	702	50	22	model.flower.mixedgrass.	186,146,46,113,55	100.0
+621	saddle	saddles	757	5500	16	model.riding.saddle.	44,147,23,136,1,180,92,139	30.0
+622	saddle	saddles	777	6000	16	model.riding.saddle.	44,147,23,136,92	60.0
+623	horse shoe	horse shoes	737	500	11	model.riding.horseshoe.	44,147,22,136,108	5.0
+624	bridle	bridles	917	800	16	model.riding.bridle.	108,147,44,23,92,136	15.0
+625	girth	girth	897	2500	16	model.riding.girth.	44,147,23,92	18.0
+626	stirrups	stirrups	837	1000	16	model.riding.stirrups.	44,147,23,92	22.0
+627	mouth bit	mouth bits	60	200	11	model.riding.bit.	44,147,22	5.0
+628	reins	reins	957	300	16	model.riding.reins.	44,147,23,92	16.0
+629	saddle seat	saddle seats	797	2000	16	model.riding.saddleseat.	44,23,108	30.0
+630	saddle seat	saddle seats	817	2500	16	model.riding.saddleseat.	44,23,108	60.0
+631	headstall	headstall	937	300	16	model.riding.headstall.	44,147,23,92	16.0
+632	yoke	yokes	60	20000	14	model.part.yoke.	21,147,44	20.0
+633	brittle wand	brittle wands	400	5	39	model.magic.wand.brittle.	108,42,53,21	10.0
+634	dishwater	dishwaters	589	700	26	model.liquid.soup.	5,137,26,90	1.0
+635	ornate fountain	fountains	60	120000	15	model.decoration.fountain.2.	108,31,135,86,25,51,52,44,67,1,33,128,176,178	40.0
+636	heart	heart	516	500	1	model.resource.heart.	28,5,62,74,48,106,129,46,146	500.0
+637	freedom stones	standing stones	60	2000000	15	model.structure.portal.6.	25,131,49,31,52,44,48,67	99.0
+638	guard tower	towers	60	500000	15	model.structure.guardtower.free.	52,25,31,67,44,85,86,49,98,123,194,239	20.0
+639	meditation rug	rugs	901	1500	17	model.decoration.carpet.medi.one.	24,44,52,140,51,184	45.0
+640	Fo puppet	puppets	306	500	17	model.toy.puppet.fo.	24,44,138,157	30.0
+641	Magranon puppet	puppets	305	500	17	model.toy.puppet.magranon.	24,44,138,157	30.0
+642	Vynora puppet	puppets	303	500	17	model.toy.puppet.vynora.	24,44,138,157	30.0
+643	Libila puppet	puppets	304	500	17	model.toy.puppet.libila.	24,44,138,157	30.0
+644	fine meditation rug	rugs	901	1500	17	model.decoration.carpet.medi.two.	24,44,52,140,51,184	65.0
+645	beautiful meditation rug	rugs	901	1500	17	model.decoration.carpet.medi.three.	24,44,52,140,51,184	80.0
+646	exquisite meditation rug	rugs	901	1500	17	model.decoration.carpet.medi.four.	24,44,52,140,51,184	95.0
+647	grooming brush	grooming brushes	902	350	14	model.tool.groomingbrush.	108,21,147,44,38	15.0
+649	light token	tokens	820	100	15	model.light.token.	25,32,52,59,45,156	1.0
+650	farmer's salve	salves	262	100	32	model.healing.salve.	27,46,147	5.0
+651	gift box	giftboxes	243	23	14	model.container.giftbox.	53,48,108,52,21,83	10.0
+652	christmas tree	christmas trees	606	15000	37	model.decoration.tree.christmas.	21,113,157,52,129,237	1.0
+653	glass flask	flask	261	70	20	model.magic.potion.	1,33,108	10.0
+654	transmutation liquid	liquid	588	144	21	model.liquid.transmutation.	26,54	40.0
+655	snowman	snowmen	60	150000	26	model.decoration.statue.snowman.	108,31,51,52,67,86,157,92,237	5.0
+656	shop sign	shop signs	252	8000	14	model.sign.shop.	108,147,21,142,48,51,52,44,18,86,200	40.0
+657	torch lamp	lamps	825	5000	11	model.light.lamp.street.torch.	108,22,143,48,51,52,101,44,86,116,92,199	35.0
+658	hanging lamp	lamps	825	5000	11	model.light.lamp.street.pole.	108,22,143,48,51,52,101,44,86,116,92,199	30.0
+659	imperial street lamp	lamps	825	25000	11	model.light.lamp.street.metal.	108,22,143,48,51,52,101,44,86,116,92,199	45.0
+660	metal torch	torches	822	800	11	model.light.torch.metal.	108,101,44,22,92,32,59,52,51	25.0
+661	food storage bin	food storage bins	468	20000	14	model.container.storagebin.food.	108,147,135,144,21,51,52,44,47,1,92,145,176,48,199	10.0
+662	bulk storage bin	bulk storage bins	469	20000	14	model.container.storagebin.	108,147,135,144,21,51,52,44,47,1,92,145,176,48,199	10.0
+663	settlement form	settlement forms	340	0	33	model.writ.deed.	83,40,42,48,53,54,57,114	100.0
+664	magical chest	magical chests	244	15000	14	model.container.chest.large.magical.	108,135,1,31,21,47,51,52,53,127,176,259	10.0
+665	magical chest	magical chests	244	3000	14	model.container.chest.small.magical.	108,135,1,21,47,51,52,53,127,259	10.0
+666	sleep powder	sleep powder	641	25	6	model.resource.whitepowder	42,5,53,76,127	300.0
+667	tuning fork of metal detection	tuning forks	739	300	8	model.tool.tunefork.	42,22,53,127	300.0
+668	Rod of Transmutation	rods of transmutation	1259	1000	15	model.tool.rodtrans.	42,53,127,155	300.0
+669	bulk item	items	60	0	0	model.	31,54,216,212,48	10.0
+670	trash heap	trash heaps	60	20000	14	model.container.storagebin.trash.	108,147,21,135,144,109,31,51,52,44,1,92	1.0
+671	Deed border	markers	60	0	21	model.marker.temporary.settle.	45,31,59,52	3.0
+672	decayitem	items	500	100	37	model.food.potato.	20,55,129,21,59	200.0
+673	Perimeter	markers	60	0	21	model.marker.temporary.settle.perimeter.	45,31,59,52	3.0
+674	hanging lamp head	lamp heads	822	800	11	model.light.lantern.hanging.	108,44,22,92,59	50.0
+675	imperial lamp head	lamp heads	822	800	11	model.light.lantern.metal.	108,44,22,92,59	55.0
+676	mission ruler	mission rulers	759	10	14	model.resource.sprout.	40,21,42,53,48,127	99.0
+677	gm sign	gm signs	252	3000	14	model.sign.gmnotice.	108,147,21,142,31,48,52,44,18,86,199,51,92	10.0
+678	Fo obelisk	obelisks	60	2000000	15	model.structure.portal.1.	25,49,31,52,40,149	99.0
+679	Construction marker	markers	900	4000	14	model.marker.build.	52	10.0
+680	Libila stone	stones	60	2000000	15	model.structure.portal.2.	25,49,31,52,40,150	99.0
+681	fence bars	fence bars	625	6000	11	model.part.ironfencebars.	22,146,158	30.0
+682	declaration of independence	declarations	324	0	33	model.writ.declaration.	40,42,53	100.0
+683	Valrei item	items	462	100	21	model.valrei.	32,59	300.0
+684	rock	iron rock	618	3000	11	model.resource.rock.	148,146,46,113,129,141,151,157,175	200.0
+685	crude knife	crude knives	1201	600	15	model.weapon.knife.crude.	38,25,17,13,11,97,151,113	1.0
+686	crude pickaxe head	crude pickaxe heads	723	2000	15	model.tool.pickaxe.blade.crude.	25,151	15.0
+687	crude pickaxe	crude pickaxes	743	3000	15	model.tool.pickaxe.crude.	38,25,10,2,97,151,113,157,247	1.0
+688	branch	branches	646	2000	14	model.resource.shaft.crude.	133,146,21,14,144,37,84,129,151,113,175,211	1.0
+689	crude shovel blade	stone shovel blades	726	1000	15	model.tool.shovel.blade.crude.	25,151,113	1.0
+690	crude shovel	crude shovels	746	2000	14	model.tool.shovel.crude.	133,38,21,19,37,2,97,151,113,157,247	20.0
+691	crude shaft	crude shafts	646	1000	14	model.resource.shaft.crude	133,146,21,14,144,37,84,129,151,113,157	3.0
+692	boulder	boulders	60	200000	56	model.resource.boulder.	113,31,152,52	200.0
+693	ore	admantine ore	596	20000	56	model.resource.ore.	148,146,46,113,48,157	200.0
+694	lump	adamantine lumps	639	400	56	model.resource.lump.	22,146,46,113,157	4.0
+695	scrap	adamantine scrap	60	100	56	model.resource.scrap.	22,146,46,113,157	1.0
+696	boulder	boulders	60	200000	57	model.resource.boulder.	113,31,152,157,52	200.0
+697	ore	glimmersteel ore	595	20000	57	model.resource.ore.	148,146,46,113,48,157	200.0
+698	lump	glimmersteel lumps	638	400	57	model.resource.lump.	22,146,46,113,157	4.0
+699	scrap	glimmersteel scrap	60	100	57	model.resource.scrap.	22,146,46,113,157	1.0
+700	fireworks	fireworks	60	4000	14	model.fireworks.	108,21,52	70.0
+701	branding iron	branding iron	780	300	11	model.tool.brandingiron.	108,44,38,22	20.0
+702	leather barding	bardings	1120	15000	16	model.riding.barding.	44,147,23,136,4,92,108	40.0
+703	chain barding	bardings	1120	25000	11	model.riding.barding.	44,147,22,136,4,92,108	60.0
+704	cloth barding	bardings	1120	12000	17	model.riding.barding.	44,147,24,136,4,108	40.0
+705	long spear	long spears	1221	2700	14	model.weapon.polearm.spear.long.	133,108,44,21,13,37,154,84,147,189	20.0
+706	halberd	halberds	1247	4500	11	model.weapon.polearm.halberd.	133,108,44,22,2,37,154,84,147,189	40.0
+707	spear	spears	1221	3700	9	model.weapon.polearm.spear.	133,108,44,22,13,37,154,84,147	40.0
+708	halberd head	halberd heads	1246	2500	11	model.weapon.blade.halberd.	44,22	15.0
+709	spear tip	spear tips	1220	700	11	model.weapon.blade.spear.long.	44,22	5.0
+710	staff	staves	646	3000	9	model.weapon.polearm.staff.	44,133,22,14,154,37,84,129	10.0
+711	staff	staves	646	2000	14	model.weapon.polearm.staff.	133,21,14,154,144,37,84,129	10.0
+712	shrine	shrine	60	1500000	15	model.structure.shrine.	25,49,31,52,44,67,195,194,109,178,123	25.0
+713	pylon	pylons	60	2000000	15	model.structure.pylon.	25,49,31,52,44,67,109,195,194,178,123	55.0
+714	obelisk	obelisk	60	1500000	15	model.structure.obelisque.	25,49,31,52,44,67,109,178,194,195,123	40.0
+715	temple	temple	60	1500000	15	model.structure.temple.	25,49,31,52,44,67,195,194,109,178,123	35.0
+716	spirit gate	spirit gate	60	500000	15	model.structure.spiritgate.	25,49,31,52,44,67,109,195,194,178,123	55.0
+717	foundation pillar	foundation pillars	60	1500000	15	model.structure.pillar.foundation.	25,49,31,52,44,67,195,194,109,178,123	20.0
+718	huge bell	huge bells	298	8300	31	model.part.bell.huge.	22,44	30.0
+719	small bell	small bells	278	500	30	model.decoration.bell.small.	22,44	20.0
+720	small resonator	small resonators	278	400	30	model.decoration.bell.small.resonator.	22,44	60.0
+721	large bell resonator	large resonators	298	6300	31	model.part.bell.huge.resonator.	22,44,52	60.0
+722	bell tower	bell towers	310	36500	14	model.structure.belltower.	21,44,52,31,67,109,51,178,86,176,199	45.0
+723	bell cot	bell cots	309	30000	14	model.structure.bellcot.	21,44,52	25.0
+724	weapons rack	weapons racks	60	20000	14	model.container.weapons.	21,44,1,86,52,67,31,51,199,176,178	15.0
+725	polearms rack	polearms racks	60	20000	14	model.container.weapons.polearms.	21,44,1,86,52,67,31,51,199,176,178	15.0
+726	ring center	ring centers	60	100000	15	model.structure.duelring.	25,49,31,52,40,67,98,123,48,109,178	139.0
+727	duelling ring	duelling rings	60	100000	15	model.structure.duelring.side.	25,49,31,52,40,98,48,123,109,178	139.0
+728	ring corner	ring corners	60	100000	15	model.structure.duelring.corner.	25,49,31,52,40,98,48,109,123,178	139.0
+729	cake	cakes	530	1200	22	model.food.cake.	82,32,76,220,233	1.0
+730	cake slice	cake slices	530	200	22	model.food.cake.slice.	82,74,220,222,233	1.0
+731	tree stump	stumps	606	200000	0	model.stump.	21,113,52,129,31,123,86,237	200.0
+732	epic portal	portals	60	2000000	15	model.structure.portal.8.	25,131,49,31,52,44,48,67,51,86,178	1.0
+733	huge epic portal	portals	60	2000000	15	model.structure.portal.7.	25,131,49,31,52,44,48,67,51,178	1.0
+734	tiny clapper	tiny clappers	60	100	11	model.part.clapper.small.	22,44	10.0
+735	large clapper	large clappers	60	2000	11	model.part.clapper.large.	22,44	20.0
+736	pillar	pillar	60	1500000	15	model.structure.pillar.	25,31,52,44,67,109,51,86,178	20.0
+737	Valrei mission item	items	462	100	21	model.valrei.	32,59,147,60	300.0
+738	garden gnome	gnomes	60	20000	18	model.decoration.statue.garden.	108,51,52,67,92,89,1,33,40,178	300.0
+739	Hota pillar	hota pillars	60	1500000	15	model.structure.pillar.hota.	25,49,31,52,40,67,109,123,92,48,114,32,156,60,178	39.0
+740	medallion	medallions	464	70	7	model.decoration.medallion.hota.	52,22	10.0
+741	shrine of the rush	rush shrines	60	1500000	0	model.structure.shrine.	49,31,52,67,98,109,123,40,114,60,178	66.0
+742	hota statue	statues	467	150000	7	hota.	108,22,51,52,40,67,92,1,32,48,176,199,178,259	5.0
+743	reed plants	reed plants	547	500	22	model.resource.reed.	146,102,46,129	5.0
+744	reed seed	reed seeds	480	100	22	model.resource.reedseed.	20,146,129	200.0
+745	reed fibre	reed fibre	547	500	60	model.resource.reedfibre.	46,146,129,211	5.0
+746	rice	rice	480	100	22	model.food.rice.	5,146,20,55,129,212	3.0
+747	press	presses	246	2000	14	model.tool.press.	108,44,144,38,21,139,210	30.0
+748	papyrus sheet	papyrus sheets	640	10	33	model.resource.sheet.papyrus.	21,159,146,211	5.0
+749	reed pen	reed pens	275	200	60	model.tool.reedpen.	108,1,144,38,21,139,33	10.0
+750	strawberry seeds	strawberry seeds	480	100	22	model.resource.strawberries.	20,5,146,55,129	200.0
+751	mission ruler recharge	ruler recharges	759	10	14	model.resource.sprout.	40,21,42,53,127	99.0
+752	ink sac	ink sacs	515	200	2	model.resource.inksac.	106,62,46	1.0
+753	black ink	black ink	583	100	26	model.liquid.ink.black.	26,88,90	20.0
+754	cooked rice	rice	608	700	26	model.liquid.porridge.	82,74,219,222	1.0
+755	kelp	bunches of kelp	599	50	22	model.flower.mixedgrass.	146,46,113,55,211,157	100.0
+756	thatch	bunches of thatch	599	50	22	model.flower.thatch.	186,146,46,158	5.0
+757	oil barrel	oil barrel	245	60000	14	model.container.barrel.huge.oil.	108,135,144,31,1,21,86,33,51,52,44,92,109,178,176,259	35.0
+758	bow rack	bow racks	60	20000	14	model.container.weapons.bows.	21,44,1,86,52,67,31,51,135,176,178,199	25.0
+759	armour stand	armour stands	60	20000	14	model.container.weapons.armour.	21,44,1,86,52,67,31,51,135,176,178,199	20.0
+760	outpost	outposts	60	500000	14	model.structure.guardtower.	52,21,31,67,40,49,98,48,161,178,123	100.0
+761	battle camp	battle camps	60	500000	14	model.structure.capturetower.	52,21,31,67,40,49,98,48,161,178,123	100.0
+762	fortification	fortification	60	500000	14	model.structure.guardtower.	52,21,31,67,40,49,98,48,161,178,123	100.0
+763	source	source	540	10	21	model.liquid.source.	26,88,90,163	99.0
+764	source salt	source salt	643	1	21	model.food.salt.source.	5,55,146,163,46	1.0
+765	source crystal	source crystals	542	30	21	model.decoration.gem.source.	93,163	99.0
+766	source fountain	source fountains	60	120000	15	model.decoration.fountain.source.	31,40,25,52,67,1,33,128,123,162,178	40.0
+767	source spring	source springs	60	120000	15	model.decoration.spring.source.	31,40,25,52,67,1,33,128,123,162,178	40.0
+768	wine barrel	wine barrels	245	2000	14	model.container.winebarrel.small.	108,135,51,1,21,33,86,52,147,44,92,77,67,178,199,236,259	50.0
+769	clay brick	clay brick	574	5000	18	model.resource.brick.	108,146,113,129,196	3.0
+770	shards	slate shards	610	20000	61	model.resource.	25,146,46,112,113,129,48,175	1.0
+771	slate slab	slate slabs	689	80000	61	model.resource.slab.	25,51,135,86,44,146,158,242,243	3.0
+772	sheet	copper sheets	675	6000	10	model.resource.sheet.	22,146,158	30.0
+773	sheet	iron sheets	675	6000	11	model.resource.sheet.	22,146,158	30.0
+774	leggat	leggats	862	1200	14	model.tool.leggat.	108,44,38,21,14,119,147	1.0
+775	staircase	staircases	60	35000	14	model.structure.staircase.simple.	108,135,31,21,51,86,52,44	12.0
+776	pottery brick	pottery bricks	575	5000	19	model.resource.brick.pottery	108,30,92,147,146,242,243	3.0
+777	clay shingle	clay shingles	576	2000	18	model.resource.brick.	25,146,113,129,196,158	1.0
+778	pottery shingle	pottery shingles	577	2000	19	model.resource.shingle.	25,146,113,129,158	1.0
+779	blue cloth hood	blue cloth hoods	963	300	17	model.armour.head.blue.	108,44,24,4,92,147	10.0
+780	old unstrung fishing rod	old unstrung fishing rods	786	1000	14	model.tool.fish.rod.unstrung.	157,108,44,21	1.0
+781	hand mirror	hand mirror	920	100	8	model.tool.handmirror.	22,40,42,53,127	100.0
+782	concrete	concrete	591	3000	18	model.resource.concrete.	25,146,46,112,113,158,247	25.0
+784	slate shingle	slate shingles	670	7500	61	model.resource.brick.	25,146,113,129,158	1.0
+785	shards	marble shards	610	20000	62	model.resource.	25,146,46,112,113,129,48,175	1.0
+786	marble brick	marble bricks	670	15000	62	model.resource.brick.	25,146,113,129,158,242,243	5.0
+787	marble slab	marble slabs	689	80000	62	model.resource.slab.	25,51,135,86,44,146,158,242,243	20.0
+788	smelting pot	smelting pots	511	500	19	model.container.smeltingpot.	108,30,92,147	5.0
+789	clay smelting pot	clay smelting pot	491	500	18	model.container.smeltingpot.	108,196,44,147	40.0
+790	wood shingle	wood shingles	626	250	14	model.resource.shingle.	25,146,113,129,158	10.0
+791	soft cap	caps	963	30	17	model.clothing.head.cap.soft.	108,44,24,4,92	10.0
+792	sacrificial knife	sacrificial knives	1379	1230	8	model.weapon.knife.sacrificial.	108,44,38,22,17,13,147	30.0
+793	sacrificial knife blade	sacrificial knife blades	735	1100	8	model.weapon.blade.knife.sacrificial.	44,22	20.0
+794	key of the heavens	heaven keys	789	150	7	model.artifact.keyheavens.	53,168,48	100.0
+795	blood of the angels	angel bloods	260	200	52	model.artifact.bloodang.	53,32,156,168,40	100.0
+796	smoke from sol	sol smoke vials	260	200	52	model.artifact.smokesol.	53,168	100.0
+797	uttacha slime	uttacha slimes	260	200	52	model.artifact.slimeutt.	53,168	10.0
+798	red tome of magic	tomes of magic	325	1000	33	model.artifact.tomemagic.red.	53,168	1000.0
+799	scroll of binding	scrolls of binding	331	100	33	model.artifact.scrollbind.	53,168	1000.0
+800	white cherry	white cherries	60	200	22	model.artifact.cherry.white.	53,168	100.0
+801	red cherry	red cherries	713	200	22	model.artifact.cherry.red.	53,168	100.0
+802	green cherry	green cherries	60	200	22	model.artifact.cherry.green.	53,168	100.0
+803	giant walnut	giant walnut	579	200	22	model.artifact.walnut.	53,168	100.0
+804	tome of incineration	tomes of incineration	325	1000	33	model.artifact.tomemagic.incineration.	53,168	1000.0
+805	wand of the seas	wands of the seas	60	5	38	model.artifact.wandseas.	53,168,48,143,59,199,52	10.0
+806	libram of the night	night librams	330	1000	33	model.artifact.libramnight.	53,168	1000.0
+807	green tome of magic	tomes of magic	327	1000	33	model.artifact.tomemagic.green.	53,168	1000.0
+808	black tome of magic	tomes of magic	328	1000	33	model.artifact.tomemagic.black.	53,168	1000.0
+809	blue tome of magic	tomes of magic	326	1000	33	model.artifact.tomemagic.blue.	53,168	1000.0
+810	white tome of magic	tomes of magic	329	1000	33	model.artifact.tomemagic.white.	53,168	1000.0
+811	statue of horse	statues	60	70000	15	model.decoration.statue.horse.	108,31,135,25,51,52,44,86,199,92,176,178	15.0
+812	clay flowerpot	clay flowerpots	490	600	18	model.container.flowerpot.	108,196,44,147	15.0
+813	pottery flowerpot	pottery flowerpots	510	600	19	model.container.flowerpot.	108,30	15.0
+814	yellow flowerpot	yellow flowerpots	510	600	19	model.container.flowerpotYellow.	108,30,169,52,51	15.0
+815	blue flowerpot	blue flowerpots	510	600	19	model.container.flowerpotBlue.	108,30,169,52,51	50.0
+816	purple flowerpot	purple flowerpots	510	600	19	model.container.flowerpotPurple.	108,30,169,52,51	30.0
+817	white flowerpot	white flowerpots	510	600	19	model.container.flowerpotWhite.	108,30,169,52,51	35.0
+818	orange-red flowerpot	orange-red flowerpots	510	600	19	model.container.flowerpotOrange.	108,30,169,52,51	25.0
+819	greenish-yellow flowerpot	greenish-yellow flowerpots	510	600	19	model.container.flowerpotGreenish.	108,30,169,52,51	60.0
+820	white-dotted flowerpot	white-dotted flowerpots	510	600	19	model.container.flowerpotDotted.	108,30,169,52,51	70.0
+821	gravestone	gravestones	335	20000	15	model.decoration.gravestone.	25,113,144,86,119,44	30.0
+822	gravestone	gravestones	335	20000	15	model.decoration.gravestone.buried.	25,31,144,86,159,51,52,44,178	30.0
+823	equipmentslot	equipmentslots	60	0	1	model.	170,8,1	200.0
+824	group	groups	20	0	0	model.	1,112,42,31,61,178	200.0
+825	sapphire staff	staves	646	2000	14	model.weapon.polearm.staff.sapphire.	133,21,14,154,144,37,84,129,172	10.0
+826	ruby staff	staves	646	2000	14	model.weapon.polearm.staff.ruby.	133,21,14,154,144,37,84,129,172	10.0
+827	diamond staff	staves	646	2000	14	model.weapon.polearm.staff.diamond.	133,21,14,154,144,37,84,129,172	10.0
+828	opal staff	staves	646	2000	14	model.weapon.polearm.staff.opal.	133,21,14,154,144,37,84,129,172	10.0
+829	emerald staff	staves	646	2000	14	model.weapon.polearm.staff.emerald.	133,21,14,154,144,37,84,129,172	10.0
+830	fragile arrow	fragile arrows	1215	140	14	model.arrow.war.	21,45,59	15.0
+831	kingdom tabard	kingdom tabards	307	300	17	model.clothing.tabard.	24,44	25.0
+832	walnut	walnuts	579	200	22	model.food.walnut.	5,21,146,80,212,217,74	1.0
+833	chestnut	chestnuts	559	200	22	model.food.chestnut.	5,21,146,80,212,74	1.0
+834	yellow potion	potions	260	1	21	model.magic.potion.yellow.	6	200.0
+835	village recruitment board	village recruitment boards	252	5000	14	model.sign.recruitment.	21,142,51,52,44,18,199,86,178,48	10.0
+836	brown potion	potions	260	1	21	model.magic.potion.brown.	6	200.0
+837	lump	seryll lumps	630	1000	67	model.resource.lump.	22,146,46,113,157	80.0
+838	brazier stand	copper brazier stands	557	400	10	model.decoration.brazier.stand.	22,44,119	60.0
+839	brazier bowl	copper brazier bowls	302	3000	10	model.decoration.brazier.bowl.	22,44,119	60.0
+840	brazier bowl	large gold brazier bowls	302	5000	7	model.decoration.large.brazier.bowl.	22,44,119	60.0
+841	small brazier	small braziers	301	4200	10	model.decoration.brazier.	22,52,44,119,32,101,179,199,51	60.0
+842	marble brazier pillar	marble brazier pillars	60	855000	62	model.decoration.brazier.pillar.	25,44,119,52,199,176,32,178,101,179,51,86	60.0
+843	name change certificate	name change certificate	340	0	33	model.writ.namecert.	40,42,53,54	100.0
+844	snow lantern	snow lanterns	60	2500	21	model.light.snowlantern.seasoncycle.	108,52,32,51	20.0
+845	water marker	markers	540	0	26	model.marker.temporary.water	45,40,52,92	3.0
+846	black bear rug	rugs	603	3000	55	model.decoration.black.bear.rug.	23,44,119,52,173,51,184	50.0
+847	brown bear rug	rugs	603	3000	55	model.decoration.brown.bear.rug.	23,44,119,52,173,51,184	50.0
+848	mountain lion rug	rugs	603	400	55	model.decoration.mountain.lion.rug.	23,44,119,52,173,51,184	50.0
+849	black wolf rug	rugs	603	3000	55	model.decoration.black.wolf.rug.	23,44,119,52,173,51,184	50.0
+850	wagon	wagons	60	240000	14	model.transports.medium.wagon.	108,1,31,21,51,52,44,117,193,134,47,48,176,180,160,54	70.0
+851	small crate	crates	312	20000	14	model.container.crate.small.	108,135,21,48,51,52,44,1,92,145,176	20.0
+852	large crate	crates	311	20000	14	model.container.crate.large.	108,135,21,48,51,52,44,1,92,145,176	50.0
+853	ship transporter	transporters	60	240000	14	model.transports.large.ship.transporter.	108,1,31,21,51,56,52,44,92,117,54,134,193,47,160	30.0
+854	tutorial object	tutorial objects	60	240000	0	tutorial.object.	108,31,51,40,52,44,48	30.0
+855	steel portal	portals	60	240000	57	model.structure.portal.9.	31,40,52,131	30.0
+856	rice porridge	porridges	608	700	26	model.liquid.porridge.	82,74,26,219	1.0
+857	risotto	risottos	608	700	26	model.liquid.risotto.	82,76,219,222	1.0
+858	rice wine	rice wines	582	1000	26	model.liquid.wine.rice.	108,26,88,90,213,212	70.0
+859	chain link	chain links	470	1000	11	model.resource.largechain.iron.	22,146,158	28.0
+860	wooden beam	wooden beams	553	15000	14	model.resource.beam.	21,146,158,147	35.0
+861	tent	starter tents	640	500	17	model.structure.tent.small.	24,1,47,97,181,109,201,61,52,98,180,157	10.0
+862	deed stake	stakes	646	200	14	model.resource.shaft.	133,21,97,165	3.0
+863	explorer tent	explorer tents	640	3500	17	model.structure.tent.small.	24,1,47,181,109,117,52,86,98,180	10.0
+864	military tent	military tents	640	3500	17	model.structure.tent.military.	24,1,47,181,109,117,52,86,98,180	10.0
+865	pavilion	pavilions	640	2500	17	model.structure.tent.pavilion.	24,47,109,52,86,51,98,180,182	10.0
+866	blood	blood	582	100	21	model.magic.blood.	6,48	200.0
+867	strange bone	bones	536	1500	35	model.resource.collarbone.	62	200.0
+868	skull	skull	556	3000	35	model.resource.skull.	62	200.0
+869	Colossus of Vynora	Colossus	60	7500000	15	model.decoration.statue.colossus.vynora.	108,31,25,194,135,52,44,195,67,49,123,178,157	50.0
+870	Colossus of Magranon	Colossus	60	7500000	15	model.decoration.statue.colossus.magranon.	108,31,25,194,135,52,44,195,67,49,123,178,157	50.0
+871	oil of the weapon smith	potions	260	200	21	model.magic.potion.ws.	6,183	10.0
+872	potion of the ropemaker	potions	260	200	21	model.magic.potion.rm.	6,183	10.0
+873	potion of water walking	potions	260	200	21	model.magic.potion.ww.	6	10.0
+874	potion of mining	potions	260	200	21	model.magic.potion.mi.	6,183	10.0
+875	ointment of tailoring	potions	260	200	21	model.magic.potion.ta.	6,183	10.0
+876	oil of the armour smith	potions	260	200	21	model.magic.potion.as.	6,183	10.0
+877	fletching potion	potions	260	200	21	model.magic.potion.fl.	6,183	10.0
+878	oil of the blacksmith	potions	260	200	21	model.magic.potion.bs.	6,183	10.0
+879	potion of leatherworking	potions	260	200	21	model.magic.potion.lw.	6,183	10.0
+880	potion of shipbuilding	potions	260	200	21	model.magic.potion.sb.	6,183	10.0
+881	ointment of stonecutting	potions	260	200	21	model.magic.potion.sc.	6,183	10.0
+882	ointment of masonry	potions	260	200	21	model.magic.potion.ma.	6,183	10.0
+883	potion of woodcutting	potions	260	200	21	model.magic.potion.wc.	6,183	10.0
+884	potion of carpentry	potions	260	200	21	model.magic.potion.ca.	6,183	10.0
+885	bedside table	bedside tables	60	10000	14	model.furniture.wooden.bedside.table.	108,21,1,135,86,199,157,51,52,44,47,92,176,180,1,180,256	30.0
+886	potion of acid	potions	260	200	21	model.magic.potion.ac.	6,183	10.0
+887	salve of fire	potions	260	200	21	model.magic.potion.fi.	6,183	10.0
+888	salve of frost	potions	260	200	21	model.magic.potion.fr.	6,183	10.0
+889	open fireplace	fireplaces	60	100000	15	model.fireplace.open.decorative.	108,135,31,25,51,86,52,59,44,176,1,180,256	60.0
+890	canopy bed	beds	313	40000	14	model.furniture.bed.canopy.	109,108,21,51,52,44,86,31,67,135,48,110,111,176,178,1,180,256	60.0
+891	bench	benches	60	90000	14	model.furniture.wood.bench.	108,31,135,21,86,51,52,44,199,67,176,178,117,197	40.0
+892	wardrobe	wardrobes	60	100000	14	model.furniture.wardrobe.	21,44,1,86,52,67,31,51,199,176,178,180,47	60.0
+893	coffer	coffers	60	100000	14	model.furniture.wooden.coffer.	21,44,1,86,52,67,31,51,47,176,178,199,180,259	40.0
+894	royal throne	thrones	274	30000	14	model.furniture.throne.	109,108,21,51,52,44,86,67,135,178,117,197,199	60.0
+895	washing bowl	washing bowls	60	7000	30	model.furniture.bowl.washing.	22,44,1,86,52,67,51,33,178,199,180	40.0
+896	tripod table	tables	60	12000	14	model.furniture.tripod.table.	21,44,86,52,67,51,157,199,178,180,51,1,180,256	35.0
+897	brass ribbon	brass ribbons	709	3000	30	model.resource.ribbon.	22,146	5.0
+898	tortoise shell	tortoise shells	60	600	35	model.resource.tortoise.	52,157	10.0
+899	tortoise shield	tortoise shields	970	700	35	model.shield.tortoise.	108,44,3,157	10.0
+900	crab meat	crab meat	503	100	2	model.food.meat.	28,5,62,129,146,76,219,212,223	1.0
+901	range pole	range poles	776	100	14	model.tool.rangepole.	21,44,119,147,199,52	20.0
+902	protractor	protractors	422	50	30	model.tool.protractor.	22,44,119,147	50.0
+903	dioptra	dioptras	775	500	31	model.tool.dioptra.	22,44,119,147	70.0
+904	sight	sights	421	50	31	model.tool.sight.	22,44,119,147	40.0
+905	stone keystone	stone keystones	466	80000	15	model.resource.keystone.	25,51,135,86,44,158,147	20.0
+906	marble keystone	marble keystones	466	80000	62	model.resource.keystone.	25,51,135,86,44,158,147	20.0
+907	Colossus of Fo	Colossus	60	7500000	15	model.decoration.statue.colossus.fo.	108,31,25,194,135,52,44,195,67,49,123,178,157	50.0
+908	colourful carpet	colourful carpets	901	3000	17	model.decoration.colorful.carpet.small.	24,44,52,51,184	20.0
+909	colourful carpet	colourful carpets	901	4000	17	model.decoration.colorful.carpet.medium.	24,44,52,51,184	30.0
+910	colourful carpet	colourful carpets	901	5000	17	model.decoration.colorful.carpet.large.	24,44,52,51,184	40.0
+911	high bookshelf	high bookshelves	60	30000	14	model.decoration.high.bookshelf.	21,44,52,178,67,51,199,1,180,256	35.0
+912	low bookshelf	low bookshelves	60	19000	14	model.decoration.low.bookshelf.	21,44,52,178,67,51,199,1,180,256	25.0
+913	fine high chair	fine high chairs	274	7500	14	model.decoration.fine.high.chair.	21,44,52,48,67,51,117,197,178,199,249	60.0
+914	high chair	high chairs	274	7000	14	model.decoration.regular.high.chair.	21,44,52,48,67,51,117,197,178,199	50.0
+915	paupers high chair	paupers high chairs	274	7000	14	model.decoration.pauper.high.chair.	21,44,52,48,67,51,117,197,178,199	25.0
+916	Colossus of Libila	Colossus	60	7500000	15	model.decoration.statue.colossus.libila.	108,31,25,194,135,52,44,195,67,49,123,178,157	50.0
+917	ivy seedling	ivy seedlings	484	50	0	model.resource.sprout.	146	200.0
+918	grape seedling	grape seedlings	484	50	0	model.resource.sprout.	146,157	200.0
+919	ivy trellis	trellises	420	5000	68	model.decoration.trellis.ivy.	108,21,52,44,86,178,51,199,167,230	40.0
+920	grape trellis	trellises	420	5000	49	model.decoration.trellis.grape.	108,21,52,44,86,178,51,199,167,230	40.0
+921	wool	wools	558	100	69	model.resource.wool.	24,146,46,113	1.0
+922	spinning wheel	spinning wheels	826	4500	14	model.tool.wheel.spinning.	21,199,52,44,86,67,51,176,108	40.0
+923	lounge chair	lounge chairs	274	8000	14	model.furniture.chair.lounge.	21,44,52,86,67,51,176,178,199	30.0
+924	royal lounge chaise	royal lounge chaises	274	10000	14	model.furniture.chair.lounge.royal.	21,44,52,86,67,51,176,117,197,178,199,249	50.0
+925	yarn	yarn	620	200	69	model.resource.yarn.	24,146,46,158	1.0
+926	square piece of wool cloth	square pieces of wool cloth	640	600	69	model.resource.yard.	24,146,46	15.0
+927	cupboard	cupboards	60	6500	14	model.furniture.wooden.cupboard.	21,44,52,47,86,67,178,51,1,199,180,176,259	50.0
+928	round marble table	round marble tables	60	80000	62	model.furniture.table.round.marble.	108,25,44,86,52,67,51,176,199,173,178,1,180,256	45.0
+929	rectangular marble table	rectangular marble tables	60	100000	62	model.furniture.table.square.marble.	108,25,44,86,52,67,51,176,199,173,178,1,180,256	45.0
+931	siege shield	siege shields	606	30000	0	model.structure.siegeshield.	21,113,52,86,109,51,98,117,31,190	10.0
+932	ballista dart	ballista darts	1215	500	14	model.arrow.ballista.	108,146,44,21,147,113	45.0
+933	machine mount	mounts	60	50000	14	model.structure.small.mount.	108,21,51,52,44,92,86,176,113	30.0
+934	strange device	devices	60	150000	14	model.structure.small.pewpewdie.uncharged.	108,21,51,52,44,86,109,176,177,113,48,199	30.0
+935	ballista dart head	dart heads	1216	200	0	model.arrow.head.ballista.	22,146,113,158	40.0
+936	ballista	ballistas	60	70000	14	model.structure.small.ballista.	108,21,51,52,44,92,86,109,176,177,113,117,157	30.0
+937	trebuchet	trebuchet	60	1200000	14	model.structure.small.trebuchet.	108,1,31,63,21,51,67,52,44,92,86,109,177,113,117,178	30.0
+938	spike barrier	barriers	606	30000	0	model.structure.barrier.spike.	21,113,52,86,109,98,51,67,31,123	10.0
+939	archery tower	archery towers	60	1500000	14	model.structure.archerytower.	52,21,31,67,44,109,86,49,98,123,59	60.0
+940	acid turret	turret	60	150000	14	model.structure.small.pewpewdie.acid.	108,21,51,59,52,44,86,109,176,177,113,48,199	70.0
+941	fire turret	turret	60	150000	14	model.structure.small.pewpewdie.fire.	108,21,51,59,52,44,86,109,176,177,113,48,199	70.0
+942	lightning turret	turret	60	150000	14	model.structure.small.pewpewdie.lightning.	108,21,51,59,52,44,86,109,176,177,113,48,199	70.0
+943	peasant wool cap	peasant wool caps	963	300	69	model.armour.head.wool.cap0.	108,44,24,4,157,92	10.0
+944	yellow peasant wool cap	yellow peasant wool caps	963	300	69	model.armour.head.wool.cap0.yellow.	108,44,24,4,147	10.0
+945	green peasant wool cap	green peasant wool caps	963	300	69	model.armour.head.wool.cap0.green.	108,44,24,4,147	10.0
+946	red peasant wool cap	red peasant wool caps	963	300	69	model.armour.head.wool.cap0.red.	108,44,24,4,147	10.0
+947	blue peasant wool cap	blue peasant wool caps	963	300	69	model.armour.head.wool.cap0.blue.	108,44,24,4,147	10.0
+948	common wool hat	common wool hats	963	300	69	model.armour.head.wool.hat1.	108,44,24,4,157,92	10.0
+949	dark common wool hat	dark common wool hats	963	300	69	model.armour.head.wool.hat1.dark.	108,44,24,4,157	10.0
+950	brown common wool hat	brown common wool hats	963	300	69	model.armour.head.wool.hat1.brown.	108,44,24,4,147	10.0
+951	green common wool hat	green common wool hats	963	300	69	model.armour.head.wool.hat1.green.	108,44,24,4,147	10.0
+952	red common wool hat	red common wool hats	963	300	69	model.armour.head.wool.hat1.red.	108,44,24,4,147	10.0
+953	blue common wool hat	blue common wool hats	963	300	69	model.armour.head.wool.hat1.blue.	108,44,24,4,147	10.0
+954	foresters wool hat	foresters wool hats	963	300	69	model.armour.head.wool.hat2.	108,44,24,4,157,92	10.0
+955	green foresters wool hat	green foresters wool hats	963	300	69	model.armour.head.wool.hat2.green.	108,44,24,4,147	10.0
+956	dark foresters wool hat	dark foresters wool hats	963	300	69	model.armour.head.wool.hat2.dark.	108,44,24,4,147	10.0
+957	blue foresters wool hat	blue foresters wool hats	963	300	69	model.armour.head.wool.hat2.blue.	108,44,24,4,147	10.0
+958	red foresters wool hat	red foresters wool hats	963	300	69	model.armour.head.wool.hat2.red.	108,44,24,4,147	10.0
+959	brown bear helm	brown bear helms	1003	700	16	model.armour.head.brownbear.	108,44,23,4,147	15.0
+960	leather adventurer hat	adventurer hats	963	400	16	model.armour.head.hat1.leather.	108,44,23,4,92,147	10.0
+961	squire wool cap	squire wool caps	963	300	69	model.armour.head.wool.hat3.	108,44,24,4,157,92	10.0
+962	green squire wool cap	green squire wool caps	963	300	69	model.armour.head.wool.hat3.green.	108,44,24,4,147	10.0
+963	blue squire wool cap	blue squire wool caps	963	300	69	model.armour.head.wool.hat3.blue.	108,44,24,4,147	10.0
+964	black squire wool cap	black squire wool caps	963	300	69	model.armour.head.wool.hat3.black.	108,44,24,4,147	10.0
+965	red squire wool cap	red squire wool caps	963	300	69	model.armour.head.wool.hat3.red.	108,44,24,4,147	10.0
+966	yellow squire wool cap	yellow squire wool caps	963	300	69	model.armour.head.wool.hat3.yellow.	108,44,24,4,147	10.0
+967	garden gnome	gnomes	60	20000	18	model.decoration.statue.garden.green.	108,51,52,67,1,33,40,178	300.0
+968	frost turret	turret	60	150000	14	model.structure.small.pewpewdie.frost.	108,21,51,59,52,44,86,109,176,177,113,48,199	70.0
+969	supply depot	depots	60	500000	0	model.structure.war.supplydepot.1.	52,21,31,67,40,49,98,48,1,178,63	100.0
+970	supply depot	depots	60	500000	0	model.structure.war.supplydepot.2.	52,21,31,67,40,49,98,48,1,178,63	100.0
+971	supply depot	depots	60	500000	0	model.structure.war.supplydepot.3.	52,21,31,67,40,49,98,48,1,178,63	100.0
+972	yule goat	goats	60	500	70	model.decoration.bucketthree.	108,51,52,40	300.0
+973	mask of the enlightened	masks	465	200	16	model.armour.head.mask.enlightened.	108,44,23,4,187	25.0
+974	mask of the ravager	masks	465	200	16	model.armour.head.mask.ravager.	108,44,23,4,187	25.0
+975	pale mask	masks	465	200	19	model.armour.head.mask.pale.	108,44,30,4,187	25.0
+976	mask of the shadow	masks	465	200	16	model.armour.head.mask.shadow.	108,44,23,4,187	25.0
+977	mask of the challenger	masks	465	200	8	model.armour.head.mask.challenge.	108,44,22,4,187	25.0
+978	mask of the isles	masks	465	200	19	model.armour.head.mask.isles.	108,44,30,4,187	25.0
+979	horned helmet of gold	horned helmets	968	1700	9	model.armour.head.greathelmHornedOfGold.	108,44,22,4	25.0
+980	plumed helm of the hunt	plumed helmets	966	1100	9	model.armour.head.openhelmplumedhunt.	108,44,22,4	15.0
+981	challenge statue	challenge statues	60	100000	7	model.decoration.statue.challenge.	108,22,51,52,40,67,176,178,187	15.0
+982	challenge statue	challenge statues	60	100000	8	model.decoration.statue.challenge.	108,22,51,52,40,67,176,178,187	15.0
+983	challenge statue	challenge statues	60	100000	31	model.decoration.statue.challenge.	108,22,51,52,40,67,176,178,187	15.0
+984	challenge statue	challenge statues	60	100000	62	model.decoration.statue.challenge.	108,25,51,52,40,67,176,178,187	15.0
+985	hota necklace	hota necklaces	268	100	8	model.decoration.necklace.hota.	108,52,147,22,44,87,153,187,157	40.0
+986	staff of land	land staves	646	3000	9	model.weapon.staffOfLand.	44,133,22,14,37,84,129,187	10.0
+987	tapestry stand	tapestry stands	60	6000	14	model.furniture.tapestry.stand.	52,21,86,119,44,67	30.0
+988	green tapestry	green tapestries	60	12000	69	model.furniture.tapestry.pattern1.	24,52,109,86,119,44,188,157,173,51	30.0
+989	beige tapestry	beige tapestries	60	12000	69	model.furniture.tapestry.pattern2.	24,52,109,86,119,44,188,157,173,51	30.0
+990	orange tapestry	orange tapestries	60	12000	69	model.furniture.tapestry.pattern3.	24,52,109,86,119,44,188,157,173,51	30.0
+991	cavalry motif tapestry	cavalry tapestries	60	12000	69	model.furniture.tapestry.motif1.	24,52,109,86,119,44,188,157,173,51	30.0
+992	festivities motif tapestry	festivity tapestries	60	12000	69	model.furniture.tapestry.motif2.	24,52,109,86,119,44,188,157,173,51	30.0
+993	battle of Kyara tapestry	kyara tapestries	60	12000	69	model.furniture.tapestry.motif3.	24,52,109,86,119,44,188,157,173,51	30.0
+994	tapestry of Faeldray	faeldray tapestries	60	12000	69	model.furniture.tapestry.faeldray.	24,52,109,86,119,44,188,157,173,51	30.0
+995	treasure chest	treasure chests	244	200000	14	model.container.chest.large.treasure.	1,31,6,147,47,52,40	210.0
+996	neutral guard tower	neutral guard towers	60	500000	15	model.structure.neutraltower.	52,25,31,67,40,49,98,123,239	20.0
+997	valentines	valentines	510	600	19	model.furniture.valentineroses.	108,30,169,52,51	50.0
+998	cavalier helmet	cavalier helmets	967	1100	9	model.armour.head.greathelmWolf.	108,44,22,4,157	95.0
+999	tall kingdom banner	tall banners	640	5500	14	model.decoration.tallbanner.	24,92,51,52,167,48,86,119,44,173,199	50.0
+1000	ownership papers	ownership papers	321	0	33	model.writ.	83,40,42,48,53,54,114	100.0
+1001	marble planter	planters	60	90000	62	model.decoration.planter.	108,25,52,86,119,44,176,51,199	15.0
+1002	yellow planter	yellow planters	60	90000	62	model.decoration.planter.yellow.	108,25,169,52,86,51,199,176	15.0
+1003	blue planter	blue planters	60	90000	62	model.decoration.planter.blue.	108,25,169,52,86,51,199,176	50.0
+1004	purple planter	purple planters	60	90000	62	model.decoration.planter.purple.	108,25,169,52,86,51,199,176	30.0
+1005	white planter	white planters	60	90000	62	model.decoration.planter.white.	108,25,169,52,86,51,199,176	35.0
+1006	orange-red planter	orange-red planters	60	90000	62	model.decoration.planter.orange.	108,25,169,52,86,51,199,176	25.0
+1007	greenish-yellow planter	greenish-yellow planter	60	90000	62	model.decoration.planter.greenish.	108,25,169,52,86,51,199,176	60.0
+1008	white-dotted planter	white-dotted planters	60	90000	62	model.decoration.planter.dotted.	108,25,169,52,86,51,199,176	70.0
+1009	rod of eruption	rods of eruption	60	5	15	model.artifact.roderuption.	53,168,48,143,59,199,52	10.0
+1010	crude axe head	crude axe heads	724	2000	15	model.weapon.axe.small.blade.crude.	25,151	15.0
+1011	crude axe	crude axes	744	3000	15	model.weapon.axe.small.crude.	38,25,37,97,15,2,151,113,157	1.0
+1012	sheep milk	sheep milk	541	1000	28	model.liquid.	26,88,90,113,191,212	1.0
+1013	bison milk	bison milk	541	1000	28	model.liquid.	26,88,90,113,191,212	1.0
+1014	goblin war bonnet	war bonnets	1003	700	16	model.armour.head.goblin.war.bonnet.	108,44,23,4	15.0
+1015	crown of the troll king	troll crown	1003	700	16	model.armour.head.troll.king.hat.	108,44,23,4,157	15.0
+1016	Stone of Soulfall	stones	60	2000000	15	model.structure.portal.10.	25,49,31,52,40	99.0
+1017	rose seedling	rose seedlings	484	50	0	model.resource.sprout.	146,157	200.0
+1018	rose trellis	trellises	420	5000	47	model.decoration.trellis.rose.	108,21,52,44,86,178,51,199,167,230	40.0
+1019	small clay amphora	small clay amphoras	662	6000	18	model.decoration.amphora.small.	108,196,44,147,1,194,63	50.0
+1020	small pottery amphora	small pottery amphoras	682	6000	19	model.decoration.amphora.small.	108,30,1,33,123,195,194,52,92,215,48	5.0
+1021	large clay amphora	large clay amphoras	662	12000	18	model.decoration.amphora.large.	108,196,44,147,1,194,63	70.0
+1022	large pottery amphora	large pottery amphoras	682	12000	19	model.decoration.amphora.large.	108,30,1,33,123,195,194,52,92,215,48	5.0
+1023	kiln	kilns	60	410000	15	model.fireplace.kiln.	52,31,1,25,51,48,59,108,176,199,109,44,119,86,67,178,209	50.0
+1024	conch	conches	588	14	52	model.liquid.transmutation.	42,40,48	40.0
+1025	birdcage	birdcages	361	10000	30	model.decoration.birdcage.	108,147,22,44,52,51,199	75.0
+1026	unstable source rift	rifts	60	120000	21	model.decoration.rift.unstable.	31,135,86,6,51,52,44,67,1,33,176,178	40.0
+1027	steel wand	steel wands	400	5	21	model.magic.wand.gm.	108,40,42,48,53	10.0
+1028	smelter	smelters	60	1000000	15	model.fireplace.smelter.	52,31,1,25,51,48,59,108,176,199,109,44,119,86,67,178,209,259	65.0
+1029	halter rope	halter ropes	621	2000	53	model.resource.wemprope.	64,198,147	70.0
+1030	sword display	sword displays	60	16500	14	model.decoration.hanger.sword.	108,21,147,44,52,51,199,119,86	50.0
+1031	axe display	axe displays	60	15500	14	model.decoration.hanger.axe.	108,21,147,44,52,51,199,119,86	50.0
+1032	yule reindeer	reindeers	60	500	70	model.decoration.bucketfour.	108,51,52,40	300.0
+1033	rift stone	stones	60	200000	15	model.structure.rift.stone.1.	25,49,31,52,67,86,123,178	99.0
+1034	rift stone	stones	60	200000	15	model.structure.rift.stone.2.	25,49,31,52,67,86,123,178	99.0
+1035	rift stone	stones	60	200000	15	model.structure.rift.stone.3.	25,49,31,52,67,86,123,178	99.0
+1036	rift stone	stones	60	200000	15	model.structure.rift.stone.4.	25,49,31,52,67,86,123,178	99.0
+1037	rift crystal	crystals	60	200000	52	model.structure.rift.crystal.1.	49,31,52,67,86,123,178	99.0
+1038	rift crystal	crystals	60	200000	52	model.structure.rift.crystal.2.	49,31,52,67,86,123,178	99.0
+1039	rift crystal	crystals	60	200000	52	model.structure.rift.crystal.3.	49,31,52,67,86,123,178	99.0
+1040	rift crystal	crystals	60	200000	52	model.structure.rift.crystal.4.	49,31,52,67,86,123,178	99.0
+1041	plant	plants	60	200000	22	model.structure.rift.plant.1.	49,31,52,67,86,123,178	99.0
+1042	plant	plants	60	200000	22	model.structure.rift.plant.2.	49,31,52,67,86,123,178	99.0
+1043	plant	plants	60	200000	22	model.structure.rift.plant.3.	49,31,52,67,86,123,178	99.0
+1044	plant	plants	60	200000	22	model.structure.rift.plant.4.	49,31,52,67,86,123,178	99.0
+1045	rift altar	altars	60	2000000	15	model.structure.rift.altar.1.	49,31,52,67,123,178	99.0
+1046	rift device	devices	60	2000000	15	model.structure.rift.altar.1.	49,31,52,67,123,178	99.0
+1047	rift device	devices	60	2000000	15	model.structure.rift.altar.1.	49,31,52,67,123,178	99.0
+1048	rift device	devices	60	2000000	15	model.structure.rift.altar.1.	49,31,52,67,123,178	99.0
+1049	small shoulder pad	shoulder pads	1140	300	17	model.armour.shoul.1.	108,24,147,92	25.0
+1050	double shoulder pad	shoulder pads	1140	300	17	model.armour.shoul.2.	108,24,147,92	25.0
+1051	curved shoulder pad	shoulder pads	1140	300	17	model.armour.shoul.3.	108,24,147,92	25.0
+1052	triple shoulder pad	shoulder pads	1140	300	16	model.armour.shoul.4.	108,23,147,92	25.0
+1053	right elaborate shoulder pad	shoulder pads	1140	300	16	model.armour.shoul.5.right.	108,23,147,92	25.0
+1054	exquisite shoulder pad	shoulder pads	1140	300	16	model.armour.shoul.6.	108,23,147,92	25.0
+1055	right basic shoulder pad	shoulder pads	1140	500	11	model.armour.shoul.7.right.	108,22,147,92	25.0
+1056	right shielding shoulder pad	shoulder pads	1140	500	11	model.armour.shoul.8.right.	108,22,147,92	25.0
+1057	right stylish shoulder pad	shoulder pads	1140	500	7	model.armour.shoul.9.right.	108,22,147,92	25.0
+1058	right layered shoulder pad	shoulder pads	1140	300	9	model.armour.shoul.10.right.	108,22,147,92	25.0
+1059	chain shoulder pad	shoulder pads	1140	300	0	model.armour.shoul.11.	108,22,147,92	25.0
+1060	crafted shoulder pad	shoulder pads	1140	300	35	model.armour.shoul.12.	108,147,92	25.0
+1061	boar shoulder pad	shoulder pads	1140	500	35	model.armour.shoul.13.	108,147,92	25.0
+1062	ribboned shoulder pad	shoulder pads	1140	300	0	model.armour.shoul.14.	108,21,147,92	25.0
+1063	skull shoulder pad	shoulder pads	1140	400	35	model.armour.shoul.15.	108,147,92	25.0
+1064	human skull shoulder pad	shoulder pads	1140	500	35	model.armour.shoul.16.	108,147,92	25.0
+1065	dragon shoulder pad	shoulder pads	1140	500	9	model.armour.shoul.17.	108,22,147,92	25.0
+1066	left elaborate shoulder pad	shoulder pads	1140	300	16	model.armour.shoul.5.left.	108,23,147,92	25.0
+1067	green cloth tunic	green cloth tunics	960	300	17	model.clothing.torso.shirt1.	108,44,24,4,92,147	35.0
+1068	black belted vest	black belted vests	960	300	17	model.clothing.torso.shirt2.	108,44,24,4,92,147	55.0
+1069	red cloth tunic	red cloth tunics	960	300	17	model.clothing.torso.shirt3.	108,44,24,4,92,147	45.0
+1070	brown striped breeches	brown striped breeches	961	300	17	model.cloth.leg.pants1.	108,44,24,4,92,147	10.0
+1071	patchwork pants	patchwork pants	961	300	69	model.cloth.leg.pants2.	108,44,24,4,92,147	10.0
+1072	black cloth pants	black cloth pants	961	300	17	model.cloth.leg.pants3.	108,44,24,4,92,147	10.0
+1073	green cloth pants	green cloth pants	961	300	17	model.cloth.leg.pants3.green.	108,44,24,4,92,147	10.0
+1074	green cloth sleeve	green cloth sleeves	962	200	17	model.clothing.sleeve.shirt1.	108,44,24,4,92,147	10.0
+1075	red cloth sleeve	red cloth sleeves	962	200	17	model.clothing.sleeve.shirt3.	108,44,24,4,92,147	10.0
+1076	socketed ring	rings	249	50	67	model.decoration.ring.rift.1.	22,87,48	99.0
+1077	artisan ring	rings	249	50	67	model.decoration.ring.rift.2.	22,87,48	99.0
+1078	seal ring	rings	249	50	67	model.decoration.ring.rift.3.	22,87	99.0
+1079	dark ring	rings	249	50	67	model.decoration.ring.rift.4.	22,87	99.0
+1080	ring of the Eye	rings	249	50	67	model.decoration.ring.rift.5.	22,87	99.0
+1081	fist bracelet	bracelets	250	300	67	model.decoration.armring.rift.1.	22,87,258	10.0
+1082	huge sword bracelet	bracelets	250	300	67	model.decoration.armring.rift.2.	22,87,258	10.0
+1083	short sword bracelet	bracelets	250	300	67	model.decoration.armring.rift.3.	22,87,258	10.0
+1084	spear bracelet	bracelets	250	300	67	model.decoration.armring.rift.4.	22,87,258	10.0
+1085	bracelet of inspiration	bracelets	250	300	67	model.decoration.armring.rift.5.	22,87,258	10.0
+1086	soul stealer necklace	necklaces	268	500	67	model.decoration.n.rift.1.	147,22,87	40.0
+1087	artisan necklace	necklaces	268	100	67	model.decoration.n.rift.2.	147,22,87	40.0
+1088	necklace of protection	necklaces	268	100	67	model.decoration.n.rift.3.	147,22,87	40.0
+1089	necklace of focus	necklaces	268	100	67	model.decoration.n.rift.4.	147,22,87	40.0
+1090	necklace of replenishment	necklaces	268	100	67	model.decoration.n.rift.5.	147,22,87	40.0
+1091	metallic liquid	liquid	588	144	21	model.liquid.shatterprot.	26,54,183	40.0
+1092	left basic shoulder pad	shoulder pads	1140	500	11	model.armour.shoul.7.left.	108,22,147,92	25.0
+1093	left shielding shoulder pad	shoulder pads	1140	500	11	model.armour.shoul.8.left.	108,22,147,92	25.0
+1094	left stylish shoulder pad	shoulder pads	1140	500	7	model.armour.shoul.9.left.	108,22,147,92	25.0
+1095	left layered shoulder pad	shoulder pads	1140	300	9	model.armour.shoul.10.left.	108,22,147,92	25.0
+1096	rift heart	hearts	516	300	1	model.resource.heart.	28,5,62,55,48,129	500.0
+1097	gift pack	giftpacks	243	23	14	model.container.giftbox.	53,48,108,52,21,83,42,147,157	10.0
+1098	returner tool chest	chests	243	23	14	model.container.giftbox.	53,48,108,52,21,83,42,157	10.0
+1099	mask of the returner	masks	465	200	16	model.armour.head.mask.returner.	108,44,23,4,187,157	25.0
+1100	knapsack	knapsacks	241	1000	16	model.container.knapsack.	44,1,97,157	999.0
+1101	champagne	champagne	260	1000	52	model.container.champagne.		99.0
+1102	rift stone shard	rift stone shards	610	200	15	model.resource.stone.rift.	25,146,46,112,129,48,157	40.0
+1103	rift crystal	rift crystals	60	200	52	model.resource.crystal.	22,146,46,112,129,48,157	40.0
+1104	rift wood	rift wood	646	200	14	model.resource.beam.hardened.	21,146,46,112,211,129,48,157	40.0
+1105	black cloth sleeve	black cloth sleeves	962	200	17	model.clothing.sleeve.shirt2.	108,44,24,4,92,147	10.0
+1106	plain white cloth sleeve	white cloth sleeves	962	200	17	model.clothing.sleeve.shirt.	108,44,24,4,92,147	10.0
+1107	plain white cloth pants	plain white pants	961	300	17	model.cloth.leg.pants.	108,44,24,4,92,147	10.0
+1108	wine barrel rack	wine barrel racks	401	6500	14	model.container.rack.winebarrel.	108,147,135,21,51,52,44,47,1,199,67,178	50.0
+1109	small barrel rack	small barrel racks	402	6500	14	model.container.rack.barrel.	108,147,135,21,51,52,44,47,1,199,67,178	30.0
+1110	planter rack	planter racks	421	6500	14	model.container.rack.planter.	108,147,135,21,51,52,44,47,1,199,67,178	25.0
+1111	amphora rack	amphora racks	422	6500	14	model.container.rack.amphora.	108,147,135,21,51,52,44,47,1,199,67,178	45.0
+1112	waystone	waystones	361	6600	15	model.road.waystone.	25,199,178,54,52,44,241,157,86,48,246	45.0
+1113	blind catseye	blind catseyes	362	500	15	model.road.catseye.blind.	25,44,157,54,146,86,246	15.0
+1114	catseye	catseyes	362	500	15	model.road.catseye.	25,178,54,244,44,157,241,146,86,246	15.0
+1115	crowbar	crowbars	738	2000	9	model.tool.crowbar.	108,44,38,22,14,157	17.0
+1116	shards	sandstone shards	1449	20000	89	model.resource.	25,146,46,112,113,129,48,175	1.0
+1117	alchemist's cupboard	alchemist's cupboards	60	6500	14	model.furniture.wooden.cupboard.alchemist.	21,178,44,52,47,86,67,51,1,199,180,176	50.0
+1118	alchemy flask	alchemy flasks	425	250	19	model.furniture.pottery.thermos.	30,178,33,232,1,31,229,112,240	50.0
+1119	storage unit	storage units	60	200000	14	model.furniture.wooden.storageunit.	21,178,44,52,47,86,67,51,1,199,180,176	40.0
+1120	storage shelf	storage shelves	626	10000	14	model.furniture.wooden.storageshelf.	21,178,232,108,1,31,229,112,240,245	40.0
+1121	sandstone brick	sandstone bricks	1450	15000	89	model.resource.brick.	25,146,113,129,158,242,243	1.0
+1122	rounded stone	rounded stones	1451	15000	15	model.resource.brick.rounded.	25,146,113,129,158,242,243	1.0
+1123	slate brick	slate bricks	1452	15000	61	model.resource.brick.	25,146,113,129,158,242,243	1.0
+1124	sandstone slab	sandstone slabs	1453	80000	89	model.resource.slab.	25,51,135,86,44,146,158,242,243	3.0
+1125	battering ram	battering rams	60	200000	14	model.structure.small.batteringram.	108,31,63,21,51,67,52,44,92,86,109,177,113,56,178	30.0
+1126	battering ram head	ram heads	1216	10000	0	model.arrow.head.batteringram.	22,146,113,158	40.0
+1127	almanac	almanacs	1454	250	16	model.container.almanac.	23,44,1,229	5.0
+1128	almanac folder	almanac folders	1455	0	33	model.container.almanac.folder.	21,1,207,31,229,112,178,232,40,157	5.0
+1129	wagoner contract	wagoner contracts	324	0	33	model.writ.wagoner.	40,42,48,53,114,83,54,157,246	100.0
+1130	mint	mint	701	50	22	model.herb.mint.	146,5,78,103,206,55,212,221	100.0
+1131	fennel	fennel	569	50	22	model.herb.fennel.	146,5,78,103,55,212,217	100.0
+1132	fennel plant	fennel plants	569	300	22	model.resource.fennelplant.	146,5,78,212,221	100.0
+1133	carrot	carrots	714	500	22	model.food.carrot.	146,5,55,29,212,223	1.0
+1134	cabbage	cabbages	715	1000	22	model.food.cabbage.	146,5,55,29,212,223	1.0
+1135	tomato	tomatoes	716	500	22	model.food.tomato.	146,5,55,29,212,223	1.0
+1136	sugar beet	sugar beets	717	1000	22	model.food.sugarbeet.	146,5,55,212	1.0
+1137	lettuce	lettuces	718	500	22	model.food.lettuce.	146,5,55,29,212,223	1.0
+1138	pea pod	pea pods	719	500	22	model.food.peapod.	146,5,55,29,212,223	1.0
+1139	sugar	sugar	642	100	22	model.food.sugar.	146,137,5	1.0
+1140	cumin	cumins	694	50	22	model.spice.cumin.	206,55,146,5,205,212,221	1.0
+1141	ginger	ginger	696	100	22	model.spice.ginger.	206,55,146,5,205,212,221	1.0
+1142	nutmeg	nutmeg	697	50	22	model.spice.nutmeg.	146,55,5,205,105,212,217	5.0
+1143	paprika	paprika	698	100	22	model.spice.paprika.	146,55,5,205,102,212,221	4.0
+1144	turmeric	turmeric	699	100	22	model.spice.turmeric.	146,55,5,205,103,212,221	3.0
+1145	carrot seed	carrot seeds	480	50	22	model.resource.carrotseeds.	20,55,146,5	100.0
+1146	cabbage seed	cabbage seeds	480	50	22	model.resource.cabbageseeds.	20,55,146,5	100.0
+1147	tomato seed	tomato seeds	480	50	22	model.resource.tomatoseeds.	20,55,146,5	100.0
+1148	sugar beet seed	sugar beet seeds	480	50	22	model.resource.sugarbeetseeds.	20,55,146,5	100.0
+1149	lettuce seed	lettuce seeds	480	50	22	model.resource.lettuceseeds.	20,55,146,5	100.0
+1150	pea	peas	683	100	22	model.resource.peas.	20,55,146,5,29,212,223	1.0
+1151	fennel seed	fennel seeds	480	50	22	model.resource.fennelseeds.	206,55,146,5,205,212	100.0
+1152	cocoa	cocoa	518	200	22	model.food.cocoa.	5,129,212,55	15.0
+1153	paprika seed	paprika seeds	480	50	22	model.resource.paprikaseeds.	206,55,146,5,205,212	100.0
+1154	turmeric seed	turmeric seeds	480	50	22	model.resource.turmericseeds.	206,55,146,5,205,212	100.0
+1155	cocoa bean	cocoa beans	518	200	22	model.resource.cocoabean.	146,55,5,212	8.0
+1156	any veg	any veg	502	600	22	model.resource.veg.	207,208,5,29,223	15.0
+1157	any cereal	any cereal	480	600	4	model.resource.cereal.	207,208,5	15.0
+1158	any herb	any herb	627	600	22	model.herb.	207,208,5,78	15.0
+1159	any spice	any spice	694	600	22	model.spice.	207,208,5,205	15.0
+1160	clay planter	clay planters	490	600	18	model.planter.	108,196,44,147	15.0
+1161	pottery planter	pottery planters	510	600	19	model.planter.	108,30,52,51,199	15.0
+1162	pottery planter	pottery planters	510	600	19	model.planter.	108,30,52,51,233,199	15.0
+1163	any fruit	any fruit	508	600	22	model.food.fruit.	207,208,5,80	15.0
+1164	clay pie dish	clay pie dishes	491	600	18	model.container.piedish.	108,196,44,147,1,63	15.0
+1165	pie dish	pie dishes	511	600	19	model.container.piedish.	108,30,1,77,33,231	15.0
+1166	cake tin	cake tins	263	600	34	model.container.caketin.	108,44,22,1,33,77,231	15.0
+1167	baking stone	baking stones	285	2000	15	model.container.stoneware.	108,44,25,1,33,77,231	15.0
+1168	clay roasting dish	clay roasting dishs	264	600	18	model.container.roastingdish.	108,196,44,147,1,63	15.0
+1169	roasting dish	roasting dishs	284	600	19	model.container.roastingdish.	108,30,1,77,33,231	15.0
+1170	slice of bread	slices of bread	505	100	22	model.bread.slice.	82,212,74,222	4.0
+1171	clay measuring jug	clay measuring jugs	294	300	18	model.container.measuringjug.	108,196,44,147,1,63	15.0
+1172	measuring jug	measuring jugs	314	300	19	model.container.measuringjug.	108,30,1,33,180	15.0
+1173	plate	plates	295	250	14	model.container.plate.	108,21,1,77,44,92,33,231	1.0
+1174	batter	batter	584	600	22	model.liquid.batter.	5,129,212,55,108	15.0
+1175	bee hive	bee hives	287	60000	14	model.container.hive.	108,21,1,176,63,135,52,49,225,47,199,109,44,51	15.0
+1176	fudge sauce	fudge sauce	584	600	22	model.liquid.fudgesauce.	129,212,55,219,26,88	15.0
+1177	pie	pies	668	600	22	model.food.pie.	82,129,76,219,220,222,233	15.0
+1178	still	stills	290	50000	10	model.container.still.	108,22,147,209,52,67,59,1,44,178,33,199,180,112,259	45.0
+1179	any berry	any berry	489	600	22	model.fruit.berries.	207,208,5,80	15.0
+1180	mead	mead	608	1000	26	model.liquid.mead.	108,26,88,90,212,213	15.0
+1181	cider	cider	550	1000	26	model.liquid.cider.	108,26,88,90,212,213	20.0
+1182	beer	beer	568	1000	26	model.liquid.beer.	108,26,88,90,212,213,233	25.0
+1183	whisky	whisky	568	1000	26	model.liquid.whisky.	108,26,88,90,213,212,214,89,233	35.0
+1184	pinenut	pinenuts	519	200	22	model.food.pinenuts.	5,55,146,80,212,217	15.0
+1185	chocolate	chocolate	624	600	22	model.food.chocolate.	82,75,146,220,222	15.0
+1186	butter	butter	609	250	28	model.food.butter.	82,55,222,233	15.0
+1187	omelette	omelette	649	600	28	model.food.omelette.	82,76,219,222,233	15.0
+1188	curry	curry	539	600	2	model.food.curry.	82,76,219,222,233	15.0
+1189	salad	salad	688	600	22	model.food.salad.	82,212,76,220,222,233	15.0
+1190	sausage	sausages	695	600	2	model.food.sausage.	82,212,146,74,219,222,233	15.0
+1191	bacon	bacon	663	300	2	model.food.bacon.	82,146,212,74,219,222,228	15.0
+1192	corn dough	corn dough	525	600	22	model.resource.dough.	5,146,129,74	15.0
+1193	cooking oil	cooking oils	587	180	25	model.liquid.oil.	26,88,34,158,113,233	15.0
+1194	gravy	gravy	568	600	26	model.liquid.gravy.	26,88,74,219,212	15.0
+1195	custard	custard	608	600	28	model.liquid.custard.	5,26,88,74,108	15.0
+1196	raspberries	handfuls of raspberries	677	300	22	model.fruit.raspberries.	5,146,80,46,212,55	100.0
+1197	any nut	any nut	507	600	22	model.food.nut.	207,208,5	15.0
+1198	any cheese	any cheese	561	600	28	model.food.cheese.	207,208,5,192,224	15.0
+1199	any mushroom	any mushroom	586	600	22	model.food.mushroom.	207,208,5,226	15.0
+1200	any milk	any milk	541	600	28	model.liquid.	207,208,26,88,191	15.0
+1201	any fish	any fish	504	600	2	model.fish.	207,208,5,36,223	15.0
+1202	biscuit	biscuits	532	600	22	model.food.biscuit.	82,129,212,76,220,222,233	15.0
+1203	fries	fries	685	100	22	model.food.fries.	82,129,212,74,219,222,228	15.0
+1204	gelatine	gelatine	587	600	22	model.resource.gelatine.	129,137,108,26,88	15.0
+1205	honey water	honey water	587	1000	29	model.liquid.honey.water.	129,26,213,108,88,212	15.0
+1206	passata	passata	582	600	22	model.resource.passata.	129,212,26,108,88,55	15.0
+1207	pasta	pasta	659	600	22	model.food.pasta.	82,129,212,76,219,222,233	15.0
+1208	pastry	pastry	664	600	22	model.food.pastry.	82,129,212,75,222	15.0
+1209	pesto	pesto	581	600	22	model.food.pesto.	129,212,26,88,55	15.0
+1210	stock	stock	568	600	22	model.liquid.stock.	129,55,26,88,212	15.0
+1211	tomato ketchup	tomato ketchup	582	600	22	model.food.ketchup.	82,129,74,222	15.0
+1212	white sauce	white sauce	584	600	22	model.liquid.whitesauce.	129,212,55,26,88,108,233,82	15.0
+1213	wort	wort	587	600	26	model.liquid.wort.	129,26,213,108,233,212	15.0
+1214	rat-on-a-stick	rat-on-a-stick	687	600	78	model.food.spit.rat.	82,129,212,76,219,222,228	15.0
+1215	hog roast	hog roast	597	600	84	model.food.spit.pig.	82,129,212,76,219,222,228,52,237	15.0
+1216	lamb spit	lamb spit	629	600	83	model.food.spit.lamb.	82,129,212,76,219,222,228,52,237	15.0
+1217	mushy peas	mushy peas	683	600	22	model.resource.peas.mushy.	5,129,212,55,108	15.0
+1218	croutons	croutons	505	100	22	model.bread.croutons.	5,129,74,108	15.0
+1219	haggis	haggis	578	600	22	model.food.haggis.	82,129,75,219,222	15.0
+1220	cornflour	cornflour	642	100	22	model.food.flour.	5,146,129,55	5.0
+1221	cheesecake	cheesecake	533	600	22	model.food.cheesecake.	82,129,76,220,222,233	15.0
+1222	kielbasa	kielbasa	695	600	22	model.food.kielbasa.	82,129,76,219,222	15.0
+1223	mushroom	mushroom	546	600	22	model.food.mushroom.stuffed.	1,129,5,82,77,74,233	15.0
+1224	stuffed mushroom	stuffed mushroom	506	600	22	model.food.mushroom.stuffed.	82,129,74,219,222	15.0
+1225	crisps	crisps	537	600	22	model.food.crisps.	82,129,76,220,222	15.0
+1226	jelly	jelly	628	600	22	model.food.jelly.	82,129,55,220,222,233	15.0
+1227	scone	scones	1440	600	22	model.food.scone.	82,129,76,220,222,233	15.0
+1228	toast	toast	1444	100	22	model.bread.toast.	82,129,74,222,233	15.0
+1229	pasty	pasty	665	600	22	model.food.pasty.	82,129,76,219,220,222,233	15.0
+1230	chocolate nut spread	chocolate nut spread	624	600	22	model.food.chocalate.spread.	5,129,74,108	25.0
+1231	vodka	vodka	551	1000	26	model.liquid.vodka.	108,26,88,90,213,212,214,89	30.0
+1232	brandy	brandy	568	1000	26	model.liquid.brandy.	108,26,88,90,212,214,89,233	35.0
+1233	moonshine	moonshine	551	1000	26	model.liquid.moonshine.	108,26,88,90,213,212,214,89	40.0
+1234	gin	gin	551	1000	26	model.liquid.gin.	108,26,88,90,213,212,214,89,233	20.0
+1235	pineapple	pineapples	669	500	22	model.food.pineapple.	146,5,80,212,55	15.0
+1236	sausage skin	sausage skins	695	10	22	model.food.sausage.skin.	5,1,77,55	20.0
+1237	mortar and pestle	mortar and pestle	756	100	62	model.tool.mortarandpestle.	25,210,44	50.0
+1238	rock salt	rock salts	610	20000	36	model.resource.rocksalt.	25,146,112,113,129,48,175,211	5.0
+1239	wild bee hive	wild bee hives	287	2000	14	model.container.hive.wild.	108,21,1,31,123,52,109,218,63	15.0
+1240	spaghetti	spaghetti	659	50	22	model.food.spaghetti.	82,212,76,219,222	10.0
+1241	icing	icing	642	50	22	model.food.icing.	82,212,55,233	25.0
+1242	cake mix	cake mixes	525	1200	22	model.food.cake.mix.	5,74	1.0
+1243	bee smoker	bee smokers	736	2100	11	model.tool.beesmoker.	108,22,44,52	15.0
+1244	breadcrumbs	breadcrumbs	538	100	22	model.bread.crumbs.	82,146,212,74,222	4.0
+1245	meatballs	meatballs	648	120	2	model.food.meatballs.	82,146,212,74,219,222,233	4.0
+1246	vinegar	vinegar	568	600	26	model.liquid.vinegar.	108,26,88,212,233	15.0
+1247	cucumber	cucumbers	684	500	22	model.food.cucumber.	146,55,5,29,212,223	1.0
+1248	cucumber seed	cucumber seeds	480	50	22	model.resource.cucumberseeds.	20,55,146,5	100.0
+1249	cream	cream	541	20	28	model.food.cream.	212,26,88,233	15.0
+1250	goblin skull	goblin skulls	296	1000	35	model.resource.skull.small.	62,187,211	200.0
+1251	clay beer stein	clay beer steins	258	3000	35	model.resource.beerstein.clay.	108,196,44,147,1,63	50.0
+1252	beer stein	beer steins	259	3000	35	model.resource.beerstein.pottery.	108,30,1,33	200.0
+1253	skull cup	skull cups	315	1000	35	model.resource.skull.mug.	108,44,1,33,187	75.0
+1254	beeswax	beeswax	498	100	22	model.resource.beeswax.	146,46	15.0
+1255	wax sealing kit	wax sealing kits	498	1000	33	model.resource.sealingkit.	146	1.0
+1256	biscuit mix	biscuit mixes	525	1200	22	model.food.biscuit.mix.	5,74	1.0
+1257	scone mix	scone mixes	525	1200	22	model.food.scone.mix.	5,74	1.0
+1258	tart	tarts	1442	600	22	model.food.tart.	82,129,76,219,220,222,233	15.0
+1259	stir fry	stir frys	539	600	22	model.food.stirfry.	82,129,212,76,219,222,233	15.0
+1260	nori	bunches of nori	645	50	22	model.food.nori.	146,46,113,5,55	5.0
+1261	any meat	any meat	503	600	22	model.food.meat.	207,208,5,28,223	15.0
+1262	pizza	pizzas	678	600	22	model.food.pizza.	82,129,212,76,219,222	15.0
+1263	any oil	any oil	587	180	25	model.liquid.oil.	108,26,88,34,158,113,208	15.0
+1264	sushi	sushi	1441	600	22	model.food.sushi.	82,129,212,76,220,222,233	15.0
+1265	pickle	pickles	667	200	22	model.food.pickle.	82,129,212,74,220,222,233	15.0
+1266	pudding	puddings	679	600	22	model.food.pudding.	82,129,212,76,220,222,233	15.0
+1267	any flower	any flowers	681	600	22	model.flower.flower1.	207,208,211,118	15.0
+1268	broth	broth	531	700	26	model.liquid.soup.	82,219,76,26,90,88,233,212	1.0
+1269	label	labels	640	2	33	model.resource.label.	21,146	5.0
+1270	wood pulp	wood pulp	547	3000	14	model.resource.woodpulp.	21,46,146,129,211	5.0
+1271	village message board	village message boards	252	5000	14	model.sign.messageboard.	21,142,51,52,44,18,199,86,178,48,47	10.0
+1272	paper sheet	paper sheets	640	10	33	model.resource.sheet.paper.	21,159,146,211	5.0
+1273	hops	hops	545	50	22	model.resource.hops.	146,5,55,212	100.0
+1274	hops trellis	trellises	420	5000	68	model.decoration.trellis.hops.	108,21,52,44,86,178,51,199,167,230	40.0
+1275	hops seedling	hops seedlings	484	50	68	model.resource.sprout.	146	200.0
+1276	snowball	snowballs	632	100	26	model.resource.snowball.	5,27	1.0
+1277	larder	larders	286	6500	14	model.furniture.wooden.larder.	108,147,135,144,21,51,52,44,47,1,92,176,48,199,180,112	50.0
+1278	ice box	ice box	286	6500	14	model.furniture.wooden.shelf.	21,1,31,54,232,240,229,112,157,245	50.0
+1279	food shelf	food shelves	286	6500	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,240,157,245	50.0
+1280	coconut	coconuts	500	500	22	model.food.coconut.	146,5,80,212,55	15.0
+1281	ice cream	ice creams	598	100	26	model.food.icecream.	5,55,220,27,108,233	1.0
+1282	sweet	sweets	1442	100	22	model.food.sweet.	82,74,108,212,233,220,234	1.0
+1283	orange	oranges	658	300	22	model.food.orange.	146,104,5,80,212,157,74	100.0
+1284	boiler	boilers	290	6500	10	model.container.still.boiler.	22,1,31,54,232,240,178,33,77,229,112,157,245	50.0
+1285	condenser	condensers	290	6500	10	model.container.still.condenser.	22,1,31,54,232,240,178,33,63,229,112,157,245	50.0
+1286	rum	rum	551	1000	26	model.liquid.rum.	108,26,88,90,213,212,214,89	22.0
+1287	muffin	muffins	644	600	22	model.food.muffin.	82,129,212,76,219,222,233	15.0
+1288	cookie	cookies	532	600	22	model.food.biscuit.cookie.	82,129,212,76,220,222,233	15.0
+1289	rune of Magranon	runes of Magranon	381	100	11	model.rune.magranon.	157,48,235,233	80.0
+1290	rune of Fo	runes of Fo	382	100	11	model.rune.fo.	157,48,235,233	80.0
+1291	rune of Vynora	runes of Vynora	383	100	11	model.rune.vynora.	157,48,235,233	80.0
+1292	rune of Libila	runes of Libila	384	100	11	model.rune.libila.	157,48,235,233	80.0
+1293	rune of Jackal	runes of Jackal	385	100	11	model.rune.jackal.	157,48,235,233	80.0
+1294	thermos	thermos	425	250	19	model.furniture.pottery.thermos.	30,1,31,229,112,238,178,33,232,40,157	50.0
+1295	food compartment	food compartments	426	250	34	model.furniture.tin.foodtin.	22,1,31,229,112,178,232,238,40,157	50.0
+1296	lunchbox	lunchboxes	423	500	34	model.furniture.tin.lunchbox.	108,147,135,144,178,22,44,47,1,92,48,180	60.0
+1297	picnic basket	picnic baskets	424	300	70	model.furniture.picnicbasket.	108,135,144,238,178,47,1,92,40,187,48,180,44	50.0
+1298	sheet	tin sheets	1447	6000	34	model.resource.sheet.	22,146,158	30.0
+1299	sheet	lead sheets	1446	6000	12	model.resource.sheet.	22,146,158	30.0
+1300	golden mirror	golden mirrors	921	100	7	model.tool.handmirror.	22,40,53,127	100.0
+1301	wagoner campfire	wagoner campfires	291	1500	14	model.fireplace.campfire.	52,21,31,157,245,49,207,123,48,246	1.0
+1302	slate keystone	slate keystones	466	80000	61	model.resource.keystone.	25,51,135,86,44,158,147	20.0
+1303	clay keystone	clay keystones	466	80000	18	model.resource.keystone.	108,196,44,147	20.0
+1304	pottery keystone	pottery keystones	466	80000	19	model.resource.keystone.	25,51,135,86,44,158,147	20.0
+1305	sandstone keystone	sandstone keystones	466	80000	89	model.resource.keystone.	25,51,135,86,44,158,147	20.0
+1306	mask of rebirth	masks	465	200	19	model.armour.head.mask.midsummer.	108,44,22,4,187	25.0
+1307	fragment	fragments	1460	1000	0	model.fragment.	48,157,187,233,246	30.0
+1308	wagoner tent	wagoner tents	640	500	17	model.structure.tent.small.wagoner.	24,181,109,61,52,48,245,207,246	10.0
+1309	wagoner container	wagoner containers	311	6500	14	model.container.crate.huge.	108,157,135,21,51,52,44,47,1,54,178,48,246,257	30.0
+1310	stored creature	stored creatures	60	50000	0	NotNeeded	31,48,246,59	100.0
+1311	creature cage	creature cages	363	150000	14	model.cage.	167,47,21,63,52,31,1,176,145,86,246,44,59,48,257,51	60.0
+1312	crate rack	crate racks	421	6500	14	model.container.rack.crate.	108,147,135,21,51,52,44,47,1,199,67,178	30.0
+1313	straw bed	straw beds	313	10000	70	model.furniture.bed.straw.	109,51,52,117,246,86,31,67,48,110,178,157	10.0
+1315	rack for empty bsb	racks for empty bsbs	421	6500	14	model.container.rack.bsb.	108,147,135,21,51,52,44,47,1,199,67,178	30.0
+1316	bulk container unit	bulk containers units	421	6500	14	model.container.bulk.unit.	108,147,135,21,51,52,44,47,1,92,199,178,112	50.0
+1317	bulk storage shelf	bulk storage shelves	469	20000	14	model.container.storagebin.	21,1,31,229,112,232,240,157,145,48,207,245	10.0
+1318	tapestry of Evening	tapestries	60	12000	69	model.furniture.tapestry.comp1.	24,52,109,86,119,44,188,157,173,51	30.0
+1319	tapestry of Mclavin	tapestries	60	12000	69	model.furniture.tapestry.comp2.	24,52,109,86,119,44,188,157,173,51	30.0
+1320	tapestry of Ehizellbob	tapestries	60	12000	69	model.furniture.tapestry.comp3.	24,52,109,86,119,44,188,157,173,51	30.0
+1321	troll mask	masks	465	200	16	model.armour.head.mask.troll.	108,44,23,4,187,157	25.0
+1322	pumpkin shoulder pad	shoulder pads	1140	300	16	model.armour.shoul.18.	108,44,23,187,157,92	25.0
+1323	statue of eagle	eagle statues	60	70000	15	model.decoration.statue.eagle.	108,31,135,25,51,1,52,44,86,199,256,92,176,178	30.0
+1324	statue of worg	worg statues	60	70000	15	model.decoration.statue.worg.	108,31,135,25,51,1,52,44,86,199,256,92,176,178	30.0
+1325	statue of hell horse	hell horse statues	60	70000	15	model.decoration.statue.hellhorse.	108,31,135,25,51,1,52,44,86,199,256,92,176,178	30.0
+1326	statue of Vynora	vynora statues	60	50000	62	model.decoration.statue.vynora.	108,31,135,25,51,52,44,86,199,92,176,178	30.0
+1327	statue of Magranon	magranon statues	60	50000	62	model.decoration.statue.magranon.	108,31,135,25,51,52,44,86,199,92,176,178	30.0
+1328	statue of Fo	statues	60	50000	62	model.decoration.statue.fo.	108,31,135,25,51,52,44,86,199,92,176,178	30.0
+1329	statue of Libila	libila statues	60	50000	61	model.decoration.statue.libila.	108,31,135,25,51,52,44,86,199,92,176,178	30.0
+1330	statue of drake	drake statues	60	100000	11	model.decoration.statue.drake.	108,31,135,22,51,1,52,44,86,199,256,92,176,178	30.0
+1331	chocolate milk	chocolate milk	541	1000	28	model.liquid.	82,74,26,90,233	1.0
+1332	small bag	small bags	242	1000	16	model.container.satchel.	44,147,23	15.0
+1333	saddle bags	saddle bags	242	3500	16	model.container.mountbag.	44,147,23,1,248,92,139	30.0
+1334	saddle sacks	saddle sacks	242	3500	16	model.container.mountbag.xmas.	44,157,23,1,187,139	30.0
+1335	salmon	salmons	504	25000	2	model.fish.salmon.	108,5,36,146,212,76,219,223	50.0
+1336	tarpon	tarpons	504	50000	2	model.fish.tarpon.	108,5,36,146,212,76,219,223	57.0
+1337	sardine	sardines	504	100	2	model.fish.sardine.	108,5,36,146,212,254,76,219,223	2.0
+1338	minnow	minnows	504	100	2	model.fish.minnow.	108,5,36,146,212,254,76,219,223	4.0
+1339	loach	loaches	504	2000	2	model.fish.loach.	108,5,36,146,212,76,219,223	21.0
+1340	wurmfish	wurmfishs	504	5000	2	model.fish.wurm.	108,5,36,146,212,76,219,223	42.0
+1341	tackle box	tackle boxes	244	1000	34	model.container.tacklebox.	108,135,1,47,51,52,147,44,92,180,22	10.0
+1342	fish keep net	fish keep nets	343	10000	17	model.container.net.keep.	108,147,24,44,1,199,52,48	45.0
+1343	fishing net	fishing nets	885	500	17	model.container.net.fish.	108,147,24,44,1,63	1.0
+1344	fishing pole	fishing poles	786	860	14	model.tool.fish.pole.	108,44,21,147,1	1.0
+1345	eyelet	eyelets	1488	3	11	model.part.islet.	22	3.0
+1346	fishing rod	fishing rods	846	1506	14	model.tool.fish.rod.	21,108,44,147,1	5.0
+1347	basic fishing line	basic fishing lines	620	10	17	model.fishline.basic.	24,1,251	1.0
+1348	light fishing line	light fishing lines	620	10	17	model.fishline.light.	24,1,251	5.0
+1349	medium fishing line	medium fishing lines	620	10	17	model.fishline.medium.	24,1,251	10.0
+1350	heavy fishing line	heavy fishing lines	620	10	17	model.fishline.heavy.	24,1,251	15.0
+1351	braided fishing line	braided fishing lines	620	10	17	model.fishline.braided.	24,1,251	20.0
+1352	feather	feathers	1489	10	35	model.float.feather.	146,157,112,252	1.0
+1353	twig	twigs	1490	10	14	model.float.twig.	21,157,112,252	1.0
+1354	small piece of moss	small pieces of moss	1500	10	22	model.float.moss.	27,157,112,252	1.0
+1355	bark	barks	1491	10	14	model.float.bark.	21,157,112,252	1.0
+1356	wooden fishing hook	wooden fishing hooks	805	5	14	model.tool.fish.hook.	21,1,253,44	4.0
+1357	metal fishing hook	metal fishing hooks	785	10	11	model.tool.fish.hook.	22,1,253,44	3.0
+1358	bone fishing hook	bone fishing hooks	865	10	35	model.tool.fish.hook.	1,253	6.0
+1359	fly	flies	1480	10	2	model.bait.fly.	254,59	6.0
+1360	small piece of cheese	cheese pieces	1481	10	22	model.bait.cheese.	27,254,59	6.0
+1361	dough ball	dough balls	1482	10	0	model.bait.dough.	27,254,59	6.0
+1362	wurm	wurms	1483	10	2	model.bait.wurm.	254,59	6.0
+1363	bit of fish	bits of fish	1484	10	2	model.bait.fish.	254,59	6.0
+1364	grub	grubs	1485	10	2	model.bait.grub.	254,59	6.0
+1365	grain of wheat	wheat grains	1486	10	6	model.bait.wheat.	254,59	6.0
+1366	corn kernel	corn kernels	1487	10	22	model.bait.corn.	254,59	6.0
+1367	wood reel	wood reels	1494	150	14	model.part.reel.	21,108,44	15.0
+1368	metal reel	metal reels	1494	150	11	model.part.reel.	22,108,44	25.0
+1369	professional reel	professional reels	1494	150	9	model.part.reel.	22,108,44	25.0
+1370	reinforced handle	reinforced handles	765	380	14	model.part.handle.reinforced.	21	5.0
+1371	padded handle	padded handles	765	400	14	model.part.handle.padded.	21	5.0
+1372	light fishing reel	light fishing reels	1495	250	14	model.fishingreel.light.	21,108,1,250,44	5.0
+1373	medium fishing reel	medium fishing reels	1496	280	14	model.fishingreel.medium.	21,108,1,250,44	10.0
+1374	deep water fishing reel	deep water fishing reels	1497	530	11	model.fishingreel.deepwater.	22,108,1,250,44	20.0
+1375	professional fishing reel	professional fishing reels	1498	550	9	model.fishingreel.professional.	22,108,1,250,44	40.0
+1376	compartment	compartments	244	40	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1377	compartment	compartments	244	20	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1378	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1379	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1380	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1381	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1382	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1383	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1384	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1385	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1386	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1387	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1388	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1389	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1390	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1391	compartment	compartments	244	10	14	model.furniture.wooden.shelf.	21,1,31,229,112,232,157,245	50.0
+1392	item slot	item slots	60	1	0	model.unknown	45,233	99.0
+1393	fishing rod rack	fishing rod racks	60	20000	14	model.container.rods.	21,44,1,86,52,67,31,51,199,176,178	35.0
+1394	clam	clams	1499	2000	15	model.fish.clam.	229,112,157,146	50.0
+1395	fishing trophy	fishing trophies	626	2000	14	model.fish.trophy.	21,44,86,52,48,67,51,199	30.0
+1396	buoy	buoys	245	3000	14	model.light.buoy.	108,21,143,48,51,52,101,44,86,116,92,199,249	45.0
+1397	pearl	pearls	563	500	52	model.decoration.gem.pearl.	93,48,157	99.0
+1398	black pearl	black pearls	563	500	52	model.decoration.gem.pearl.black.	93,48,157	99.0
+1399	pearl necklace	pearl necklaces	268	100	0	model.decoration.necklace.pearl.	108,157,25,153	40.0
+1400	empty low bookshelf	empty low shelves	60	19000	14	model.decoration.low.bookshelf.empty.	21,44,52,178,67,51,199,1,180,256	25.0
+1401	empty high bookshelf	empty high shelves	60	30000	14	model.decoration.high.bookshelf.empty.	21,44,52,178,67,51,199,1,180,256	35.0
+1402	bar table	bar tables	60	18000	14	model.decoration.thirstyaussiebar.	108,21,135,86,31,51,52,157,199,44,92,176,1,180,256	35.0
+1403	archaeology report	archaeology reports	640	10	33	model.resource.sheet.papyrus.	21,159,48,246,157	5.0
+1404	archaeology journal	archaeology journals	1456	250	16	model.container.journal.	23,44,1,229	20.0
+1405	statue of guard	guard statues	60	70000	62	model.decoration.statue.guard.	108,31,135,25,51,52,44,86,199,92,176,178	30.0
+1406	statue of kyklops	kyklops statues	60	35000	15	model.decoration.statue.kyklops.	108,31,135,25,51,52,44,86,199,92,176,178	30.0
+1407	statue of rift beast	rift beast statues	60	35000	15	model.decoration.statue.riftbeast.	108,31,135,25,51,52,44,86,199,92,176,178	30.0
+1408	statue of mountain lion	lion statues	60	35000	15	model.decoration.statue.mountainlion.	108,31,135,25,51,52,44,86,199,92,176,178	30.0
+1409	book	books	1457	200	33	model.container.book.	44,1,229,92,245	10.0
+1410	creature transporter	transporters	60	240000	14	model.transports.large.creature.transporter.	108,1,31,21,51,56,52,44,92,117,54,134,193,47,160	30.0
+1411	lump	electrum lumps	631	100	96	model.resource.lump.	22,146,46,113,157	30.0
+1412	empty shelf	empty shelves	422	6500	14	model.container.rack.amphora.empty.	108,147,135,21,51,52,44,47,1,199,67,178,256	45.0
+1413	potion of butchery	potions	260	200	21	model.magic.potion.ca.	6,183	10.0
+1414	Puzzle King's crystal ball	puzzle crystal balls	813	400	52	model.decoration.ffcrystalball.	199,147,108,246,229,187,44,52	40.0
+1415	statue of unicorn	unicorn statues	60	60000	62	model.decoration.statue.unicorn.	108,31,135,25,51,1,52,44,86,199,256,92,176,178	30.0
+1416	statue of goblin	goblin statues	60	30000	15	model.decoration.statue.goblin.	108,31,135,25,51,52,44,86,199,92,176,178	30.0
+1417	statue of lava fiend	lava fiend statues	60	70000	11	model.decoration.statue.fiend.	108,31,135,22,51,1,52,44,86,199,256,92,176,178	30.0
+1418	statuette of miner	miner statuettes	60	10000	11	model.decoration.statuette.knight.mine.	108,135,22,51,52,44,86,199,178	30.0
+1419	statuette of swordsman	swordsman statuettes	60	10000	11	model.decoration.statuette.knight.sword.	108,135,22,51,52,44,86,199,178	30.0
+1420	statuette of axeman	axeman statuettes	60	10000	11	model.decoration.statuette.soldier.axe.	108,135,22,51,52,44,86,199,178	30.0
+1421	statuette of digger	digger statuettes	60	10000	11	model.decoration.statuette.soldier.dig.	108,135,22,51,52,44,86,199,178	30.0
+1422	village cache	caches	244	200000	14	model.container.chest.large.treasure.arch.	1,31,6,157,52,40,123,63	210.0
+1423	village token	mini village tokens	60	3000	10	model.board.village.cache.	108,48,135,22,51,52,44,199,178,157	30.0
+1424	leather drinking boot	leather boots	985	400	16	model.armour.foot.	108,44,23,92,157,33,1	15.0
+1425	white cloth hood	white cloth hoods	963	300	17	model.armour.head.	108,44,24,4,92,147	10.0
+1426	white cloth sleeve	white cloth sleeves	962	200	17	model.armour.sleeve.	108,44,24,4,92,147	10.0
+1427	white cloth jacket	white cloth jackets	960	500	17	model.armour.torso.	108,44,24,4,92,147	30.0
+1428	skull mask	masks	465	200	35	model.armour.head.mask.skull.	108,44,23,4,187,157	25.0
+1429	witch's hat	hats	963	200	16	model.armour.head.hat.witch.	108,44,23,4,187,157	25.0
+1430	statue of Tich	Tich statues	60	60000	62	model.decoration.statue.pifa.	108,31,135,25,51,1,52,44,86,199,256,92,176,178,22	30.0
+1431	kingdom stone	kingdom stones	60	30000	15	model.structure.portal.10.	108,25,31,123,52,40,98,49,109	25.0
+1432	chicken coop	chicken coops	403	60000	14	model.container.coop.	199,135,257,47,51,44,52,31,176,48,21,1,178,59,229,112,157	50.0
+1433	egg box	egg boxes	312	6500	14	model.container.sack.questionmark.	48,63,21,1,31,54,232,240,178,59,229,112,157,245	50.0
+1434	feeder	feeders	312	6500	14	model.container.sack.questionmark.	48,21,1,31,54,232,240,178,59,229,112,157,245	50.0
+1435	drinker	drinkers	245	6500	14	model.container.sack.questionmark.	48,21,1,31,54,232,240,178,59,229,112,157,245,33	50.0
+1436	nesting box	nesting boxes	363	6500	14	model.container.sack.questionmark.	63,48,21,1,31,54,232,240,178,59,229,112,157,245	50.0
+1437	snowman statue	snowman statues	60	10000	15	model.decoration.snowman.xmas.	25,108,51,52,40,199,1,256,92,178	80.0
+1438	affinity token	affinity tokens	573	50	11	model.coin.	42,61,31,40,157,112,229,246,178	99.0

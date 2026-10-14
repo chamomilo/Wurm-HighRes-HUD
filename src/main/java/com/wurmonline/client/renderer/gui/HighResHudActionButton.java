@@ -17,7 +17,9 @@ final class HighResHudActionButton extends StaticComponent {
     private final UiButtonMotion motion = new UiButtonMotion();
     private final Runnable action;
     private String caption;
-    private boolean available = true, hovered, held, armed;
+    private boolean available = true, hovered, held, armed, active;
+    private java.util.function.Supplier<com.wurmonline.client.resources.textures.Texture> leadingIcon;
+    void leadingIcon(java.util.function.Supplier<com.wurmonline.client.resources.textures.Texture> icon) { leadingIcon=icon; }
 
     HighResHudActionButton(WurmComponent parent, int width, int height,
                            HudCaptionGroup group, String caption, Runnable action) {
@@ -34,6 +36,8 @@ final class HighResHudActionButton extends StaticComponent {
         if (!enabled) { armed = false; held = false; }
     }
 
+    void active(boolean selected) { active = selected; }
+
     @Override protected void renderComponent(Queue queue, float ignoredAlpha) {
         group.refreshLanguage();
         motion.update(available, hovered, held, System.nanoTime());
@@ -42,8 +46,16 @@ final class HighResHudActionButton extends StaticComponent {
         boolean bold = available && hovered;
         TextFont font = ChamomiloUiV1Fonts.caption(group.fontPixels, bold, group.density);
         UiColor color = UiPainter.buttonCaptionColor(available, motion.hover());
+        if (active && available) {
+            // Same persistent selection treatment as Chamomilo's ON/OFF actions.
+            canvas.fill(UiColor.rgb(0x61bd70), .18f, x+5, y+5, width-10, height-10);
+            canvas.fill(UiColor.rgb(0x84e397), 1f, x+5, y+height-4, width-10, 2);
+            if (!hovered) color = UiColor.rgb(0x84e397);
+        }
         int offset = motion.depth() >= .5f ? 1 : 0;
-        font.moveTo(x + group.textX(caption, bold, width) + offset, y + group.baseline + offset);
+        int leading=leadingIcon==null?0:52;
+        if(leadingIcon!=null)HighResBuildWindow.icon(queue,leadingIcon.get(),x+6+offset,y+(height-36)/2+offset,36,available?1f:.5f);
+        font.moveTo(x + leading + group.textX(caption, bold, width-leading) + offset, y + group.baseline + offset);
         font.paint(queue, group.caption(caption), color.red, color.green, color.blue, 1.0f);
     }
 

@@ -6,6 +6,7 @@ import com.wurmonline.client.job.JobCompletionCallback;
 import com.wurmonline.client.job.JobManager;
 import com.wurmonline.client.renderer.Color;
 import com.wurmonline.client.renderer.Matrix;
+import com.wurmonline.client.renderer.ItemColorsXml;
 import com.wurmonline.client.renderer.ModelRenderMode;
 import com.wurmonline.client.renderer.backend.Offscreen;
 import com.wurmonline.client.renderer.backend.Pipeline;
@@ -43,6 +44,8 @@ public final class PortraitRenderService implements Job, JobCompletionCallback,
     private volatile ModelResourceWrapper requestedModel;
     private volatile long requestedSubjectId = Long.MIN_VALUE;
     private volatile PortraitProfile requestedProfile;
+    private volatile Color requestedMaterialColor;
+    private volatile String requestedMaterialMapping = "";
     private volatile AnimationData requestedAnimation;
     private volatile float requestedAnimationTime;
     private volatile boolean shouldRender;
@@ -64,6 +67,11 @@ public final class PortraitRenderService implements Job, JobCompletionCallback,
                 : System.identityHashCode(model), model, profile, null, 0f);
     }
 
+    /** Item previews follow the same masked-material palette as ground items. */
+    public void requestRender(ModelResourceWrapper model,PortraitProfile profile,String materialMapping) {
+        requestRender(model == null ? Long.MIN_VALUE : System.identityHashCode(model),model,profile,null,0f,materialMapping);
+    }
+
     public void requestRender(ModelResourceWrapper model,
                               PortraitProfile profile,
                               AnimationData animation,
@@ -77,10 +85,17 @@ public final class PortraitRenderService implements Job, JobCompletionCallback,
                               PortraitProfile profile,
                               AnimationData animation,
                               float normalizedAnimationTime) {
+        requestRender(subjectId,model,profile,animation,normalizedAnimationTime,"");
+    }
+
+    private void requestRender(long subjectId,ModelResourceWrapper model,PortraitProfile profile,
+                               AnimationData animation,float normalizedAnimationTime,String materialMapping) {
         if (model == null || profile == null || !model.isLoaded()) return;
         requestedSubjectId = subjectId;
         requestedModel = model;
         requestedProfile = profile.copy();
+        requestedMaterialMapping = materialMapping == null ? "" : materialMapping;
+        requestedMaterialColor = requestedMaterialMapping.isEmpty() ? null : ItemColorsXml.findItemColor(requestedMaterialMapping);
         requestedAnimation = animation;
         requestedAnimationTime = normalizedAnimationTime;
         shouldRender = true;
@@ -102,7 +117,7 @@ public final class PortraitRenderService implements Job, JobCompletionCallback,
                 ? "" : model.getResourceUrl().getFilePath();
         PortraitProfile profile = requestedProfile;
         return new PortraitRenderKey(requestedSubjectId, renderSize, resource,
-                profile == null ? "" : profile.renderKey());
+                (profile == null ? "" : profile.renderKey()) + "|material=" + requestedMaterialMapping);
     }
 
     @Override
@@ -151,6 +166,7 @@ public final class PortraitRenderService implements Job, JobCompletionCallback,
         shouldRender = false;
         ModelResourceWrapper model = requestedModel;
         PortraitProfile profile = requestedProfile;
+        Color materialColor = requestedMaterialColor;
         AnimationData animation = requestedAnimation;
         float animationTime = requestedAnimationTime;
         if (model == null || profile == null || !model.isLoaded()) return;
@@ -185,7 +201,7 @@ public final class PortraitRenderService implements Job, JobCompletionCallback,
             ((ColladaModelData) model.getModelData()).setShouldBeRendered(true);
         }
         Matrix modelMatrix = PortraitFraming.modelMatrix(model, profile, 1f);
-        model.render(queue, modelMatrix, null, null, null, null,
+        model.render(queue, modelMatrix, null, null, null, materialColor,
                 renderState, ModelRenderMode.RENDER_NORMAL, 0, 0f,
                 TriangleMesh.LODLevel.NONE);
     }
